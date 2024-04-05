@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Modules\Core\Http\Controllers\CkEditorApiController;
+use Modules\Core\Http\Controllers\UploadFileApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +16,9 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/core', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:api')->get('/core', function (Request $request) {
+//     return $request->user();
+// });
+Route::group(["prefix" => "upload-files", "as" => 'upload-files.'], function(){
+    Route::post("/image", [UploadFileApiController::class, "image"])->name("image");
 });

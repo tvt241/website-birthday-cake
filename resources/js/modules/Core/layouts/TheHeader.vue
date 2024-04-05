@@ -2,7 +2,7 @@
     <header class="main-header" id="header">
         <nav class="navbar navbar-expand-lg navbar-light" id="navbar">
             <!-- Sidebar toggle button -->
-            <button id="sidebar-toggler" class="sidebar-toggle">
+            <button id="sidebar-toggler" @click="checkMobileSidebar" class="sidebar-toggle">
                 <span class="sr-only">Toggle navigation</span>
             </button>
             <div class="navbar-right">

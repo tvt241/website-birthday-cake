@@ -12,35 +12,35 @@
         <div class="inline-page-menu my-4">
             <ul class="list-unstyled">
                 <li class="">
-                    <router-link :to="{ name: 'admin.settings.system-setups.languages' }" class="nav-link" exact active-class="active">
+                    <router-link :to="{ name: 'settings.system-setups.languages' }" class="nav-link" exact active-class="active">
                         {{ $t("label.about_us") }}
                     </router-link>
                 </li>
                 <li class="">
-                    <router-link :to="{ name: 'admin.settings.system-setups.languages' }" class="nav-link" exact active-class="active">
+                    <router-link :to="{ name: 'settings.system-setups.languages' }" class="nav-link" exact active-class="active">
                         {{ $t("label.terms_and_condition") }}
                     </router-link>
                 </li>
                 <li class="">
-                    <router-link :to="{ name: 'admin.settings.system-setups.languages' }" class="nav-link" exact
+                    <router-link :to="{ name: 'settings.system-setups.languages' }" class="nav-link" exact
                         active-class="active">
                         {{ $t("label.privacy_policy") }}
                     </router-link>
                 </li>
                 <li class="">
-                    <router-link :to="{ name: 'admin.settings.system-setups.languages' }" class="nav-link" exact
+                    <router-link :to="{ name: 'settings.system-setups.languages' }" class="nav-link" exact
                         active-class="active">
                         {{ $t("label.return_policy") }}
                     </router-link>
                 </li>
                 <li class="">
-                    <router-link :to="{ name: 'admin.settings.system-setups.languages' }" class="nav-link" exact
+                    <router-link :to="{ name: 'settings.system-setups.languages' }" class="nav-link" exact
                         active-class="active">
                         {{ $t("label.refund_policy") }}
                     </router-link>
                 </li>
                 <li class="">
-                    <router-link :to="{ name: 'admin.settings.system-setups.languages' }" class="nav-link" exact
+                    <router-link :to="{ name: 'settings.system-setups.languages' }" class="nav-link" exact
                         active-class="active">
                         {{ $t("label.cancellation_policy") }}
                     </router-link>

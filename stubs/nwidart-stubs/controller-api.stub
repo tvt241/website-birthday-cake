@@ -5,9 +5,11 @@ namespace $CLASS_NAMESPACE$;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Core\Traits\ResponseTrait;
 
 class $CLASS$ extends Controller
 {
+    use ResponseTrait;
     /**
      * Display a listing of the resource.
      * @return Response

@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Product\Database\Factories\ProductCategoryFactory;
 use \Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Modules\Core\Models\Image;
 
 class ProductCategory extends Model
 {
@@ -24,6 +26,11 @@ class ProductCategory extends Model
     public function getParentKeyName()
     {
         return 'category_id';
+    }
+    
+    public function image(): MorphOne
+    {
+        return $this->morphOne(Image::class, 'model');
     }
 
     protected static function newFactory(): Factory

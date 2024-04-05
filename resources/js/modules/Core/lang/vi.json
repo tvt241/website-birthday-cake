@@ -635,7 +635,7 @@
         "cancellation_policy": "Chính sách hủy"
     },
     "button": {
-        "add": "Thêm",
+        "create": "Thêm",
         "save": "Lưu",
         "edit": "Chỉnh sửa",
         "delete": "Xóa",

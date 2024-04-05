@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Log;
 
 class CheckHeaderApiMiddleware 
 {
@@ -17,7 +18,7 @@ class CheckHeaderApiMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if($locale = $request->hasHeader('X-Locale')){
+        if($locale = $request->header('X-Locale')){
             $languages = ["en", "vi"];
             if(in_array($locale, $languages)){
                 App::setLocale($locale);
@@ -25,9 +26,9 @@ class CheckHeaderApiMiddleware
             // return abort(400, __("header.miss_param.location"));
         }
 
-        if($request->hasHeader('X-DateTime')){
-            return abort(400, __("header.miss_param.date_time"));
-        }
+        // if(!$request->hasHeader('X-DateTime')){
+        //     return abort(400, __("header.miss_param.date_time"));
+        // }
 
         return $next($request);
     }

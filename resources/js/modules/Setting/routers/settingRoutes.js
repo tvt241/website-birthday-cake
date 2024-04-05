@@ -21,19 +21,109 @@ export default [
         path: "/settings",
         children: [
             {
+                path: "business-setups",
+                name: "settings.business_setup",
+                component: SocialMedia,
+                meta: {
+                    title: ""
+                }
+            },
+            {
+                path: "pages-medias",
+                children: [
+                    {
+                        path: "page-setups",
+                        component: PageSetup,
+                        children: [
+                            {
+                                path: "",
+                                name: "settings.pages-media.page-setups",
+                                redirect: {
+                                    name: "settings.pages-media.page-setups.about_us"
+                                },
+                            },
+                            {
+                                path: "about-us",
+                                name: "settings.pages-media.page-setups.about_us",
+                                component: AboutUs,
+                                meta: {
+                                    title: "setting_about_us"
+                                }
+                            },
+                            {
+                                path: "terms-and-condition",
+                                name: "settings.pages-media.page-setups.terms_and_condition",
+                                component: TermsAndCondition,
+                                meta: {
+                                    title: "setting_mail"
+                                }
+                            },
+                            {
+                                path: "privacy-policy",
+                                name: "settings.pages-media.page-setups.privacy_policy",
+                                component: PrivacyPolicy,
+                                meta: {
+                                    title: "setting_privacy_policy"
+                                }
+                            },
+                            {
+                                path: "return-policy",
+                                name: "settings.pages-media.page-setups.return_policy",
+                                component: ReturnPolicy,
+                                meta: {
+                                    title: "setting_return_policy"
+                                }
+                            },
+                            {
+                                path: "refund-policy",
+                                name: "settings.pages-media.page-setups.refund_policy",
+                                component: RefundPolicy,
+                                meta: {
+                                    title: "setting_refund_policy"
+                                }
+                            },
+                            {
+                                path: "cancellation-policy",
+                                name: "settings.pages-media.page-setups.cancellation_policy",
+                                component: CancellationPolicy,
+                                meta: {
+                                    title: "setting_cancellation_policy"
+                                }
+                            },
+                        ],
+                    },
+                    {
+                        path: "social-medias",
+                        name: "settings.social_media",
+                        component: SocialMedia,
+                        meta: {
+                            title: "setting_social_media"
+                        }
+                    },
+                ],
+            },
+            {
+                path: "template-setups",
+                name: "settings.template_setup",
+                component: SocialMedia,
+                meta: {
+                    title: "setting_social_media"
+                }
+            },
+            {
                 path: "system-setups",
                 component: SystemSetup,
                 children: [
                     {
                         path: "",
-                        name: "admin.settings.system-setups",
+                        name: "settings.system-setups",
                         redirect: {
-                            name: "admin.settings.system-setups.languages"
+                            name: "settings.system-setups.languages"
                         },
                     },
                     {
                         path: "languages",
-                        name: "admin.settings.system-setups.languages",
+                        name: "settings.system-setups.languages",
                         component: LanguageSettingComponent,
                         meta: {
                             title: "setting language"
@@ -41,7 +131,7 @@ export default [
                     },
                     {
                         path: "mail",
-                        name: "admin.settings.system-setups.mail",
+                        name: "settings.system-setups.mail",
                         component: MailSettingComponent,
                         meta: {
                             title: "setting mail"
@@ -49,7 +139,7 @@ export default [
                     },
                     {
                         path: "notification",
-                        name: "admin.settings.system-setups.notification",
+                        name: "settings.system-setups.notification",
                         component: NotificationSettingComponent,
                         meta: {
                             title: "setting notification"
@@ -57,79 +147,10 @@ export default [
                     },
                     {
                         path: "sms",
-                        name: "admin.settings.system-setups.sms",
+                        name: "settings.system-setups.sms",
                         component: SmsSettingComponent,
                     },
                 ],
-            },
-            {
-                path: "page-setups",
-                component: PageSetup,
-                children: [
-                    {
-                        path: "",
-                        name: "admin.settings.page-setups",
-                        redirect: {
-                            name: "admin.settings.page-setups.about_us"
-                        },
-                    },
-                    {
-                        path: "about-us",
-                        name: "admin.settings.page-setups.about_us",
-                        component: AboutUs,
-                        meta: {
-                            title: "setting_about_us"
-                        }
-                    },
-                    {
-                        path: "terms-and-condition",
-                        name: "admin.settings.page-setups.terms_and_condition",
-                        component: TermsAndCondition,
-                        meta: {
-                            title: "setting_mail"
-                        }
-                    },
-                    {
-                        path: "privacy-policy",
-                        name: "admin.settings.page-setups.privacy_policy",
-                        component: PrivacyPolicy,
-                        meta: {
-                            title: "setting_privacy_policy"
-                        }
-                    },
-                    {
-                        path: "return-policy",
-                        name: "admin.settings.page-setups.return_policy",
-                        component: ReturnPolicy,
-                        meta: {
-                            title: "setting_return_policy"
-                        }
-                    },
-                    {
-                        path: "refund-policy",
-                        name: "admin.settings.page-setups.refund_policy",
-                        component: RefundPolicy,
-                        meta: {
-                            title: "setting_refund_policy"
-                        }
-                    },
-                    {
-                        path: "cancellation-policy",
-                        name: "admin.settings.page-setups.cancellation_policy",
-                        component: CancellationPolicy,
-                        meta: {
-                            title: "setting_cancellation_policy"
-                        }
-                    },
-                ],
-            },
-            {
-                path: "social-media",
-                name: "admin.settings.social_media",
-                component: SocialMedia,
-                meta: {
-                    title: "setting_social_media"
-                }
             }
         ],
     },

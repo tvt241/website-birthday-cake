@@ -1,16 +1,13 @@
 <template>
-    <div class="d-flex flex-wrap gap-2 align-items-center mb-4">
-        <h2 class="h1 mb-0 d-flex align-items-center gap-2">
-            <img width="20" class="avatar-img" src="http://localhost:2222/public/assets/admin/img/icons/product.png"
-                alt="">
-            <span class="page-header-title">
-                Product List
-            </span>
-        </h2>
-        <span class="badge badge-soft-dark rounded-50 fz-14">1</span>
-    </div>
-
-
+    <PageHeaderTitleComponent :header-title="$t('label.products.list')">
+        <button type="button" class="btn btn-primary text-nowrap">
+            <router-link :to="{ name: 'settings.system-setups.languages' }" class="" exact
+                active-class="active">
+                <i class="mdi mdi-plus"></i>
+                {{ $t("button.create") }}
+            </router-link>
+        </button>
+    </PageHeaderTitleComponent>
     <div class="row g-2">
         <div class="col-12">
             <!-- Card -->
@@ -51,9 +48,6 @@
                                         </li>
                                     </ul>
                                 </div>
-                                <a href="http://localhost:2222/admin/product/add-new" class="btn btn-primary">
-                                    <i class="tio-add"></i> Add New Product
-                                </a>
                             </div>
                         </div>
                     </div>
@@ -135,3 +129,8 @@
         </div>
     </div>
 </template>
+
+<script setup>
+import PageHeaderTitleComponent from "~/Core/components/PageHeaderTitleComponent.vue";
+
+</script>

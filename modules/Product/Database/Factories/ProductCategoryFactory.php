@@ -23,6 +23,7 @@ class ProductCategoryFactory extends Factory
         return [
             "name" => $name,
             "slug" => $slug,
+            "is_active" => 1
         ];
     }
 }

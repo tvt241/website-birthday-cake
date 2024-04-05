@@ -4,17 +4,19 @@ namespace Modules\Core\Traits;
 
 trait ResponseTrait
 {
-    public function SuccessResponse($data = [], $message = "Thành công", $status_code = 200){
+    public function SuccessResponse($data = [], $message = "success", $status_code = 200){
         return response([
+            "status_code" => $status_code,
             "data" => $data,
-            "message" => $message
+            "message" => __($message)
         ], $status_code);
     }
 
-    public function ErrorResponse($data = [], $message = "Thất bại", $status_code = 400){
+    public function ErrorResponse($message = "error", $status_code = 400, $data = []){
         return response([
+            "status_code" => $status_code,
             "data" => $data,
-            "message" => $message
+            "message" => __($message)
         ], $status_code);
     }
 }

@@ -12,12 +12,31 @@
             <div class="sidebar-left" data-simplebar style="height: 100%">
                 <!-- sidebar menu -->
                 <ul class="nav sidebar-inner" id="sidebar-menu">
+                    <li>
+                        <router-link to="/" exact active-class="active" class="sidenav-item-link">
+                            <i class="mdi mdi-wechat"></i>
+                            <span class="nav-text">{{ $t("menu.dashboard") }}</span>
+                        </router-link>
+                    </li>
+                    <li>
+                        <router-link to="/" exact active-class="active" class="sidenav-item-link">
+                            <i class="mdi mdi-wechat"></i>
+                            <span class="nav-text">{{ $t("menu.pos") }}</span>
+                        </router-link>
+                    </li>
+                    <li>
+                        <router-link to="/" exact active-class="active" class="sidenav-item-link">
+                            <i class="mdi mdi-wechat"></i>
+                            <span class="nav-text">{{ $t("menu.message") }}</span>
+                        </router-link>
+                    </li>
                     <template v-for="mdl in modules">
                         <li class="section-title">{{ mdl.name }}</li>
                         <template v-for="menu in mdl.menu">
                             <template v-if="!menu.sub">
                                 <li>
-                                    <router-link :to="'/' + arrayToStringWithSeparator('/', mdl.path, menu.path)" class="sidenav-item-link">
+                                    <router-link :to="'/' + arrayToStringWithSeparator('/', mdl.path, menu.path)" exact
+                                        active-class="active" class="sidenav-item-link">
                                         <i class="mdi mdi-wechat"></i>
                                         <span class="nav-text">{{ menu.name }}</span>
                                     </router-link>
@@ -31,12 +50,13 @@
                                         <span class="nav-text">{{ menu.name }}</span>
                                         <b class="caret"></b>
                                     </a>
-                                    <ul class="collapse" :id="arrayToStringWithSeparator('-', mdl.path, menu.path)" data-parent="#sidebar-menu">
+                                    <ul class="collapse" :id="arrayToStringWithSeparator('-', mdl.path, menu.path)"
+                                        data-parent="#sidebar-menu">
                                         <li v-for="sub_menu in menu.sub">
-                                                <router-link class="sidenav-item-link"
-                                                    :to="'/' + arrayToStringWithSeparator('/', mdl.path, menu.path, sub_menu.path)">
-                                                    <span class="nav-text">{{ sub_menu.name }}</span>
-                                                </router-link>
+                                            <router-link class="sidenav-item-link" exact active-class="active"
+                                                :to="'/' + arrayToStringWithSeparator('/', mdl.path, menu.path, sub_menu.path)">
+                                                <span class="nav-text">{{ sub_menu.name }}</span>
+                                            </router-link>
                                         </li>
                                     </ul>
                                 </li>
@@ -72,12 +92,30 @@ import { ref } from 'vue';
 
 const modules = [
     {
-        name: "Product",
-        path: "products",
+        name: "Order Module",
+        menu: [
+            {
+                name: "Orders",
+                path: "",
+                sub: [
+                    {
+                        name: "Role List",
+                        path: ""
+                    },
+                    {
+                        name: "Post Add",
+                        path: "create"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        name: "Product Module",
         menu: [
             {
                 name: "Product",
-                path: "",
+                path: "products",
                 sub: [
                     {
                         name: "Product List",
@@ -90,22 +128,97 @@ const modules = [
                 ]
             },
             {
-                name: "Category",
+                name: "Product Category",
                 path: "categories"
             }
         ]
     },
     {
-        name: "Setting",
-        path: "settings",
+        name: "Marketing Module",
         menu: [
             {
+                name: "Coupon",
+                path: "",
+                sub: [
+                    {
+                        name: "Post List",
+                        path: ""
+                    },
+                    {
+                        name: "Post Add",
+                        path: ""
+                    }
+                ]
+            },
+            {
+                name: "Notification",
+                path: ""
+            },
+            {
+                name: "Banner",
+                path: ""
+            },
+            {
+                name: "Post",
+                path: "",
+                sub: [
+                    {
+                        name: "Post List",
+                        path: ""
+                    },
+                    {
+                        name: "Post Add",
+                        path: ""
+                    }
+                ]
+            },
+            {
+                name: "Post Category",
+                path: ""
+            }
+        ]
+    },
+    {
+        name: "Report Module",
+        menu: [
+            {
+                name: "Doanh thu",
+                path: "",
+                sub: [
+                    {
+                        name: "Thu nhập",
+                        path: ""
+                    },
+                    {
+                        name: "Đơn hàng",
+                        path: ""
+                    },
+                    {
+                        name: "Sản phẩm",
+                        path: ""
+                    }
+                ]
+            },
+            {
+                name: "Contact",
+                path: ""
+            }
+        ]
+    },
+    {
+        name: "Setting Module",
+        menu: [
+            {
+                name: "Roles",
+                path: "",
+            },
+            {
                 name: "Business Setup",
-                path: "business-setups",
+                path: "settings/business-setups",
             },
             {
                 name: "Page & Media",
-                path: "page-medias",
+                path: "settings/page-medias",
                 sub: [
                     {
                         name: "Page Setup",
@@ -119,11 +232,11 @@ const modules = [
             },
             {
                 name: "Template setup",
-                path: "system-setups",
+                path: "settings/template-setups",
             },
             {
                 name: "System setup",
-                path: "system-setups",
+                path: "settings/system-setups",
             },
         ]
     }
@@ -152,5 +265,5 @@ const modules = [
 //         item.style.display = "block";
 //     });
 // }
-const arrayToStringWithSeparator= (separator,...args) => args.filter((value) => value).join(separator);
+const arrayToStringWithSeparator = (separator, ...args) => args.filter((value) => value).join(separator);
 </script>
