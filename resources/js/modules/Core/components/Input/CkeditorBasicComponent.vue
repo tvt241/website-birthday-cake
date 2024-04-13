@@ -1,36 +1,15 @@
 <template>
-    <ckeditor :editor="editor" v-model="content" :config="editorConfig">
+    <ckeditor :editor="editor" v-model="content">
     </ckeditor>
 </template>
 
 <script setup>
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import ClassicEditor from '~/Core/customs/ckeditorBasic';
 import { defineModel } from "vue";
 
 const editor = ClassicEditor;
 const content = defineModel("content");
-const editorConfig = {
-    toolbar: [
-        'undo',
-        'redo',
-        '|',
-        'heading',
-        '|',
-        'bold',
-        'italic',
-        '|',
-        'link',
-        'uploadImage',
-        'CKFinder',
-        'insertTable',
-        'blockQuote',
-        'mediaEmbed',
-        'numberedList',
-        'bulletedList',
-        'outdent',
-        'indent'
-    ],
-}
+
 </script>
 
 <style>

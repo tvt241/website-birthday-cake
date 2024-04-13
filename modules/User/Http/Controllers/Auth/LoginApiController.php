@@ -5,6 +5,7 @@ namespace Modules\User\Http\Controllers\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Core\Helpers\HttpAuthHelper;
 use Modules\Core\Traits\ResponseTrait;
 
 class LoginApiController extends Controller
@@ -14,7 +15,7 @@ class LoginApiController extends Controller
     public $form;
     public $http;
 
-    public function __construct()
+    public function __construct(HttpAuthHelper $httpAuthHelper)
     {
         $clientId =  env("GRANT_CLIENT_ID");
         $clientSecret = env("GRANT_CLIENT_SECRET");
@@ -24,7 +25,7 @@ class LoginApiController extends Controller
         $this->form["client_id"] = $clientId;
         $this->form["client_secret"] = $clientSecret;
         $this->form["scope"] = "";
-        $this->http = app("HttpHelperAuth");
+        $this->http = $httpAuthHelper;
 
     }
     public function login(Request $request)

@@ -1,6 +1,8 @@
 <template>
     <PageHeaderTitleComponent headerTitle="product-create">
     </PageHeaderTitleComponent>
+
+    vào trang nauyf à 
 </template>
 
 <script setup>

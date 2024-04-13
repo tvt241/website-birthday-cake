@@ -23,4 +23,4 @@ export default {
     },
 };
 
-export const IMG_DEFAULT = ENV.API_URL + "/assets/admin/images/img-default.jpg";
+export const IMG_DEFAULT = ENV.APP_URL + "/assets/img/img-default.jpg";

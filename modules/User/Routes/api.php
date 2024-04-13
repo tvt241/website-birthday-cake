@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Modules\User\Http\Controllers\Api\PermissionApiController;
+use Modules\User\Http\Controllers\Api\RoleApiController;
 use Modules\User\Http\Controllers\Auth\LoginApiController;
 
 /*
@@ -21,6 +23,11 @@ Route::group(["prefix" => "auth", "name" => "auth."], function(){
     // Route::post("logout", [LoginApiController::class, "logout"]);
 
     // Route::post("info", [LoginApiController::class, "info"]);
+});
 
+Route::group([], function(){
+    Route::get("roles/{id}/permissions", [RoleApiController::class, 'permissionByRole']);
+    Route::put("roles/{id}/permissions", [RoleApiController::class, 'updatePermissionByRole']);
+    Route::apiResource("roles", RoleApiController::class);
 });
 

@@ -27,8 +27,13 @@ return new class extends Migration
 
         Schema::create($tableNames['permissions'], function (Blueprint $table) {
             $table->bigIncrements('id'); // permission id
+            $table->string('title'); 
             $table->string('name');       // For MySQL 8.0 use string('name', 125);
-            $table->string('guard_name'); // For MySQL 8.0 use string('guard_name', 125);
+            $table->string('guard_name')->default("api"); // For MySQL 8.0 use string('guard_name', 125);
+            $table->string('url');
+            $table->string('icon')->nullable();
+            $table->string('menu_parent')->nullable();
+            $table->string('type')->nullable();
             $table->timestamps();
 
             $table->unique(['name', 'guard_name']);
@@ -41,7 +46,7 @@ return new class extends Migration
                 $table->index($columnNames['team_foreign_key'], 'roles_team_foreign_key_index');
             }
             $table->string('name');       // For MySQL 8.0 use string('name', 125);
-            $table->string('guard_name'); // For MySQL 8.0 use string('guard_name', 125);
+            $table->string('guard_name')->default("api"); // For MySQL 8.0 use string('guard_name', 125);
             $table->timestamps();
             if ($teams || config('permission.testing')) {
                 $table->unique([$columnNames['team_foreign_key'], 'name', 'guard_name']);

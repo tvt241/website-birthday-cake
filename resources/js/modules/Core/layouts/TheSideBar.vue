@@ -15,19 +15,19 @@
                     <li>
                         <router-link to="/" exact active-class="active" class="sidenav-item-link">
                             <i class="mdi mdi-wechat"></i>
-                            <span class="nav-text">{{ $t("menu.dashboard") }}</span>
+                            <span class="nav-text">Tổng quan</span>
                         </router-link>
                     </li>
                     <li>
                         <router-link to="/" exact active-class="active" class="sidenav-item-link">
                             <i class="mdi mdi-wechat"></i>
-                            <span class="nav-text">{{ $t("menu.pos") }}</span>
+                            <span class="nav-text">POS</span>
                         </router-link>
                     </li>
                     <li>
                         <router-link to="/" exact active-class="active" class="sidenav-item-link">
                             <i class="mdi mdi-wechat"></i>
-                            <span class="nav-text">{{ $t("menu.message") }}</span>
+                            <span class="nav-text">Tin nhắn</span>
                         </router-link>
                     </li>
                     <template v-for="mdl in modules">
@@ -176,6 +176,42 @@ const modules = [
                 name: "Post Category",
                 path: ""
             }
+        ]
+    },
+    {
+        name: "User Module",
+        menu: [
+            {
+                name: "Khách hàng",
+                path: "",
+                sub: [
+                    {
+                        name: "Thêm",
+                        path: ""
+                    },
+                    {
+                        name: "Danh sách",
+                        path: ""
+                    }
+                ]
+            },
+            {
+                name: "Nhân viên",
+                path: "",
+                sub: [
+                    {
+                        name: "Thêm",
+                        path: ""
+                    },
+                    {
+                        name: "Danh sách",
+                        path: ""
+                    }
+                ]
+            },{
+                name: "Vai trò và quyền",
+                path: "roles",
+            },
         ]
     },
     {

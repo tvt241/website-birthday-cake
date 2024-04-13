@@ -32,8 +32,8 @@
             </div>
 
             <div class="btn--container">
-                <button type="reset" class="btn btn-secondary">{{ $t("button.reset") }}</button>
-                <button type="submit" @click="save" class="btn btn-primary">{{ $t("button.save") }}</button>
+                <button type="reset" class="btn btn-secondary">Đặt lại</button>
+                <button type="submit" @click="save" class="btn btn-primary">Lưu</button>
             </div>
         </div>
     </div>

@@ -1,38 +1,33 @@
-import ProductCategoryList from "../views/Category/ProductCategoryList.vue";
-import ProductCreate from "../views/Product/ProductCreate.vue";
-import ProductEdit from "../views/Product/ProductEdit.vue";
-import ProductList from "../views/Product/ProductList.vue";
+import PostCategoryList from "../views/Category/PostCategoryList.vue";
+import PostCreate from "../views/Post/PostCreate.vue";
+import PostEdit from "../views/Post/PostEdit.vue";
+import PostList from "../views/Post/PostList.vue";
 
 
 export default [
     {
-        path: '/products',
+        path: '/posts',
         children: [
             {
                 path: "",
-                component: ProductList,
-                name: 'products',
+                component: PostList,
+                name: 'posts',
             },
             {
                 path: "create",
-                component: ProductCreate,
-                name: 'products.create',
+                component: PostCreate,
+                name: 'posts.create',
+            },
+            {
+                path: "categories",
+                component: PostCategoryList,
+                name: "posts.categories"
             },
             {
                 path: ":id/edit",
-                component: ProductEdit,
-                name: 'products.edit',
+                component: PostEdit,
+                name: 'posts.edit',
             },
-        ]
-    },
-    {
-        path: "/categories",
-        children: [
-            {
-                path: "",
-                component: ProductCategoryList,
-                name: "products.categories"
-            }
         ]
     }
 ];

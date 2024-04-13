@@ -46,6 +46,15 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    protected function getDefaultGuardName(): string
+    {
+        return "api";
+    }
+
+    public function getPermissionClass(): string
+    {
+        return Permission::class;
+    }
 
     protected static function newFactory(): UserFactory
     {

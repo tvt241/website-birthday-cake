@@ -15,12 +15,6 @@
     <script src="{{ asset('assets/admin/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/admin/plugins/prism/prism.js') }}"></script>
     <script src="{{ asset('assets/admin/js/mono.js') }}"></script>
-    <script src="{{ asset('js/ckfinder/ckfinder.js') }}"></script>
-    <script>
-        CKFinder.config({
-            connectorPath: '/ckfinder/connector'
-        });
-    </script>
     @vite('resources/js/app.js')
 </head>
 

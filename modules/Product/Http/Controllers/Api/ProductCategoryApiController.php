@@ -10,11 +10,19 @@ use Modules\Core\Traits\ResponseTrait;
 use Modules\Product\Http\Requests\StoreProductCategoryRequest;
 use Modules\Product\Models\ProductCategory;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Modules\Core\Services\Image\IImageService;
 use Modules\Product\Resources\ProductCategoryResource;
 
 class ProductCategoryApiController extends Controller
 {
     use ResponseTrait;
+    private $iImageService;
+
+    public function __construct(IImageService $iImageService)
+    {
+        $this->iImageService = $iImageService;
+    }
+
     public function index(Request $request)
     {
         $pageSize = $request->get("page-size") ?? 20;
@@ -54,13 +62,13 @@ class ProductCategoryApiController extends Controller
         return $this->SuccessResponse($paginate);
     }
 
-    public function store(StoreProductCategoryRequest $request, ImageService $imageService)
+    public function store(StoreProductCategoryRequest $request)
     {
         DB::beginTransaction();
         try {
             $category = ProductCategory::create($request->validated());
             if ($request->hasFile("image")) {
-                $category->image = $imageService->store($request->image, $category, "categories");
+                $category->image = $this->iImageService->store($request->image, $category, "categories");
             }
             DB::commit();
             return $this->SuccessResponse($category);
@@ -80,7 +88,7 @@ class ProductCategoryApiController extends Controller
     }
 
 
-    public function update(Request $request, $id, ImageService $imageService)
+    public function update(Request $request, $id)
     {
         $productCategory = ProductCategory::find($id);
         if (!$productCategory) {
@@ -93,13 +101,13 @@ class ProductCategoryApiController extends Controller
             }
         }
         if ($request->hasFile("image")) {
-            $imageService->update($request->image, $productCategory, "categories");
+            $this->iImageService->update($request->image, $productCategory, "categories");
         }
-        $productCategory->update = $request->validated();
+        $productCategory->update($request->validated());
         return $this->SuccessResponse();
     }
 
-    public function destroy($id, ImageService $imageService)
+    public function destroy($id)
     {
         $productCategory = ProductCategory::find($id);
         if (!$productCategory) {
@@ -109,7 +117,7 @@ class ProductCategoryApiController extends Controller
         if ($totalChildren) {
             return $this->ErrorResponse(message: __("Cannot remove this resource permanently. It is related with another resource."), status_code: 422);
         }
-        $imageService->destroy($productCategory);
+        $this->iImageService->destroy($productCategory);
         $productCategory->delete();
         return $this->SuccessResponse();
     }

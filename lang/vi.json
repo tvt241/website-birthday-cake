@@ -706,5 +706,8 @@
     "Zambia": "Zambia",
     "Zimbabwe": "Zimbabwe",
     "Zip \/ Postal Code": "Zip \/ Mã Bưu Điện",
-    "Åland Islands": "Quần đảo Åland"
+    "Åland Islands": "Quần đảo Åland",
+    "The given data was invalid.": "Dữ liệu không hợp lệ",
+    "(and :count more error)": "(và :count lỗi khác)",
+    "(and :count more errors)": "(và :count lỗi khác)"
 }

@@ -15,14 +15,8 @@
                     <form class="" id="form-id" @submit.prevent="login">
                         <div class="auth-header">
                             <div class="mb-5">
-                                <h2 class="title">{{ $t('label.sign_in') }}</h2>
-                                <div class="text-capitalize">{{ $t("label.welcome_back") }}</div>
-                                <p class="mb-0 text-capitalize">{{ $t("message.want_to_login_your_admin") }}?
-                                    <a href="">
-                                        {{ $t("label.branch_login") }}
-                                    </a>
-                                </p>
-                                <span class="badge mt-2">( {{ $t("message.admin_or_employee_sign_in") }} )</span>
+                                <h2 class="title">Đăng ký</h2>
+                                
                             </div>
                         </div>
 
@@ -31,14 +25,14 @@
                                 class="input-label text-capitalize" 
                                 for="signinSrEmail"
                             >
-                                {{ $t('label.email_or_phone') }}
+                                Tên đăng nhập
                             </label>
                             <input 
                                 v-model="form.email_or_phone" 
                                 :class="errors.email_or_phone ? 'invalid' : ''" 
                                 class="form-control form-control-lg" 
                                 id="signinSrEmail"
-                                placeholder="email@address.com"
+                                placeholder="Nhập email hoặc số điện thoại"
                                 required
                             >
                             <small class="" v-if="errors.email_or_phone">{{ errors.email_or_phone }}</small>
@@ -47,7 +41,7 @@
                         <div class="form-group">
                             <label class="input-label" for="signupSrPassword" tabindex="0">
                                     <span class="d-flex justify-content-between align-items-center">
-                                    {{ $t('label.password') }}
+                                    Mật khẩu
                                     </span>
                             </label>
 
@@ -70,44 +64,11 @@
                                 </div>
                             </div>
                         </div>
-<!-- 
-                        <div class="form-group">
-                            <div class="custom-control custom-checkbox">
-                                <input 
-                                    type="checkbox"
 
-                                    class="custom-control-input" 
-                                    id="termsCheckbox">
-                                <label class="custom-control-label text-muted" for="termsCheckbox">
-                                    {{ $t('label.remember_me') }}
-                                </label>
-                            </div>
-                        </div> -->
-
-                        <!-- {{-- recaptcha --}}
-                        @php($recaptcha = \App\CentralLogics\Helpers::get_business_settings('recaptcha'))
-                        @if(isset($recaptcha) && $recaptcha['status'] == 1)
-                            <div id="recaptcha_element" class="w-100" data-type="image"></div>
-                            <br/>
-                        @else
-                            <div class="row p-2">
-                                <div class="col-5 pr-0">
-                                    <input type="text" class="form-control form-control-lg" name="default_captcha_value" value=""
-                                        placeholder="{{translate('Enter captcha value')}}" style="border: none" autocomplete="off">
-                                </div>
-                                <div class="col-7 input-icons" class="bg-white rounded">
-                                    <a onclick="javascript:re_captcha();">
-                                        <img src="{{ URL('/branch/auth/code/captcha/1') }}" class="input-field" id="default_recaptcha_id" style="display: inline;width: 80%; height: 75%">
-                                        <i class="tio-refresh icon"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        @endif -->
-
-                        <button type="submit" class="btn btn-lg btn-block btn-primary mb-2">{{ $t('label.sign_in') }}</button>
+                        <button type="submit" class="btn btn-lg btn-block btn-primary mb-2">Đăng nhập</button>
 
                         <router-link :to="{ name: 'auth.forgot-password' }" class="text-primary pt-2 mt-2">
-                            {{ $t('label.forgot_password') }}
+                            Quên mật khẩu
                         </router-link>
                     </form>
 

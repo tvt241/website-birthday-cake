@@ -15,7 +15,13 @@
                     <form class="" id="form-id" @submit.prevent="login">
                         <div class="auth-header">
                             <div class="mb-5">
-                                <h2 class="title">{{ $t('label.sign_in') }}</h2>
+                                <h2 class="title">Đăng nhập</h2>
+                                <div class="text-capitalize">Chào mửng trở lại</div>
+                                <p class="mb-0 text-capitalize">Bạn không phải nhân viên?
+                                    <a href="">
+                                        Người dùng đăng nhâp
+                                    </a>
+                                </p>
                             </div>
                         </div>
 
@@ -24,7 +30,7 @@
                                 class="input-label text-capitalize" 
                                 for="username"
                             >
-                                {{ $t('label.username') }}
+                                Tên đăng nhập
                             </label>
                             <input 
                                 v-model="form.username" 
@@ -40,7 +46,7 @@
                         <div class="form-group">
                             <label class="input-label" for="signupSrPassword" tabindex="0">
                                     <span class="d-flex justify-content-between align-items-center">
-                                    {{ $t('label.password') }}
+                                    Mật khẩu
                                     </span>
                             </label>
 
@@ -97,10 +103,10 @@
                             </div>
                         @endif -->
 
-                        <button type="submit" class="btn btn-lg btn-block btn-primary mb-2">{{ $t('label.sign_in') }}</button>
+                        <button type="submit" class="btn btn-lg btn-block btn-primary mb-2">Đăng nhập</button>
 
                         <router-link :to="{ name: 'auth.forgot-password' }" class="text-primary pt-2 mt-2">
-                            {{ $t('label.forgot_password') }}
+                            Quên mật khẩu
                         </router-link>
                     </form>
 

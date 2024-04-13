@@ -1,6 +1,9 @@
 <?php
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Modules\Post\Http\Controllers\Api\PostApiController;
+use Modules\Post\Http\Controllers\Api\PostCategoryApiController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +16,6 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/post', function (Request $request) {
-    return $request->user();
-});
+Route::get("posts/categories/get-all", [PostCategoryApiController::class, "getAll"]);
+Route::apiResource("posts/categories", PostCategoryApiController::class);
+Route::apiResource("posts", PostApiController::class);

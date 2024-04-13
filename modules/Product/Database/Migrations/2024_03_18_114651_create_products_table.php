@@ -16,9 +16,13 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->string("slug");
-            $table->string("desc_sort");
-            $table->string("desc_full");
+            $table->string("slug")->nullable();
+            $table->string("category_id")->nullable();
+            $table->decimal("min_price")->nullable();
+            $table->decimal("max_price")->nullable();
+            $table->string("desc_sort")->nullable();
+            $table->string("desc")->nullable();
+            $table->tinyInteger("is_active")->default(0);
             $table->timestamps();
         });
     }

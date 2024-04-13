@@ -13,6 +13,10 @@ export default {
         const url = "categories";
         return apiHelper.postRaw(url, form);
     },
+    getCategory: function(id){
+        const url = `categories/${id}`;
+        return apiHelper.get(url);
+    },
     updateCategory: function(id, form){
         const url = `categories/${id}`;
         return apiHelper.putRaw(url, form);

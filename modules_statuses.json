@@ -9,6 +9,5 @@
     "Order": true,
     "Post": true,
     "Product": true,
-    "Language": true,
     "Customer": true
 }

@@ -1,9 +1,9 @@
 <template>
-    <PageHeaderTitleComponent :header-title="$t('menu.products.categories')">
+    <PageHeaderTitleComponent header-title="Danh sách danh mục sản phẩm">
         <button type="button" data-target="#modal-category" data-toggle="modal" class="btn btn-primary text-nowrap"
             @click="resetData">
             <i class="mdi mdi-plus"></i>
-            {{ $t("button.create") }}
+            Thêm
         </button>
     </PageHeaderTitleComponent>
     <div class="row">
@@ -17,10 +17,10 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th class="border-top-0">#</th>
-                                    <th class="border-top-0" style="width: 30%">{{ $t("label.name") }}</th>
-                                    <th class="border-top-0" style="width: 30%">{{ $t("label.slug") }}</th>
-                                    <th class="border-top-0" style="width: 15%">{{ $t("label.status") }}</th>
-                                    <th class="border-top-0" style="width: 15%">{{ $t("label.action") }}</th>
+                                    <th class="border-top-0" style="width: 30%">Tên</th>
+                                    <th class="border-top-0" style="width: 30%">Slug</th>
+                                    <th class="border-top-0" style="width: 15%">Trạng thái</th>
+                                    <th class="border-top-0" style="width: 15%">Hành động</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -94,14 +94,14 @@
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" @click="resetData" class="btn btn-warning btn-reset">
-                        {{ $t("button.reset") }}
+                        Đặt lại
                     </button>
                     <div class="gap-2 d-flex">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                            {{ $t("button.close") }}
+                            Đóng
                         </button>
                         <button type="button" class="btn btn-primary" @click="handleModelAction">
-                            {{ $t("button." + modelContent[states.action].button) }}
+                            {{  modelContent[states.action].button }}
                         </button>
                     </div>
                 </div>
@@ -120,8 +120,10 @@ import alertHelper from "~/Core/helpers/alertHelper";
 
 import { ref, reactive, onMounted } from "vue";
 import imageHelper, { IMG_DEFAULT } from "~/Core/helpers/imageHelper";
-import apiCategory from "../../apis/productCategoryApi";
+import categoryApi from "../../apis/productCategoryApi";
 import toastHelper from "~/Core/helpers/toastHelper";
+import inputHelper from "~/Core/helpers/inputHelper";
+
 // config
 const states = reactive({
     image: "",
@@ -132,11 +134,11 @@ const states = reactive({
 const modelContent = {
     add: {
         title: "Thêm danh mục sản phẩm",
-        button: "save"
+        button: "Lưu"
     },
     edit: {
         title: "Chỉnh sửa danh mục sản phẩm",
-        button: "update"
+        button: "Cập nhật"
     },
 
 };
@@ -151,7 +153,7 @@ const categories = ref([]);
 
 async function getCategories() {
     try {
-        const response = await apiCategory.getCategories();
+        const response = await categoryApi.getCategories();
         categories.value = response.data;
     } catch (error) {
     }
@@ -162,7 +164,7 @@ const categoriesPaginate = ref({});
 async function getCategoriesPaginate(page = 1) {
     filter.page = page;
     try {
-        const response = await apiCategory.getCategoriesPaginate(filter);
+        const response = await categoryApi.getCategoriesPaginate(filter);
         categoriesPaginate.value = response.data;
     } catch (error) {
     }
@@ -172,31 +174,37 @@ async function getCategory(id) {
     states.id = id;
     states.action = "edit";
     try {
-        const response = await apiCategory.getCategory(id);
+        const response = await categoryApi.getCategory(id);
         if (response.data.image.url) {
             states.image = response.data.image.url;
         }
-        form.value = response.data;
+        else{
+            states.image = IMG_DEFAULT;
+        }
+        const data = response.data;
+        form.name = data.name;
+        form.slug = data.slug;
+        form.category_id = data.category_id ? data.category_id : "";
+        form.description = data.description;
+
     } catch (error) {
     }
 }
 // create
-const formDataDefault = {
+const form = reactive({
     name: "",
     category_id: "",
     slug: "",
     image: {},
     description: "",
-};
-
-const form = reactive(formDataDefault);
+});
 
 async function handleModelAction() {
     try {
         if (states.action == "add") {
-            await apiCategory.addCategory(form);
+            await categoryApi.addCategory(form);
         } else {
-            await apiCategory.updateCategory(states.id, form);
+            await categoryApi.updateCategory(states.id, form);
         }
         getCategoriesPaginate();
     } catch (error) {
@@ -206,7 +214,7 @@ async function handleModelAction() {
 async function deleteCategory(id) {
     states.id = id;
     try {
-        await apiCategory.deleteCategory(states.id);
+        await categoryApi.deleteCategory(states.id);
         getCategoriesPaginate();
     } catch (error) {
     }
@@ -222,7 +230,11 @@ function onShowConfirm(id) {
 }
 
 function resetData() {
-    Object.assign(form, formDataDefault);
+    form.name = "";
+    form.category_id = "";
+    form.image = {};
+    form.slug = "";
+    form.description = "";
     states.image = IMG_DEFAULT;
     states.action = "add";
 }
@@ -237,33 +249,8 @@ async function previewImage(event) {
     }
 }
 
-function renderSlug() {
-    const nameFormat = form.name.toLowerCase().replaceAll(" ", "-");
-    form.slug = removeAccents(nameFormat);
-}
-
-function removeAccents(str) {
-    var AccentsMap = [
-        "aàảãáạăằẳẵắặâầẩẫấậ",
-        "AÀẢÃÁẠĂẰẲẴẮẶÂẦẨẪẤẬ",
-        "dđ", "DĐ",
-        "eèẻẽéẹêềểễếệ",
-        "EÈẺẼÉẸÊỀỂỄẾỆ",
-        "iìỉĩíị",
-        "IÌỈĨÍỊ",
-        "oòỏõóọôồổỗốộơờởỡớợ",
-        "OÒỎÕÓỌÔỒỔỖỐỘƠỜỞỠỚỢ",
-        "uùủũúụưừửữứự",
-        "UÙỦŨÚỤƯỪỬỮỨỰ",
-        "yỳỷỹýỵ",
-        "YỲỶỸÝỴ"
-    ];
-    for (var i = 0; i < AccentsMap.length; i++) {
-        var re = new RegExp('[' + AccentsMap[i].substr(1) + ']', 'g');
-        var char = AccentsMap[i][0];
-        str = str.replace(re, char);
-    }
-    return str;
+function renderSlug(event) {
+    form.slug = inputHelper.renderSlug(event);
 }
 
 function handleToggleChild(event, id) {

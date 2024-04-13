@@ -1,12 +1,16 @@
 import { createRouter, createWebHistory } from "vue-router";
 import authRoutes from "~/User/routers/authRoutes";
+import roleRouters from "~/User/routers/roleRouters";
 import productRoutes from "~/Product/routers/productRoutes";
 import settingRoutes from "~/Setting/routers/settingRoutes";
 import i18n from "~/Core/i18n";
+import postRoutes from "~/Post/routers/postRoutes";
 
 const routes = [].concat(
-    authRoutes, 
-    productRoutes, 
+    authRoutes,
+    roleRouters,
+    productRoutes,
+    postRoutes,
     settingRoutes
 );
 

@@ -27,10 +27,6 @@ import toastHelper from './helpers/toastHelper';
 import LoadingComponent from "~/Core/components/LoadingComponent.vue";
 import { provide } from 'vue';
 
-provide("loading", {
-  isActive: false
-});
-
 onMounted(() => {
   window.addEventListener("offline", () => {
     toastHelper.error("Có vẻ bạn đã mất internet");

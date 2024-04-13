@@ -1,8 +1,10 @@
 <template>
-    <PageHeaderTitleComponent :header-title="$t('label.products.create')">
+    <PageHeaderTitleComponent header-title="Danh sách bài viết">
+        <router-link :to="{ name: 'posts.create' }"  class="btn btn-primary text-nowrap">
+            <i class="mdi mdi-plus"></i>
+            Thêm
+        </router-link>
     </PageHeaderTitleComponent>
-
-
     <div class="row g-2">
         <div class="col-12">
             <!-- Card -->
@@ -22,32 +24,6 @@
                                 </div>
                             </form>
                         </div>
-                        <div class="col-lg-8">
-                            <div class="d-flex gap-3 justify-content-end text-nowrap flex-wrap">
-                                <div>
-                                    <button type="button" class="btn btn-outline-primary" data-toggle="dropdown"
-                                        aria-expanded="false">
-                                        <i class="tio-download-to"></i>
-                                        Export
-                                        <i class="tio-chevron-down"></i>
-                                    </button>
-                                    <ul class="dropdown-menu dropdown-menu-right">
-                                        <li>
-                                            <a type="submit" class="dropdown-item d-flex align-items-center gap-2"
-                                                href="http://localhost:2222/admin/product/excel-import">
-                                                <img width="14"
-                                                    src="http://localhost:2222/public/assets/admin/img/icons/excel.png"
-                                                    alt="">
-                                                Excel
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <a href="http://localhost:2222/admin/product/add-new" class="btn btn-primary">
-                                    <i class="tio-add"></i> Add New Product
-                                </a>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
@@ -57,59 +33,55 @@
                             class="table table-borderless table-thead-bordered table-nowrap table-align-middle card-table">
                             <thead class="thead-light">
                                 <tr>
-                                    <th>SL</th>
-                                    <th>Product name</th>
-                                    <th>Selling price</th>
-                                    <th class="text-center">Total sale</th>
-                                    <th>Stock</th>
-                                    <th>Status</th>
-                                    <th class="text-center">Action</th>
+                                    <th>#</th>
+                                    <th>Tên bài viết</th>
+                                    <th>Danh mục</th>
+                                    <th>Mô tả ngắn</th>
+                                    <th>Hiển thị</th>
+                                    <th class="text-center">Hành động</th>
                                 </tr>
                             </thead>
 
-                            <tbody id="set-rows">
-                                <tr>
-                                    <td>1</td>
+                            <tbody>
+                                <tr v-for="(post, index) in posts.data">
+                                    <td class="vertical-middle">{{ index + 1 }}</td>
                                     <td>
                                         <div class="media align-items-center gap-3">
                                             <div class="avatar">
-                                                <img src="http://localhost:2222/storage/app/public/product/2023-09-06-64f83b1948ac3.png"
+                                                <img :src="post.image ? post.image : IMG_DEFAULT"
                                                     class="rounded img-fit">
                                             </div>
 
                                             <div class="media-body">
-                                                <a class="text-dark" href="http://localhost:2222/admin/product/view/1">
-                                                    Test Product
+                                                <a class="text-dark" href="#">
+                                                    {{ post.name }}
                                                 </a>
                                             </div>
                                         </div>
                                     </td>
-                                    <td>10.00$</td>
-                                    <td class="text-center">0
-                                    </td>
-                                    <td>
-                                        <div><span class="">Stock Type : Unlimited</span></div>
-                                    </td>
+                                    <td>{{ post.category_name }}</td>
+                                    <td>{{ post.desc_sort }}</td>
                                     <td>
                                         <div>
                                             <label class="switcher">
-                                                <input id="1" class="switcher_input" type="checkbox" checked
-                                                    data-url="http://localhost:2222/admin/product/status/1/0"
-                                                    onchange="status_change(this)">
+                                                <input class="switcher_input" type="checkbox" :checked="post.is_active">
                                                 <span class="switcher_control"></span>
                                             </label>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="d-flex justify-content-center gap-2">
-                                            <a class="btn btn-outline-info btn-sm edit square-btn"
-                                                href="http://localhost:2222/admin/product/edit/1">
-                                                <i class="tio-edit"></i>
-                                            </a>
+                                            <router-link 
+                                                class="btn btn-outline-info btn-sm edit square-btn"
+                                                :to="{ name: 'posts.edit', params: { id: post.id }}"
+                                            >
+                                                <i class="mdi mdi-pencil"></i>
+                                            </router-link>
                                             <button type="button"
                                                 class="btn btn-outline-danger btn-sm delete square-btn"
-                                                onclick="form_alert('product-1','Want to delete this item ?')">
-                                                <i class="tio-delete"></i></button>
+                                                @click="onShowConfirm(post.id)">
+                                                <i class="mdi mdi-trash-can"></i>
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
@@ -127,3 +99,56 @@
         </div>
     </div>
 </template>
+
+<script setup>
+import { ref, reactive, onMounted } from "vue";
+import PageHeaderTitleComponent from "~/Core/components/PageHeaderTitleComponent.vue";
+import { IMG_DEFAULT } from "~/Core/helpers/imageHelper";
+import alertHelper from "~/Core/helpers/alertHelper";
+import postApi from "~/Post/apis/postApi";
+
+const posts = ref({});
+
+const filter = reactive({
+    page: 1
+});
+
+async function getPostsPaginate(page = 1) {
+    filter.page = page;
+    try {
+        const response = await postApi.getPostsPaginate(filter);
+        posts.value = response.data;
+    } catch (error) {
+
+    }
+}
+
+function onShowConfirm(id) {
+    alertHelper.confirmDelete()
+        .then((result) => {
+            if (result.isConfirmed) {
+                deletePost(id);
+            }
+        })
+}
+
+async function deletePost(id){
+    try {
+        await postApi.deletePost(id);
+        getPostsPaginate();
+    } catch (error) {
+
+    }
+}
+
+onMounted(async () => { 
+   await getPostsPaginate();
+});
+
+</script>
+
+<style>
+td{
+    vertical-align: middle !important;
+}
+</style>

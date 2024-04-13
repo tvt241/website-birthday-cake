@@ -12,9 +12,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get("/login", function(){
-    return view("user::app");
-});
+// Route::get("/login", function(){
+//     return view("user::app");
+// });
 
 Route::get("/admin/{any?}", function(){
     return view("user::app");

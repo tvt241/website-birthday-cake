@@ -13,36 +13,36 @@
             <ul class="list-unstyled">
                 <li class="">
                     <router-link :to="{ name: 'settings.system-setups.languages' }" class="nav-link" exact active-class="active">
-                        {{ $t("label.about_us") }}
+                        Về chúng tôi
                     </router-link>
                 </li>
                 <li class="">
                     <router-link :to="{ name: 'settings.system-setups.languages' }" class="nav-link" exact active-class="active">
-                        {{ $t("label.terms_and_condition") }}
+                        Diều khoản và điều kiện
                     </router-link>
                 </li>
                 <li class="">
                     <router-link :to="{ name: 'settings.system-setups.languages' }" class="nav-link" exact
                         active-class="active">
-                        {{ $t("label.privacy_policy") }}
+                        Chính sách bảo mật
                     </router-link>
                 </li>
                 <li class="">
                     <router-link :to="{ name: 'settings.system-setups.languages' }" class="nav-link" exact
                         active-class="active">
-                        {{ $t("label.return_policy") }}
+                        Chính sách trả hàng
                     </router-link>
                 </li>
                 <li class="">
                     <router-link :to="{ name: 'settings.system-setups.languages' }" class="nav-link" exact
                         active-class="active">
-                        {{ $t("label.refund_policy") }}
+                        Chính sách hoàn tiền
                     </router-link>
                 </li>
                 <li class="">
                     <router-link :to="{ name: 'settings.system-setups.languages' }" class="nav-link" exact
                         active-class="active">
-                        {{ $t("label.cancellation_policy") }}
+                        Chính sách hủy
                     </router-link>
                 </li>
             </ul>

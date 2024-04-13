@@ -30,8 +30,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger btn-pill" >{{ $t("button.close") }}</button>
-                    <button type="button" class="btn btn-primary btn-pill">{{ $t("button.save") }}</button>
+                    <button type="button" class="btn btn-danger btn-pill" >Đóng</button>
+                    <button type="button" class="btn btn-primary btn-pill">Lưu</button>
                 </div>
             </div>
         </div>

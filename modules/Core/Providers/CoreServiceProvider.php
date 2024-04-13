@@ -3,8 +3,13 @@
 namespace Modules\Core\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Database\Eloquent\Factory;
-use Modules\Core\Helpers\HttpHelperAuth;
+use Illuminate\Support\Facades\View;
+use Modules\Core\Services\Image\IImageService;
+use Modules\Core\Services\Image\ImageService;
+use Modules\Core\Services\Location\ILocationService;
+use Modules\Core\Services\Location\LocationAppMobService;
+use Modules\Core\Services\Location\LocationGhnService;
+use Modules\Product\Models\ProductCategory;
 
 class CoreServiceProvider extends ServiceProvider
 {
@@ -39,7 +44,33 @@ class CoreServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(RouteServiceProvider::class);
-        $this->app->bind("HttpHelperAuth", HttpHelperAuth::class);
+        $this->app->bind(IImageService::class, ImageService::class);
+        //location
+        // $this->app->singleton(ILocationService::class, LocationGhnService::class);
+        $this->app->singleton(ILocationService::class, LocationAppMobService::class);
+
+        try {
+            $categories = ProductCategory::tree()
+            ->leftJoin("images", function ($join) {
+                $join->on("laravel_cte.id", "=", "images.model_id")
+                    ->where("images.model_type", ProductCategory::class);
+            })
+            ->get([
+                "laravel_cte.id",
+                "laravel_cte.name",
+                "laravel_cte.slug",
+                "laravel_cte.category_id",
+                "laravel_cte.is_active",
+                "laravel_cte.description",
+                "images.url as image"
+            ]);
+        } catch (\Exception $th) {
+            info("message", [
+                "error" => $th->getMessage()
+            ]);
+            $categories = [];
+        }
+        View::share("categories", $categories);
     }
 
     /**

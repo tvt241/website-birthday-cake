@@ -1,12 +1,9 @@
 <template>
-    <PageHeaderTitleComponent :header-title="$t('label.products.list')">
-        <button type="button" class="btn btn-primary text-nowrap">
-            <router-link :to="{ name: 'settings.system-setups.languages' }" class="" exact
-                active-class="active">
-                <i class="mdi mdi-plus"></i>
-                {{ $t("button.create") }}
-            </router-link>
-        </button>
+    <PageHeaderTitleComponent header-title="Danh sách sản phẩm">
+        <router-link :to="{ name: 'products.create' }"  class="btn btn-primary text-nowrap">
+            <i class="mdi mdi-plus"></i>
+            Thêm
+        </router-link>
     </PageHeaderTitleComponent>
     <div class="row g-2">
         <div class="col-12">
@@ -59,59 +56,59 @@
                             class="table table-borderless table-thead-bordered table-nowrap table-align-middle card-table">
                             <thead class="thead-light">
                                 <tr>
-                                    <th>SL</th>
-                                    <th>Product name</th>
-                                    <th>Selling price</th>
-                                    <th class="text-center">Total sale</th>
-                                    <th>Stock</th>
-                                    <th>Status</th>
+                                    <th>#</th>
+                                    <th>Tên sản phẩm</th>
+                                    <th>Danh mục</th>
+                                    <th>Giá</th>
+                                    <th>Kho</th>
+                                    <th>Hiển thị</th>
                                     <th class="text-center">Action</th>
                                 </tr>
                             </thead>
 
-                            <tbody id="set-rows">
-                                <tr>
-                                    <td>1</td>
+                            <tbody>
+                                <tr v-for="(product, index) in products.data">
+                                    <td class="vertical-middle">{{ index + 1 }}</td>
                                     <td>
                                         <div class="media align-items-center gap-3">
                                             <div class="avatar">
-                                                <img src="http://localhost:2222/storage/app/public/product/2023-09-06-64f83b1948ac3.png"
+                                                <img :src="product.image"
                                                     class="rounded img-fit">
                                             </div>
 
                                             <div class="media-body">
-                                                <a class="text-dark" href="http://localhost:2222/admin/product/view/1">
-                                                    Test Product
+                                                <a class="text-dark" href="#">
+                                                    {{ product.name }}
                                                 </a>
                                             </div>
                                         </div>
                                     </td>
-                                    <td>10.00$</td>
-                                    <td class="text-center">0
-                                    </td>
+                                    <td>{{ product.slug }}</td>
+                                    <td>{{ product.category_name }}</td>
                                     <td>
                                         <div><span class="">Stock Type : Unlimited</span></div>
                                     </td>
                                     <td>
                                         <div>
                                             <label class="switcher">
-                                                <input id="1" class="switcher_input" type="checkbox" checked
-                                                    data-url="http://localhost:2222/admin/product/status/1/0"
-                                                    onchange="status_change(this)">
+                                                <input class="switcher_input" type="checkbox" :checked="product.is_active">
                                                 <span class="switcher_control"></span>
                                             </label>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="d-flex justify-content-center gap-2">
-                                            <a class="btn btn-outline-info btn-sm edit square-btn"
-                                                href="http://localhost:2222/admin/product/edit/1">
-                                                <i class="tio-edit"></i>
-                                            </a>
+                                            <router-link 
+                                                class="btn btn-outline-info btn-sm edit square-btn"
+                                                :to="{ name: 'products.edit', params: { id: product.id }}"
+                                            >
+                                                <i class="mdi mdi-pencil"></i>
+                                            </router-link>
                                             <button type="button"
                                                 class="btn btn-outline-danger btn-sm delete square-btn"
-                                                onclick="form_alert('product-1','Want to delete this item ?')">
-                                                <i class="tio-delete"></i></button>
+                                                @click="onShowConfirm(product.id)">
+                                                <i class="mdi mdi-trash-can"></i>
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
@@ -131,6 +128,53 @@
 </template>
 
 <script setup>
+import { ref, reactive, onMounted } from "vue";
 import PageHeaderTitleComponent from "~/Core/components/PageHeaderTitleComponent.vue";
+import alertHelper from "~/Core/helpers/alertHelper";
+import productApi from "~/Product/apis/productApi";
+
+const products = ref([]);
+
+const filter = reactive({
+    page: 1
+});
+
+async function getProductsPaginate(page = 1) {
+    filter.page = page;
+    try {
+        const response = await productApi.getProductsPaginate(filter);
+        products.value = response.data;
+    } catch (error) {
+
+    }
+}
+
+function onShowConfirm(id) {
+    alertHelper.confirmDelete()
+        .then((result) => {
+            if (result.isConfirmed) {
+                deleteProduct(id);
+            }
+        })
+}
+
+async function deleteProduct(id){
+    try {
+        await productApi.deleteProduct(id);
+        getProductsPaginate();
+    } catch (error) {
+
+    }
+}
+
+onMounted(() => { 
+    getProductsPaginate();
+});
 
 </script>
+
+<style>
+td{
+    vertical-align: middle !important;
+}
+</style>

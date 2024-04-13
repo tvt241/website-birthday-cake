@@ -11,23 +11,18 @@
     <div class="mb-5 mt-5">
         <ul class="nav nav-underline-active-primary border-0 mb-3">
             <li class="nav-item">
-                <router-link  :to="{ name: 'settings.system-setups.languages' }"  class="nav-link" exact  active-class="active">
-                    {{ $t("label.language") }}
-                </router-link>
-            </li>
-            <li class="nav-item">
                 <router-link :to="{ name: 'settings.system-setups.mail' }" class="nav-link" exact  active-class="active">
-                    {{ $t("label.mail")  }}
+                    Mail
                 </router-link>
             </li>
             <li class="nav-item">
                 <router-link :to="{ name: 'settings.system-setups.notification' }" class="nav-link" exact  active-class="active">
-                    {{ $t("label.notification")  }}
+                    Thông báo
                 </router-link>
             </li>
             <li class="nav-item">
                 <router-link :to="{ name: 'settings.system-setups.sms' }" class="nav-link" exact  active-class="active">
-                    {{ $t("label.sms")  }}
+                    SMS
                 </router-link>
             </li>
         </ul>

@@ -1,6 +1,6 @@
 <template>
     <div :class="classDiv ?? 'form-group'">
-        <label for="mail_password">{{ $t("label.mail_password") }}</label>
+        <label for="mail_password">Mật khẩu</label>
         <div class="input-group input-group-merge">
             <input 
                 :type="showPass.type" 

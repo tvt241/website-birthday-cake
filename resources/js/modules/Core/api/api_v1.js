@@ -3,14 +3,16 @@ import { getItem } from "../composables/useLocalStorage";
 import ENV from "../config/env";
 import i18n from "../i18n";
 import alertHelper from "../helpers/alertHelper";
-import { provide } from "vue";
+import { useLoadingStore } from "../stores/loadingStore";
 
-const baseURL = ENV.API_URL + '/api';
+
+const store = useLoadingStore();
 
 const instance = axios.create({
-    baseURL,
+    baseURL: ENV.API_URL,
     headers: {
-        "X-Locale": i18n.global.locale,
+        // "X-Locale": i18n.global.locale,
+        "X-Locale": "vi",
         "Content-Type": "application/json",
         "X-DateTime": ENV.DATE_V1,
         "Authorization": `Bearer ${ getItem("token") }`
@@ -19,18 +21,14 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use((config) => {
-    provide("loading", {
-        isActive: true
-    });
+    store.showLoading();
     return config;
 });
   
 
 instance.interceptors.response.use(
     (response) => {
-        provide("loading", {
-            isActive: false
-        });
+        store.hideLoading();
         if (response.status === 200) {
             const method = response.config.method;
             if(method == "post"){
@@ -44,9 +42,7 @@ instance.interceptors.response.use(
         return Promise.reject(response);
     },
     (error) => {
-        provide("loading", {
-            isActive: false
-        });
+        store.hideLoading();
         if (error) {
             if (error.response && error.response.status === 401) {
                 msg = error.response.data.msg;

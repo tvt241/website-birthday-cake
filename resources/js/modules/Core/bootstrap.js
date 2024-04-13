@@ -1,15 +1,3 @@
-import axios from 'axios';
-import ENV from './config/env';
-window.axios = axios;
-
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-
-const API_URL = ENV.API_URL;
-// const API_KEY = ENV.API_KEY;
-
-axios.defaults.baseURL = API_URL + '/api';
-
-
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting

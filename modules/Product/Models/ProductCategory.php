@@ -18,6 +18,7 @@ class ProductCategory extends Model
      * The attributes that are mass assignable.
      */
     protected $fillable = [
+        "id",
         "name",
         "slug",
         "category_id"

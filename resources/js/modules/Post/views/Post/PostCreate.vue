@@ -1,5 +1,8 @@
 <template>
-    <PageHeaderTitleComponent :header-title="$t('label.products.create')">
+    <PageHeaderTitleComponent header-title="Thêm bài viết">
+        <router-link :to="{ name: 'posts' }" class="btn btn-primary text-nowrap">
+            Danh sách bài viết
+        </router-link>
     </PageHeaderTitleComponent>
     <div class="col-12">
         <form>
@@ -7,264 +10,116 @@
                 <div class="card-header">
                     <h4 class="mb-0 d-flex gap-2 align-items-center">
                         <i class="tio-canvas-text"></i>
-                        Thông tin sản phẩm
-                    </h4>
-                </div>
-                <div class="card card-body h-100">
-                    <ul class="nav nav-tabs mb-4">
-                        <li class="nav-item">
-                            <a class="nav-link lang_link active" href="#" id="en-link">Việt Nam(Vi)</a>
-                        </li>
-                    </ul>
-                    <div class="lang_form" id="en-form">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label class="input-label">Tên</label>
-                                    <input type="text" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label class="input-label">Mô tả ngắn</label>
-                                    <textarea class="form-control"></textarea>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label class="input-label">Mô tả</label>
-                                    <textarea class="form-control"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card mt-3">
-                <div class="card-header">
-                    <h4 class="mb-0 d-flex gap-2 align-items-center">
-                        <i class="tio-canvas-text"></i>
-                        Thông tin chung
+                        Thông tin bài viết
                     </h4>
                 </div>
                 <div class="card card-body h-100">
                     <div class="row">
                         <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="input-label" for="exampleFormControlSelect1">
+                                    Tên bài viết
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" class="form-control"
+                                    :class="{ 'is-invalid': errors.name }"
+                                    v-model="form.name" 
+                                    @keyup="renderSlug"
+                                >
+                                <span v-if="errors.name" class="invalid-feedback">
+                                    {{ errors.name[0] }}
+                                </span>
+                            </div>
+                            <div class="form-group">
+                                <label class="input-label" for="exampleFormControlSelect1">
+                                    Slug
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" 
+                                    v-model="form.slug" 
+                                    class="form-control"
+                                    :class="{ 'is-invalid': errors.slug }"
+                                >
+                                <span v-if="errors.slug" class="invalid-feedback">
+                                    {{ errors.slug[0] }}
+                                </span>
+                            </div>
                             <div class="form-group">
                                 <label class="input-label" for="exampleFormControlSelect1">
                                     Danh mục
                                     <span class="text-danger">*</span>
                                 </label>
-                                <select name="category_id" class="form-control">
-                                    <option>---Select---</option>
-                                    <option value="1">Test category</option>
+                                <select name="category_id" 
+                                    v-model="form.category_id"
+                                    class="form-control"
+                                    :class="{ 'is-invalid': errors.category_id }"
+                                >
+                                    <option value="">---Chọn danh mục---</option>
+                                    <template v-for="category in categories">
+                                        <option :value="category.id">{{ category.name }}</option>
+                                    </template>
                                 </select>
-                            </div>
-                            <div class="form-group">
-                                <label class="input-label" for="exampleFormControlSelect1">
-                                    Phân loại
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <select name="" class="form-control">
-                                    <option>Không phân loại</option>
-                                    <option value="1">Phân loại</option>
-                                </select>
+                                <span v-if="errors.category_id" class="invalid-feedback">
+                                    {{ errors.category_id[0] }}
+                                </span>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label class="font-weight-bold text-dark">Ảnh hiển thị trang chính</label>
+                                <label class="input-label">
+                                    Hiển thị trang nguời dùng
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <select class="form-control" 
+                                    v-model="form.is_active"
+                                    :class="{ 'is-invalid': errors.is_active }"
+                                >
+                                    <option value="1">Hiển thị</option>
+                                    <option value="0">Ẩn</option>
+                                </select>
+                                <span v-if="errors.is_active" class="invalid-feedback">
+                                    {{ errors.is_active[0] }}
+                                </span>
+                            </div>
+                            <div class="form-group">
+                                <label class="font-weight-bold text-dark">Ảnh bài viết</label>
                                 <small class="text-danger">*</small>
-                                <div class="d-flex justify-content-center mt-4">
+                                <div class="d-flex justify-content-center mt-1">
                                     <div class="upload-file">
                                         <input type="file" name="image"
                                             accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*"
-                                            class="upload-file__input">
+                                            @change="previewImage"
+                                            class="upload-file__input"
+                                            :class="{ 'is-invalid': errors.image }"
+                                        >
                                         <div class="upload-file__img_drag upload-file__img">
-                                            <img width="176" :src="imgSrcPreview" @change="previewImage($event)" alt="">
+                                            <img width="120" :src="states.image" alt="">
                                         </div>
                                     </div>
                                 </div>
+                                <span v-if="errors.image" class="invalid-feedback">
+                                    {{ errors.image[0] }}
+                                </span>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card mt-3">
-                <div class="card-header">
-                    <h4 class="mb-0 d-flex gap-2 align-items-center">
-                        <i class="tio-canvas-text"></i>
-                        Thông tin chi tiết
-                    </h4>
-                </div>
-                <div class="card-body pb-0">
-                    <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-lg-12">
                             <div class="form-group">
-                                <label class="input-label">
-                                    Giá nhập
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label class="input-label">
-                                    Giá bán
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label class="input-label">
-                                    Số lượng
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" class="form-control">
+                                <label class="input-label">Mô tả ngắn</label>
+                                <textarea class="form-control" v-model="form.desc_sort"></textarea>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-lg-12">
                             <div class="form-group">
-                                <label class="input-label">Kiểu giảm giá</label>
-                                <select class="form-control">
-                                    <option>-- Không giảm giá --</option>
-                                    <option>Tiền mặt</option>
-                                    <option value="1">Phần trăm</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label class="input-label">Giá trị giảm giá</label>
-                                <input type="text" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label class="input-label">Số lượng sản phẩm giảm giá</label>
-                                <input type="text" class="form-control">
+                                <label class="input-label">Mô tả</label>
+                                <CkeditorBasicComponent v-model:content="form.desc" />
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card mt-3">
-                <div class="card-header">
-                    <h4 class="mb-0 d-flex gap-2 align-items-center">
-                        <i class="tio-canvas-text"></i>
-                        Thông tin chi tiết
-                    </h4>
-                </div>
-                <div class="card-body pb-0">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-inline gap-2 mb-2">
-                                <input type="text" class="form-control" placeholder="Tên phân loại">
-                                <button type="button" class="btn btn-primary">Thêm phân loại</button>
-                            </div>
-                            <draggable tag="ul" :list="variations" class="list-group">
-                                <template #item="{ element, index }">
-                                    <li class="list-group-item">
-                                        <i class="mdi mdi-menu mdi-24px handle"></i>
-                                        <input type="text" class="form-control input-variation ml-2 col-lg-3"
-                                            v-model="element.name" placeholder="Tên phân loại" />
-                                        <input type="text" class="form-control input-variation ml-2 col-lg-8"
-                                            v-model="element.options" placeholder="Các phân loại"
-                                            @keyup="handleUpdateOption($event, index)" />
-                                        <i class="mdi mdi-close mdi-24px close" @click="removeAt(index)"></i>
-                                    </li>
-                                </template>
-                            </draggable>
-                            <div class="my-3">
-                                <div class="mb-2">
-                                    <span>Chú thích:</span>
-                                    <span class="text-danger"> SL - Số lượng, GG - Giảm giá, KH - Kích hoạt</span>
-                                </div>
-                                <table class="table border text-center table-responsive">
-                                    <thead>
-                                        <th class="text-center" style="width: 70px;">Ảnh</th>
-                                        <th v-for="variation in variations">
-                                            {{ variation.name }}
-                                        </th>
-                                        <th>
-                                            Giá nhập
-                                            <span class="text-danger">*</span>
-                                        </th>
-                                        <th>
-                                            Giá bán
-                                            <span class="text-danger">*</span>
-                                        </th>
-                                        <th>
-                                            SL
-                                            <span class="text-danger">*</span>
-                                        </th>
-                                        <th>
-                                            Giảm giá
-                                        </th>
-                                        <th>
-                                            Giá trị GG
-                                        </th>
-                                        <th>
-                                            SL GG
-                                        </th>
-                                        <th>
-                                            Hạn GG
-                                        </th>
-                                        <th>
-                                            KH
-                                        </th>
-                                    </thead>
-                                    <tbody>
-                                        <tr v-for="variation in form.variations">
-                                            <td>
-                                                <div class="d-flex justify-content-center">
-                                                    <div class="upload-file">
-                                                        <input type="file" name="image"
-                                                            accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*"
-                                                            class="upload-file__input">
-                                                        <div class="upload-file__img_drag upload-file__img">
-                                                            <img width="50" :src="imgSrcPreview"
-                                                                @change="previewImage($event)" alt="">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="text-center align-middle" v-for="key in variation.key">
-                                                {{ key }}
-                                            </td>
-                                            <td>
-                                                <input class="form-control p-2" type="text">
-                                            </td>
-                                            <td>
-                                                <input class="form-control p-2" type="text">
-                                            </td>
-                                            <td class="text-end input-quantity">
-                                                <input class="form-control p-2" type="text">
-                                            </td>
-                                            <td class="input-quantity">
-                                                <select class="form-control p-2">
-                                                    <option>---</option>
-                                                    <option value="0">VND</option>
-                                                    <option value="1">%</option>
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <input class="form-control p-2" type="text">
-                                            </td>
-                                            <td class="input-quantity">
-                                                <input class="form-control p-2" type="text">
-                                            </td>
-                                            <td>
-                                                <input class="form-control p-2" type="datetime-local">
-                                            </td>
-                                            <td class="align-middle">
-                                                <input class="align-middle" type="checkbox" checked>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
             </div>
             <div class="d-flex justify-content-end gap-3 mt-4">
-                <button type="reset" class="btn btn-secondary">{{ $t("button.reset") }}</button>
-                <button type="submit" class="btn btn-primary">{{ $t("button.save") }}</button>
+                <button type="reset" class="btn btn-secondary">Đặt lại</button>
+                <button type="button" class="btn btn-primary" @click="submitForm">Lưu</button>
             </div>
         </form>
     </div>
@@ -272,117 +127,64 @@
 
 <script setup>
 import PageHeaderTitleComponent from "~/Core/components/PageHeaderTitleComponent.vue";
-import draggable from 'vuedraggable'
-import { ref, reactive } from "vue";
-import { IMG_DEFAULT } from "~/Core/config/env";
+import CkeditorBasicComponent from "~/Core/components/Input/CkeditorBasicComponent.vue";
+import { ref, reactive, onMounted } from "vue";
+import imageHelper, { IMG_DEFAULT } from "~/Core/helpers/imageHelper";
+import inputHelper from "~/Core/helpers/inputHelper";
+import postCategoryApi from "../../apis/postCategoryApi";
+import postApi from "../../apis/postApi";
 
-const variations = reactive([
-    {
-        id: 0,
-        name: "size",
-        options: [
-            "xxl",
-            "xl",
-            "m",
-            "l"
-        ]
-    },
-    {
-        id: 1,
-        name: "color",
-        options: [
-            "red",
-            "blue",
-            "black",
-            "pink"
-        ]
-    },
-]);
-
-function handleUpdateOption(event, index) {
-    const options = event.target.value.split(",");
-    variations[index].options = options.map(option => option.trim());
-    form.value.variations = [];
-    updateVariations();
-    console.log(form.value);
-}
-
-const form = ref({
-    name: "",
-    desc: "",
-    categories: [],
-    image: {},
-    is_variation: true,
-    variations: []
+const states = reactive({
+    image: IMG_DEFAULT,
 });
 
-function updateVariations(currentIndex = 0, currentArray = []) {
-    if (currentIndex === variations.length) {
-        form.value.variations.push({
-            key: currentArray
-        });
-        return;
-    }
-    const currentVariation = variations[currentIndex];
-    for (let i = 0; i < currentVariation.options.length; i++) {
-        const option = currentVariation.options[i];
-        const newArray = [...currentArray, option];
-        updateVariations(currentIndex + 1, newArray);
-    }
-}
+const errors = ref({});
 
-const imgSrcPreview = ref(IMG_DEFAULT);
+const form = reactive({
+    name: "",
+    slug: "",
+    category_id: "",
+    desc_sort: "",
+    desc: "",
+    image: {},
+    is_active: 1
+});
 
-function previewImage(event) {
-    if (event.target.files && event.target.files[0]) {
-        form.image = event.target.files[0];
-        var reader = new FileReader();
-        reader.onload = function (e) {
-            imgSrcPreview.value = e.target.result;
-        }
-        reader.readAsDataURL(event.target.files[0]);
+async function previewImage(event) {
+    try {
+        const result = await imageHelper.previewImage(event);
+        states.image = result.image_src;
+        form.image = result.image;
+    } catch (error) {
+        console.log(error);
     }
 }
 
+function renderSlug(event) {
+    form.slug = inputHelper.renderSlug(event);
+}
+
+const categories = ref([]);
+
+async function getCategories() {
+    try {
+        const response = await postCategoryApi.getCategories();
+        categories.value = response.data;
+    } catch (error) {
+    }
+}
+
+async function submitForm(){
+    try {
+        const response = await postApi.addPost(form);
+        errors.value = {};
+    } catch (error) {
+        const data = error.response.data;
+        errors.value = data.errors;
+    }
+}
+
+onMounted(async () => { 
+    await getCategories();
+});
 </script>
-
-<style scoped>
-.handle {
-    float: left;
-    padding-top: 8px;
-    padding-bottom: 8px;
-}
-
-.close {
-    float: right;
-    padding-top: 8px;
-    padding-bottom: 8px;
-}
-
-.input-variation {
-    display: inline-block;
-    /* width: 50%; */
-}
-
-.input-quantity{
-    width: 100px;
-}
-</style>
-
-<!-- <div class="form-group">
-    <div class="input-label justify-content-between">
-        <label for="">Đơn vị tính</label>
-        <button class="btn btn-sm square-btn btn-primary">
-            <i class="mdi mdi-plus"></i>
-        </button>
-    </div>
-    <div class="form-inline mt-1 justify-content-between">
-        <label for="" class="col-6 pl-0 justify-content-start">Tên : Số lượng quy đổi</label>
-        <input type="text" class="form-control col-2 p-1">
-        :
-        <input type="text" class="form-control col-2 p-1">
-        <button class="btn btn-sm square-btn btn-info text-white">
-            <i class="mdi mdi-minus"></i>
-        </button>
-    </div>
-</div> -->

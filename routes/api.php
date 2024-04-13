@@ -15,4 +15,7 @@ use Modules\User\Models\User;
 |
 */
 
+Route::group(["location"], function(){}
+    
+);
 

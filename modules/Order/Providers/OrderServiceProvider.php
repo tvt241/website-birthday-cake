@@ -4,6 +4,8 @@ namespace Modules\Order\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
+use Modules\Order\Services\PaymentService\IPaymentService;
+use Modules\Order\Services\PaymentService\VnPayService;
 
 class OrderServiceProvider extends ServiceProvider
 {
@@ -37,7 +39,9 @@ class OrderServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
+        // $this->app->bind(IPaymentService::class, VnPayService::class);
     }
 
     /**
