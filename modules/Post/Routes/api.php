@@ -15,7 +15,8 @@ use Modules\Post\Http\Controllers\Api\PostCategoryApiController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
 Route::get("posts/categories/get-all", [PostCategoryApiController::class, "getAll"]);
+Route::put("posts/categories/{id}/change-active", [PostCategoryApiController::class, "changeActive"]);
 Route::apiResource("posts/categories", PostCategoryApiController::class);
+
 Route::apiResource("posts", PostApiController::class);

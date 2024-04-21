@@ -19,8 +19,11 @@ class ProductResource extends JsonResource
             "name" => $this->name,
             "slug" => $this->slug,
             "is_active" => $this->is_active,
+            "min_price" => $this->min_price,
+            "max_price" => $this->max_price,
             "category_name" => $this->category->name,
-            "image" => $this->image->url,
+            "quantity" => $this->productItems?->sum("quantity"),
+            "image" => $this->image?->url,
             "desc" => $this->desc,
         ];
     }

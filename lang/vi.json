@@ -709,5 +709,21 @@
     "Åland Islands": "Quần đảo Åland",
     "The given data was invalid.": "Dữ liệu không hợp lệ",
     "(and :count more error)": "(và :count lỗi khác)",
-    "(and :count more errors)": "(và :count lỗi khác)"
+    "(and :count more errors)": "(và :count lỗi khác)",
+    "WEB": "Website",
+    "POS": "POS",
+    "CANCELLED": "Đã hủy",
+    "CANCELLED_SELLER": "Người bán hủy",
+    "PENDING": "Chờ sử lý",
+    "PROCESSING": "Chuẩn bị hàng",
+    "SHIPPED": "Đã gửi hàng",
+    "IN_TRANSIT": "Đang vận chuyển",
+    "OUT_FOR_DELIVERY": "Đang giao đến bạn",
+    "DELIVERED": "Đã giao hàng",
+    "COMPLETED": "Hoàn thành",
+    "AUTO_COMPLETED": "Hoàn thành (a)",
+    "DELIVERED_FAILED": "Giao hàng thất bại",
+    "REFUNDED": "Đã hoàn tiền",
+    "RETURNED": "Đã trả hàng",
+    "ONHOLD": "Tạm dừng"
 }

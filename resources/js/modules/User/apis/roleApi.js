@@ -7,7 +7,7 @@ export default {
     },
     addRole: function(form){
         const url = "roles";
-        return apiHelper.put(url, form);
+        return apiHelper.post(url, form);
     },
     updateRole: function(id, form){
         const url = `roles/${id}`;

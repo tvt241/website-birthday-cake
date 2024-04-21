@@ -7,62 +7,87 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Core\Helpers\HttpAuthHelper;
 use Modules\Core\Traits\ResponseTrait;
+use Modules\User\Models\User;
+use Modules\User\Resources\InfoUserResource;
+use Modules\User\Resources\MenuResource;
+use PDO;
 
 class LoginApiController extends Controller
 {
     use ResponseTrait;
-
-    public $form;
     public $http;
 
     public function __construct(HttpAuthHelper $httpAuthHelper)
     {
-        $clientId =  env("GRANT_CLIENT_ID");
-        $clientSecret = env("GRANT_CLIENT_SECRET");
-        if (!$clientId || !$clientSecret) {
-            abort(500, "Vui lòng liên hệ nhà cung cấp");
-        }
-        $this->form["client_id"] = $clientId;
-        $this->form["client_secret"] = $clientSecret;
-        $this->form["scope"] = "";
         $this->http = $httpAuthHelper;
-
     }
     public function login(Request $request)
     {
         $url = "oauth/token";
-
         $data = [
             'grant_type' => 'password',
             'username' => $request->username,
             'password' => $request->password,
         ];
-
-        $this->form = array_merge($data, $this->form);
-
-        $response = $this->http->post($url, $this->form);
-
+        $response = $this->http->post($url, $data);
         $status = $response->status();
+        if($status != 200){
+            return $this->ErrorResponse("Thông tin đăng nhập không đúng");
+        }
         $result = $response->object();
-
-        return $this->SuccessResponse($result, $result->message, $status);
+        return $this->SuccessResponse($result);
     }
 
-    public function refreshToken(Request $request)
+    public function refresh(Request $request)
     {
-        $clientId =  env("GRANT_CLIENT_ID");
-        $clientSecret = env("GRANT_CLIENT_SECRET");
-        if (!$clientId || !$clientSecret) {
-            abort(500, "Vui lòng liên hệ nhà cung cấp");
-        }
+        $url = "oauth/token";
         $data = [
             'grant_type' => 'refresh_token',
             'refresh_token' => $request->refresh_token,
-            'scope' => '',
         ];
 
-        $response = Http::asForm()->post(env("APP_URL") . "/oauth/token", $data);
+        $response = $this->http->post($url, $data);
+        $status = $response->status();
+        $result = $response->object();
+        return $this->SuccessResponse($result, $result->message, $status);
+    }
 
-        $data = $response->object();
+    public function info(){
+        $user = auth()->user();
+        $permissions = $user->roles()
+            ->join("role_has_permissions", "roles.id", "=", "role_has_permissions.role_id")
+            ->join("permissions", "role_has_permissions.permission_id", "=", "permissions.id")
+            ->get([
+                "permissions.id", 
+                "permissions.title", 
+                "permissions.name",
+                "permissions.module",
+                "permissions.label",
+                "permissions.icon",
+                "permissions.type",
+                "permissions.url",
+                "permissions.menu_parent",
+            ])->toArray();
+
+        $menusParent = [];
+        foreach($permissions as $key => $menu){
+            if(!$menu["menu_parent"]){
+                $menusParent[] = array_slice($menu, 0, 9) ;
+            }
+        }
+        foreach($menusParent as $key => $menuParent){
+            foreach($permissions as $menu){
+                if($menu["menu_parent"] == $menuParent["id"]){
+                    $menusParent[$key]["children"][] = array_slice($menu, 0, 9) ;
+                }
+            }
+        }
+        $menus = [];
+        foreach($menusParent as $menu){
+            $key = $menu["module"];
+            $menus[$key][] = $menu;
+        }
+        $user->menus = $menus;
+        return $this->SuccessResponse(new InfoUserResource($user));
     }
 }

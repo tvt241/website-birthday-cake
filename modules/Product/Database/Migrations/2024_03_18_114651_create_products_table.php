@@ -18,10 +18,10 @@ return new class extends Migration
             $table->string("name");
             $table->string("slug")->nullable();
             $table->string("category_id")->nullable();
-            $table->decimal("min_price")->nullable();
-            $table->decimal("max_price")->nullable();
+            $table->decimal("min_price")->default(0);
+            $table->decimal("max_price")->default(0);
             $table->string("desc_sort")->nullable();
-            $table->string("desc")->nullable();
+            $table->longText("desc")->nullable();
             $table->tinyInteger("is_active")->default(0);
             $table->timestamps();
         });

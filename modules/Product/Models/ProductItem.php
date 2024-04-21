@@ -22,17 +22,23 @@ class ProductItem extends Model
         "quantity"
     ];
 
-    public function variations(){
-        return $this->hasMany(ProductVariation::class);
+    public function variation(){
+        return $this->belongsTo(ProductVariation::class, "id");
     }
 
-    public function category(){
-        return $this->belongsTo(ProductCategory::class);
+    public function variationsCollect(){
+        return ProductVariation::where("id", $this->product_variation_id)
+            ->with(["ancestors:id,name,value,path"])
+            ->first(["id", "name", "value", "product_variation_id"]);
     }
 
     public function image(): MorphOne
     {
         return $this->morphOne(Image::class, 'model');
+    }
+
+    public function product(){
+        return $this->belongsTo(Product::class);
     }
 
     

@@ -1,16 +1,39 @@
 <?php
+use Illuminate\Support\Facades\Route;
+use Modules\Customer\Http\Controllers\Auth\ForgotPasswordController;
+use Modules\Customer\Http\Controllers\Auth\LoginController;
+use Modules\Customer\Http\Controllers\Auth\LogoutController;
+use Modules\Customer\Http\Controllers\Auth\RegisterController;
+use Modules\Customer\Http\Controllers\Auth\ResetPasswordController;
+use Modules\Customer\Http\Controllers\HomeController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+Route::get("/", [HomeController::class, "index"])->name("home");
+Route::get('/contact', [HomeController::class, "contact"])->name("contact");
+Route::get('/about-us', [HomeController::class, "aboutUs"])->name("about_us");
 
-Route::prefix('customer')->group(function() {
-    Route::get('/', 'CustomerController@index');
+
+Route::group(["middleware" => "guest"], function(){
+    Route::get("login", [LoginController::class, "login"])->name("login");
+    Route::post("login", [LoginController::class, "handleLogin"])->name("handle_login");
+
+    Route::get("register", [RegisterController::class, "register"])->name("register");
+    Route::post("register", [RegisterController::class, "handleRegister"])->name("handle_register");
 });
+
+Route::get('/logout', [LogoutController::class, "logout"])->name("logout");
+
+Route::get('/forgot-password', [ForgotPasswordController::class, "index"])->name("forgot_password");
+Route::post('/forgot-password', [ForgotPasswordController::class, "checkUser"])->name("check_user");
+
+Route::get('/confirm-otp', [ForgotPasswordController::class, "confirmOtp"])->name("confirm_otp");
+Route::post('/confirm-otp', [ForgotPasswordController::class, "checkInvalidOtp"])->name("check_invalid_otp");
+
+Route::post('/resend-otp', [ForgotPasswordController::class, "resendOtp"])->name("resend_otp");
+
+Route::get('/reset-password', [ResetPasswordController::class, "resetPassword"])->name("reset_password");
+Route::post('/reset-password', [ResetPasswordController::class, "updatePassword"])->name("update_password");
+
+
+
+
+

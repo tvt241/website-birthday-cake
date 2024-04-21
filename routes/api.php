@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 use Modules\User\Models\User;
 
@@ -15,7 +16,6 @@ use Modules\User\Models\User;
 |
 */
 
-Route::group(["location"], function(){}
-    
-);
+// Broadcast::routes(['middleware' => 'auth:api']);
+
 

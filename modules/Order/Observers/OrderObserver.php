@@ -2,12 +2,14 @@
 
 namespace Modules\Order\Observers;
 
+use Modules\Order\Models\Order;
+
 class OrderObserver
 {
-    // public function created(User $user)
-    // {
-    //     //
-    // }
+    public function created(Order $order)
+    {
+        
+    }
  
     public function updated($user)
     {

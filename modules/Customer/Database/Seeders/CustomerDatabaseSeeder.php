@@ -4,6 +4,7 @@ namespace Modules\Customer\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Customer\Models\Customer;
 
 class CustomerDatabaseSeeder extends Seeder
 {
@@ -14,8 +15,11 @@ class CustomerDatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Model::unguard();
-
-        // $this->call("OthersTableSeeder");
+        Customer::create([
+            "username" => "default",
+            "email" => "customers@gmail.com",
+            "phone" => "0987654321",
+            "password" => bcrypt("12345678"),
+        ]);
     }
 }

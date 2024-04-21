@@ -5,12 +5,12 @@ namespace Modules\Product\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
-use Modules\Core\Services\Image\ImageService;
 use Modules\Core\Traits\ResponseTrait;
 use Modules\Product\Http\Requests\StoreProductCategoryRequest;
 use Modules\Product\Models\ProductCategory;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\Core\Services\Image\IImageService;
+use Modules\Product\Http\Requests\UpdateProductCategoryRequest;
 use Modules\Product\Resources\ProductCategoryResource;
 
 class ProductCategoryApiController extends Controller
@@ -88,7 +88,7 @@ class ProductCategoryApiController extends Controller
     }
 
 
-    public function update(Request $request, $id)
+    public function update(UpdateProductCategoryRequest $request, $id)
     {
         $productCategory = ProductCategory::find($id);
         if (!$productCategory) {
@@ -100,11 +100,16 @@ class ProductCategoryApiController extends Controller
                 return $this->ErrorResponse(message: __("You do not select this parent. because the paren already to add it for the children."), status_code: 422);
             }
         }
-        if ($request->hasFile("image")) {
-            $this->iImageService->update($request->image, $productCategory, "categories");
+        try {
+            if ($request->hasFile("image")) {
+                $this->iImageService->update($request->image, $productCategory, "categories");
+            }
+            $productCategory->update($request->validated());
+            return $this->SuccessResponse();
+        } catch (\Exception $e) {
+            return $this->ErrorResponse($e->getMessage(), status_code: 422);
         }
-        $productCategory->update($request->validated());
-        return $this->SuccessResponse();
+        
     }
 
     public function destroy($id)
@@ -122,7 +127,7 @@ class ProductCategoryApiController extends Controller
         return $this->SuccessResponse();
     }
 
-    public function changeActive($id)
+    public function changeActive(Request $request, $id)
     {
         $productCategory = ProductCategory::find($id);
         if (!$productCategory) {

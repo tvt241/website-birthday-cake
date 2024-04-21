@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Http;
 use Modules\Core\Helpers\HttpFrebaseHelper;
 use Modules\User\app\Enum\FirebaseEnum;
 
-class FirebaseSendOtpService implements ISendOtpService
+class FirebaseOtpService implements ISendOtpService
 {
     private $http;
     
@@ -26,15 +26,23 @@ class FirebaseSendOtpService implements ISendOtpService
             $result = $response->object();
             if (isset($result->error)) {
                 $message = explode(" ",$result->error->message);
-                // $message = FirebaseEnum::getValue($message[0]) ?? "Vui lòng thử lại sau";
-                return false;
+                return [
+                    "is_success" => false,
+                    "data" => $message
+                ];
             }
-            return $result->sessionInfo;
+            return [
+                "is_success" => true,
+                "data" => $result->sessionInfo
+            ];
         } catch (\Exception $e) {
-            // session()->flash("error", "Nếu không nhận được mã, thử lại sau");
-            return false;
+            return [
+                "is_success" => false,
+                "data" => $e->getMessage()
+            ];
         }
     }
+
     public function confirmOtp($sessionInfo, $code){
         $url = "v1/accounts:signInWithPhoneNumber?key=" . getenv("FIRE_API_KEY");
         $data = [
@@ -44,14 +52,21 @@ class FirebaseSendOtpService implements ISendOtpService
         try {
             $response = $this->http->post($url, $data);
             $result = $response->object();
-            if (isset($result->error)) { // INVALID_CODE
-                // session()->flash("error", "Mã xác nhận không đúng, vui lòng thử lại");
-                return false;
+            if (isset($result->error)) {
+                $message = explode(" ",$result->error->message);
+                return [
+                    "is_success" => false,
+                    "data" => $message
+                ];
             }
-            return true;
+            return [
+                "is_success" => true,
+            ];
         } catch (\Exception $e) {
-            // session()->flash("error", "Vui lòng thử lại sau");
-            return false;
+            return [
+                "is_success" => false,
+                "data" => $e->getMessage()
+            ];
         }
     }
 }

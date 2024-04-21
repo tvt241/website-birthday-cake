@@ -26,7 +26,7 @@
          </td>
          <td>
             <label class="switcher">
-               <input type="checkbox" @click="$emit('changeActive', category.id)" class="switcher_input" checked>
+               <input type="checkbox" @click="$emit('changeActive', category.id)" class="switcher_input" :checked="category.is_active">
                <span class="switcher_control"></span>
             </label>
          </td>
@@ -47,6 +47,7 @@
          @show-confirm="(id) => $emit('showConfirm', id)"
          @show-edit="(id) => $emit('showEdit', id)"
          @handle-toggle-child="(event, id) => $emit('handleToggleChild', event, id)"
+         @change-active="(id) => $emit('changeActive', id)"
       />
    </template>
 </template>
@@ -56,7 +57,7 @@ import { defineProps, defineEmits } from 'vue';
 import { IMG_DEFAULT } from "~/Core/helpers/imageHelper";
 const props = defineProps(["categories"]);
 
-const emits = defineEmits(["showConfirm", "showEdit", "handleToggleChild"]);
+const emits = defineEmits(["showConfirm", "showEdit", "handleToggleChild", "changeActive"]);
 
 function renderDepth(depth) {
    let html = "";

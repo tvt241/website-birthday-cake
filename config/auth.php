@@ -1,5 +1,6 @@
 <?php
 
+use Modules\Customer\Models\Customer;
 use Modules\User\Models\User;
 
 return [
@@ -16,7 +17,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard' => 'customer_web',
         'passwords' => 'users',
     ],
 
@@ -42,10 +43,15 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'customer_web' => [
+            'driver' => 'session',
+            'provider' => 'customers',
+        ],
         'api' => [
             'driver' => 'passport',
             'provider' => 'users',
         ],
+        
     ],
 
     /*
@@ -69,6 +75,11 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => User::class,
+        ],
+
+        'customers' => [
+            'driver' => 'eloquent',
+            'model' => Customer::class,
         ],
 
         // 'users' => [
@@ -95,6 +106,12 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'customers' => [
+            'provider' => 'customers',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,

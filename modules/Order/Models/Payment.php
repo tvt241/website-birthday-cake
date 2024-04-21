@@ -11,7 +11,8 @@ class Payment extends Model
 
     protected $fillable = [
         "name",
-        "value"
+        "value",
+        "order_id"
     ];
     
 }

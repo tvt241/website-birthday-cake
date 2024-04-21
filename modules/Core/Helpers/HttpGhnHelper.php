@@ -28,7 +28,7 @@ class HttpGhnHelper
     public function postWithShopId($url, $array)
     {
         $headers = [
-            'Content-Type' => 'application/json; charset=utf-8',
+            'Content-Type' => 'application/json;',
             'ShopId' => $this->config->shop_id,
             'Token' => $this->config->token,
         ];
@@ -38,7 +38,7 @@ class HttpGhnHelper
     public function post($url, $array)
     {
         $headers = [
-            'Content-Type' => 'application/json; charset=utf-8',
+            'Content-Type' => 'application/json;',
             'Token' => $this->config->token,
         ];
         return $this->http->withHeaders($headers)->post($url, $array);

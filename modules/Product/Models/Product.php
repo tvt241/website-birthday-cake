@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Modules\Core\Models\Image;
-use Illuminate\Database\Eloquent\Casts\Attribute;
+use Modules\Core\Models\Traits\CategoryTrait;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, CategoryTrait;
 
     protected $fillable = [
         "id",
@@ -18,20 +18,16 @@ class Product extends Model
         "slug",
         "desc",
         "desc_sort",
+        "min_price",
+        "max_price",
         "category_id",
         "is_active"
     ];
 
-    public function variationsCollect()
+    public function variationsCollectFull()
     {
         $variations = ProductVariation::where("laravel_cte.product_id", $this->id)->tree()
-            ->leftJoin("product_items", function ($join) {
-                $join->on("laravel_cte.id", "=", "product_items.product_variation_id");
-            })
-            ->leftJoin("images", function ($join) {
-                $join->on("product_items.id", "=", "images.model_id")
-                    ->where("images.model_type", ProductItem::class);
-            })
+            ->joinProductItemWithImage()
             ->get([
                 "laravel_cte.id",
                 "laravel_cte.name",
@@ -41,6 +37,25 @@ class Product extends Model
                 "laravel_cte.path",
                 "images.url as image",
                 "product_items.price_import",
+                "product_items.price",
+                "product_items.quantity",
+            ]);
+        return $variations->toTree();
+    }
+
+    public function variationsCollect()
+    {
+        $variations = ProductVariation::where("laravel_cte.product_id", $this->id)->tree()
+            ->joinProductItemWithImage()
+            ->get([
+                "laravel_cte.id",
+                "laravel_cte.name",
+                "laravel_cte.value",
+                "laravel_cte.product_variation_id",
+                "laravel_cte.depth",
+                "laravel_cte.path",
+                "images.url as image",
+                "product_items.id as product_item_id",
                 "product_items.price",
                 "product_items.quantity",
             ]);

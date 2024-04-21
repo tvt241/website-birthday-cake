@@ -3,6 +3,7 @@
 namespace Modules\Product\Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Modules\Product\Models\Product;
 use Modules\Product\Models\ProductCategory;
 
 class ProductCategoryDatabaseSeeder extends Seeder
@@ -12,38 +13,82 @@ class ProductCategoryDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        ProductCategory::create([
-            "name" => "Quần áo",
-            "slug" => "quan-ao",
+        $hostPath = env("APP_URL") . "/storage/categories/";
+        
+        $category = ProductCategory::create([
+            "name" => "Mới - Bán chạy",
+            "slug" => "moi-ban-chạy",
         ]);
+        $category->image()->create(["url" => $hostPath . "ban-chay.jpeg"]);
 
-        ProductCategory::factory(5)->state([
-            "category_id" => 1
-        ])->create();
-
-        ProductCategory::create([
-            "name" => "Trang sức",
-            "slug" => "trang-suc",
+        $category = ProductCategory::create([
+            "name" => "Tặng người yêu",
+            "slug" => "tang-nguoi-yeu",
         ]);
+        $category->image()->create(["url" => $hostPath . "tang-nguoi-yeu.jpg"]);
 
-        ProductCategory::factory(5)->state([
-            "category_id" => 7
-        ])->create();
+        $category = ProductCategory::create([
+            "name" => "Vợ/ Chị em gái",
+            "slug" => "tang-vo-chi-em-gai",
+        ]);
+        $category->image()->create(["url" => $hostPath . "tang-vo-chi-em-gai.jpg"]);
 
-        ProductCategory::factory(5)->state([
-            "category_id" => 10
-        ])->create();
+        $category = ProductCategory::create([
+            "name" => "Chồng/ Anh em trai",
+            "slug" => "tang-chong-anh-em-trai",
+        ]);
+        $category->image()->create(["url" => $hostPath . "tang-chong-anh-em-trai.jpg"]);
 
-        ProductCategory::factory(5)->state([
-            "category_id" => 15
-        ])->create();
+        $category = ProductCategory::create([
+            "name" => "Bố/ Mẹ",
+            "slug" => "tang-bo-me",
+        ]);
+        $category->image()->create(["url" => $hostPath . "tang-cha-me.jpg"]);
 
-        ProductCategory::factory(5)->state([
-            "category_id" => 16
-        ])->create();
+        $category = ProductCategory::create([
+            "name" => "Sếp/ Khách hàng",
+            "slug" => "tang-sep-khach-hang",
+        ]);
+        $category->image()->create(["url" => $hostPath . "tang-sep-doi-tac.jpg"]);
 
-        ProductCategory::factory(5)->state([
-            "category_id" => 27
-        ])->create();
+        $categoryParent = ProductCategory::create([
+            "name" => "Bánh tầng",
+            "slug" => "banh-tang",
+        ]);
+        $categoryParent->image()->create(["url" => $hostPath . "banh-nhieu-tang.jpg"]);
+
+        $category = ProductCategory::create([
+            "name" => "Bánh 1 tầng",
+            "slug" => "banh-1-tang",
+            "category_id" => $categoryParent->id
+        ]);
+        $category->image()->create(["url" => $hostPath . "banh-1-tang.jpg"]);
+
+        $category = ProductCategory::create([
+            "name" => "Bánh 2 tầng",
+            "slug" => "banh-2-tang",
+            "category_id" => $categoryParent->id
+        ]);
+        $category->image()->create(["url" => $hostPath . "banh-2-tang.jpeg"]);
+
+        $category = ProductCategory::create([
+            "name" => "Bánh 3 tầng",
+            "slug" => "banh-3-tang",
+            "category_id" => $categoryParent->id
+        ]);
+        $category->image()->create(["url" => $hostPath . "banh-3-tang.jpg"]);
+
+        $category = ProductCategory::create([
+            "name" => "Bánh 4 tầng",
+            "slug" => "banh-4-tang",
+            "category_id" => $categoryParent->id
+        ]);
+        $category->image()->create(["url" => $hostPath . "banh-4-tang.jpg"]);
+
+        $category = ProductCategory::create([
+            "name" => "Đồ trang chí",
+            "slug" => "do-trang-chi",
+        ]);
+        $category->image()->create(["url" => $hostPath . "phu-kien.jpg"]);
     }
 }

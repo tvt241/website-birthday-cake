@@ -1,19 +1,3 @@
-/* ====== Index ======
-
-1. SCROLLBAR SIDEBAR
-2. MOBILE OVERLAY
-3. SIDEBAR MENU
-4. SIDEBAR TOGGLE FOR MOBILE
-5. SIDEBAR TOGGLE FOR VARIOUS SIDEBAR LAYOUT
-6. TODO LIST
-7. RIGHT SIDEBAR
-8. OFFCANVAS
-9. DROPDOWN NOTIFY
-10. REFRESS BUTTON
-11. NAVBAR TRANSPARENT SCROLL
-12. NAVBAR SEARCH
-====== End ======*/
-
 $(document).ready(function () {
     "use strict";
     /*======== 2. MOBILE OVERLAY ========*/
@@ -31,36 +15,6 @@ $(document).ready(function () {
             $("body").css("overflow", "auto");
         });
     }
-
-    /*======== 3. SIDEBAR MENU ========*/
-    $("#sidebar-menu > li").click(function () {
-        const tagCurrent = $(this);
-        const isSubmenu = tagCurrent.hasClass("has-sub");
-        tagCurrent
-            .siblings()
-            .removeClass("expand active")
-            .children()
-            .removeClass("show");
-        tagCurrent.addClass("active");
-        if (isSubmenu) {
-            const isShow = $("ul", tagCurrent).hasClass("show");
-            if (isShow) {
-                tagCurrent.addClass("expand");
-            }
-            else{
-              tagCurrent.removeClass("expand");
-            }
-            return;
-        }
-        $("#sidebar-menu .has-sub li").removeClass("active");
-    });
-
-    $("#sidebar-menu .has-sub li").click(function () {
-        const tagCurrent = $(this);
-        tagCurrent.siblings().removeClass("active");
-        tagCurrent.parent().parent().addClass("expand");
-        tagCurrent.addClass("active");
-    });
 
     /*======== 4. SIDEBAR TOGGLE FOR MOBILE ========*/
     if ($(window).width() < 768) {
@@ -214,4 +168,30 @@ $(document).ready(function () {
             }
         }
     });
+});
+
+$(document).on("click", "#sidebar-menu > li", function () {
+    const menuParent = $(this);
+    menuParent.siblings().removeClass("expand active").children().hide();
+    menuParent.addClass("active");
+    if($("a", menuParent).first().attr("data-toggle") == "collapse-custom" && menuParent.hasClass("has-sub")){
+        const menuSub = $("ul", menuParent);
+        if(menuSub.css("display") == "none"){
+            menuSub.show();
+            menuParent.addClass("expand");
+            return;
+        }
+        menuSub.hide();
+        menuParent.removeClass("expand");
+    };
+    $("#sidebar-menu .has-sub li").removeClass("active");
+});
+
+
+$(document).on("click", "#sidebar-menu .has-sub li", function (e) {
+    e.stopPropagation();
+    const menuSub = $(this); 
+    menuSub.addClass("active");
+    menuSub.siblings().removeClass("active");
+    menuSub.parent().parent().addClass("expand");
 });

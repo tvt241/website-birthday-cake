@@ -26,7 +26,9 @@
                             <tbody>
                                 <ProductCategoryChildComponent :categories="categoriesPaginate.data"
                                     @show-confirm="onShowConfirm" @show-edit="getCategory"
-                                    @handle-toggle-child="handleToggleChild" />
+                                    @handle-toggle-child="handleToggleChild" 
+                                    @change-active="onUpdateActive"
+                                />
                             </tbody>
                         </table>
                         <Bootstrap4Pagination :data="categoriesPaginate"
@@ -212,9 +214,8 @@ async function handleModelAction() {
 }
 // delete
 async function deleteCategory(id) {
-    states.id = id;
     try {
-        await categoryApi.deleteCategory(states.id);
+        await categoryApi.deleteCategory(id);
         getCategoriesPaginate();
     } catch (error) {
     }
@@ -228,6 +229,16 @@ function onShowConfirm(id) {
             }
         })
 }
+
+
+async function onUpdateActive(id) {
+    try {
+        await categoryApi.changeActiveCategory(id);
+        getCategoriesPaginate();
+    } catch (error) {
+    }
+}
+
 
 function resetData() {
     form.name = "";
@@ -284,6 +295,7 @@ function toggleChild(id, isShow) {
         tagTr.classList.remove("d-none");
     });
 }
+
 
 onMounted(async () => {
     await getCategoriesPaginate();

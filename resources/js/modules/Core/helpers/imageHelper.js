@@ -24,3 +24,6 @@ export default {
 };
 
 export const IMG_DEFAULT = ENV.APP_URL + "/assets/img/img-default.jpg";
+
+export const IMG_FOLDER = ENV.APP_URL + "/assets/img/";
+

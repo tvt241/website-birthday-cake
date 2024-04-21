@@ -7,7 +7,7 @@
     --------------------*/
     $(window).on('load', function () {
         $(".loader").fadeOut();
-        $("#preloder").delay(200).fadeOut("slow");
+        $("#preloder").delay(100).fadeOut("slow");
 
         /*------------------
             Gallery filter
@@ -73,10 +73,10 @@
     $(".categories__slider").owlCarousel({
         loop: true,
         margin: 0,
-        items: 5,
+        items: 6,
         dots: false,
-        nav: false,
-        // navText: ["<span class='fa fa-angle-left fa-2x'><span/>", "<span class='fa fa-angle-right fa-2x'><span/>"],
+        nav: true,
+        navText: ["<span class='fa fa-angle-left'><span/>", "<span class='fa fa-angle-right'><span/>"],
         animateOut: 'fadeOut',
         animateIn: 'fadeIn',
         smartSpeed: 1200,
@@ -85,7 +85,7 @@
         responsive: {
 
             0: {
-                items: 1,
+                items: 2,
             },
 
             480: {
@@ -97,7 +97,7 @@
             },
 
             992: {
-                items: 5,
+                items: 6,
             }
         }
     });
@@ -208,19 +208,56 @@
     proQty.prepend('<span class="dec qtybtn">-</span>');
     proQty.append('<span class="inc qtybtn">+</span>');
     proQty.on('click', '.qtybtn', function () {
+        const cartContainer = proQty.closest("div.cart__container");
+        const maxQty = $(".product-item-quantity", cartContainer).val();
+        const price = Number($(".product-item-price", cartContainer).val());
+
         var $button = $(this);
+        var newVal = 0;
         var oldValue = $button.parent().find('input').val();
         if ($button.hasClass('inc')) {
-            var newVal = parseFloat(oldValue) + 1;
+            if(oldValue == maxQty){
+                return;
+            }
+            newVal = parseFloat(oldValue) + 1;
         } else {
-            // Don't allow decrementing below zero
-            if (oldValue > 0) {
-                var newVal = parseFloat(oldValue) - 1;
+            if (oldValue > 1) {
+                if(oldValue > maxQty){
+                    newVal = maxQty;
+                }
+                else{
+                    newVal = parseFloat(oldValue) - 1;
+                }
             } else {
-                newVal = 0;
+                newVal = 1;
             }
         }
+        $(".price__container span", cartContainer).first().html(formatCurrency(price * newVal));
         $button.parent().find('input').val(newVal);
     });
 
+    proQty.on('keyup', 'input', function () {
+        const cartContainer = proQty.closest("div.cart__container");
+        const maxQty = $(".product-item-quantity", cartContainer).val();
+        const price = Number($(".product-item-price", cartContainer).val());
+
+        const input  = $(this);
+        var currentValue = Number(input.val());
+        if(currentValue && currentValue > 0){
+            if(currentValue > maxQty){
+                currentValue = maxQty;
+            }
+        }
+        else currentValue = 1;
+        $(".price__container span", cartContainer).first().html(formatCurrency(price * currentValue));
+        input.val(currentValue);
+    });
+
+    $('.back-to-top').on('click', function (e) {
+        e.preventDefault();
+        $('html,body').animate({
+            scrollTop: 0
+        }, 700);
+    });
 })(jQuery);
+

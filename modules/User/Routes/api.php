@@ -19,10 +19,11 @@ use Modules\User\Http\Controllers\Auth\LoginApiController;
 
 Route::group(["prefix" => "auth", "name" => "auth."], function(){
     Route::post("login", [LoginApiController::class, "login"]);
-    Route::post("refresh-token", [LoginApiController::class, "refreshToken"]);
-    // Route::post("logout", [LoginApiController::class, "logout"]);
-
-    // Route::post("info", [LoginApiController::class, "info"]);
+    Route::post("refresh", [LoginApiController::class, "refresh"]);
+    Route::group(["middleware" => "auth:api"], function(){
+        Route::get("info", [LoginApiController::class, "info"]);
+        Route::post("logout", [LoginApiController::class, "logout"]);
+    });
 });
 
 Route::group([], function(){
@@ -30,4 +31,3 @@ Route::group([], function(){
     Route::put("roles/{id}/permissions", [RoleApiController::class, 'updatePermissionByRole']);
     Route::apiResource("roles", RoleApiController::class);
 });
-

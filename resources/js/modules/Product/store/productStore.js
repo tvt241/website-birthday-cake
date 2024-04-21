@@ -1,7 +1,6 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { getItem, setItem } from "~/Core/composables/useLocalStorage";
 
 export const useAuthStore = defineStore("authInfo", () => {
     const authToken = ref("");
@@ -11,7 +10,6 @@ export const useAuthStore = defineStore("authInfo", () => {
         return new Promise((resolve, reject) => {
             axios.post("auth/login", form)
             .then((res) => {
-                console.log(res);
                 // authToken = res.data.access_token;
                 // setLocalStorage("authToken", authToken);
                 // setLocalStorage("authRefreshToken", res.data.refresh_token);

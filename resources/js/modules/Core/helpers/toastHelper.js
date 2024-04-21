@@ -17,7 +17,6 @@ export default {
 
     info: function (message = "abc", position = "top-right") {
         const toast = useToast();
-        console.log(this);
         toast.info(message, {
             position: position,
         });

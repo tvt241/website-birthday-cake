@@ -13,6 +13,10 @@ class ImageService implements IImageService {
     }
 
     public function store(UploadedFile $file, $model, $prefix = ""){
+        info("error", [
+            "file" => $file,
+            "model" => $model,
+        ]);
         $url = Storage::disk("public")->putFile($prefix, $file);
         $url = $this->hostPath . $url;
         $model->image()->create(["url" => $url]);
@@ -25,10 +29,9 @@ class ImageService implements IImageService {
             $path = str_replace($this->hostPath, "", $image->url);
             Storage::disk("public")->delete($path);
         }
-
         $url = Storage::disk("public")->putFile($prefix, $file);
         $url = $this->hostPath . $url;
-        $image->update(["url" => $url]);
+        $model->image()->updateOrCreate(["url" => $url]);
         return $url;
     }
 

@@ -10,7 +10,7 @@
             <!-- Card -->
             <div class="card">
                 <!-- Header -->
-                <div class="card-top px-card pt-4">
+                <!-- <div class="card-top px-card pt-4">
                     <div class="row justify-content-between align-items-center gy-2">
                         <div class="col-lg-4">
                             <form action="http://localhost:2222/admin/product/list" method="GET">
@@ -48,7 +48,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <div class="py-4">
                     <div class="table-responsive datatable-custom">
@@ -57,12 +57,12 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th>#</th>
-                                    <th>Tên sản phẩm</th>
+                                    <th style="width: 30%;">Tên sản phẩm</th>
                                     <th>Danh mục</th>
                                     <th>Giá</th>
                                     <th>Kho</th>
                                     <th>Hiển thị</th>
-                                    <th class="text-center">Action</th>
+                                    <th class="text-center">Khác</th>
                                 </tr>
                             </thead>
 
@@ -72,7 +72,7 @@
                                     <td>
                                         <div class="media align-items-center gap-3">
                                             <div class="avatar">
-                                                <img :src="product.image"
+                                                <img :src="product.image ?? IMG_DEFAULT"
                                                     class="rounded img-fit">
                                             </div>
 
@@ -83,15 +83,17 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td>{{ product.slug }}</td>
                                     <td>{{ product.category_name }}</td>
                                     <td>
-                                        <div><span class="">Stock Type : Unlimited</span></div>
+                                        {{ handleViewPrice(product.min_price, product.max_price) }}
+                                    </td>
+                                    <td>
+                                        {{ product.quantity }}
                                     </td>
                                     <td>
                                         <div>
                                             <label class="switcher">
-                                                <input class="switcher_input" type="checkbox" :checked="product.is_active">
+                                                <input class="switcher_input" @click="onUpdateActive(product.id)" type="checkbox" :checked="product.is_active">
                                                 <span class="switcher_control"></span>
                                             </label>
                                         </div>
@@ -131,7 +133,9 @@
 import { ref, reactive, onMounted } from "vue";
 import PageHeaderTitleComponent from "~/Core/components/PageHeaderTitleComponent.vue";
 import alertHelper from "~/Core/helpers/alertHelper";
+import { IMG_DEFAULT } from "~/Core/helpers/imageHelper";
 import productApi from "~/Product/apis/productApi";
+import { formatCurrency } from "~/Core/helpers/currencyHelper";
 
 const products = ref([]);
 
@@ -166,6 +170,27 @@ async function deleteProduct(id){
 
     }
 }
+
+async function onUpdateActive(id){
+    try {
+        await productApi.changeActiveProduct(id);
+        getProductsPaginate();
+    } catch (error) {
+
+    }
+}
+
+function handleViewPrice(min, max){
+    if(min && max){
+        const minFormat = formatCurrency(min);
+        if(minFormat){
+            return formatCurrency(max);
+        }
+        return `${ minFormat } - ${ formatCurrency(max) }`
+    }
+    return "Chưa có thông tin"
+}
+
 
 onMounted(() => { 
     getProductsPaginate();

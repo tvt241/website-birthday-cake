@@ -10,7 +10,7 @@
             <!-- Card -->
             <div class="card">
                 <!-- Header -->
-                <div class="card-top px-card pt-4">
+                <!-- <div class="card-top px-card pt-4">
                     <div class="row justify-content-between align-items-center gy-2">
                         <div class="col-lg-4">
                             <form action="http://localhost:2222/admin/product/list" method="GET">
@@ -25,7 +25,7 @@
                             </form>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <div class="py-4">
                     <div class="table-responsive datatable-custom">

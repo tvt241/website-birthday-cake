@@ -1,0 +1,32 @@
+.auth__contaner{
+    min-height: 500px;
+}
+
+.auth__contaner > div {
+    padding: 100px 0 !important;
+}
+
+.auth__contaner input{
+    height: 50px;
+}
+
+.auth__contaner button{
+    width: 100px;
+}
+.btn-cancel{
+    background-color: #e4e6eb;
+    color: #4a505a;
+    border: none;
+}
+.btn-confirm{
+    background-color: #7fad39;
+    border: none
+}
+.btn-confirm{
+    background-color: #7fad39;
+    border: none
+}
+
+.view-count-down span{
+    color: red;
+}

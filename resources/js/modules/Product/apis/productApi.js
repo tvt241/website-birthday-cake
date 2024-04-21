@@ -22,7 +22,7 @@ export default {
         return apiHelper.delete(url);
     },
     changeActiveProduct: function(id){
-        const url = `products/${id}`;
+        const url = `products/${id}/change-active`;
         return apiHelper.put(url);
     },
 }

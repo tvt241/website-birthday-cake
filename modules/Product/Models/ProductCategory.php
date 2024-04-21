@@ -21,7 +21,8 @@ class ProductCategory extends Model
         "id",
         "name",
         "slug",
-        "category_id"
+        "category_id",
+        "is_active"
     ];
 
     public function getParentKeyName()

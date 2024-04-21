@@ -15,18 +15,23 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string("user_id");
+            $table->string("name"); // ten người nhận
+            $table->string("phone"); // sdt
+            $table->string("address"); 
+            $table->string("address2");
+            $table->string("note")->nullable();
             $table->string("order_code");
-            $table->string("order_type")->default(0);
-            $table->timestamp("order_date")->nullable();
-            $table->decimal("amount");
-            $table->decimal("coupon_value")->default(0);
-            $table->string("coupon_id")->default(0);
-            $table->decimal("shipping_price")->nullable();
             $table->string("payment_method")->default(0);
-            $table->tinyInteger("payment_status")->default(0);
-            $table->tinyInteger("status");
-            $table->string("note");
+            $table->string("payment_status")->default(0);
+            $table->string("user_id")->nullable();
+            $table->string("order_type")->default(0); // POS / WEB
+            $table->timestamp("order_date")->nullable();
+            $table->decimal("total", 10);
+            $table->decimal("amount", 10);
+            $table->decimal("coupon_value")->default(0);
+            $table->string("coupon_id")->nullable();
+            $table->decimal("shipping_price")->nullable();
+            $table->tinyInteger("status")->default(0);
             $table->timestamps();
         });
     }

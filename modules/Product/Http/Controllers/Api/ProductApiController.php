@@ -27,7 +27,7 @@ class ProductApiController extends Controller
     }
     public function index(Request $request)
     {
-        $query = Product::query()->with(["image:model_id,url", "category:id,name"]);
+        $query = Product::query()->with(["image:model_id,url", "category:id,name", "productItems:id,product_id,quantity"]);
         // if($request->is_active){
 
         // }
@@ -88,14 +88,27 @@ class ProductApiController extends Controller
                 }
             }
             if(sizeof($productVariationIds) == sizeof($items)){
+                $min = 0;
+                $max = 0;
                 foreach($items as $key => $item){
+                    if($item["price"] < $min){
+                        $min = $item["price"];
+                    }
+                    if($item["price"] > $max){
+                        $max = $item["price"];
+                    }
                     $item["product_id"] = $productId;
                     $item["product_variation_id"] = $productVariationIds[$key];
                     $productItem = ProductItem::create($item);
                     if(isset($item["image"]) && is_file($item["image"])){
-                        $productItem->image = $this->iImageService->store($item["image"], $productItem->id, "product_items");
+                        $productItem->image = $this->iImageService->store($item["image"], $productItem, "product_items");
                     }
                 }
+                $data = [
+                    "min_price" => $min,
+                    "max_price" => $max,
+                ];
+                Product::find($productId)->update($data);
             }
         }
     }
@@ -106,7 +119,7 @@ class ProductApiController extends Controller
         if (!$product) {
             return $this->ErrorResponse(message: __("No Results Found."), status_code: 422);
         }
-        $product->variations = $product->variationsCollect();
+        $product->variations = $product->variationsCollectFull();
         return $this->SuccessResponse($product);
     }
 
@@ -134,49 +147,25 @@ class ProductApiController extends Controller
 
     public function destroy($id)
     {
-        $productCategory = ProductCategory::find($id);
-        if (!$productCategory) {
+        $product = Product::find($id);
+        if (!$product) {
             return $this->ErrorResponse(message: __("No Results Found."), status_code: 422);
         }
-        $totalChildren = ProductCategory::where("category_id", $productCategory->id)->count();
-        if ($totalChildren) {
-            return $this->ErrorResponse(message: __("Cannot remove this resource permanently. It is related with another resource."), status_code: 422);
-        }
-        $imageService = app(IImageService::class);
-        $imageService->destroy($productCategory);
-        $productCategory->delete();
+        $product->items()->delete();
+        $product->variations()->delete();
+        $product->carts()->delete();
+        $this->iImageService->destroy($product);
+        $product->delete();
         return $this->SuccessResponse();
     }
 
     public function changeActive($id)
     {
-        $productCategory = ProductCategory::find($id);
-        if (!$productCategory) {
+        $product = Product::find($id);
+        if (!$product) {
             return $this->ErrorResponse(message: __("No Results Found."), status_code: 422);
         }
-        $productCategory->update(["is_active" => !$productCategory->is_active]);
+        $product->update(["is_active" => !$product->is_active]);
         return $this->SuccessResponse([]);
-    }
-
-    public function getAll(Request $request)
-    {
-        $categories = ProductCategory::tree()
-            ->leftJoin("images", function ($join) {
-                $join->on("laravel_cte.id", "=", "images.model_id")
-                    ->where("images.model_type", ProductCategory::class);
-            })
-            ->get([
-                "laravel_cte.id",
-                "laravel_cte.name",
-                "laravel_cte.slug",
-                "laravel_cte.category_id",
-                "laravel_cte.depth",
-                "laravel_cte.path",
-                "laravel_cte.is_active",
-                "laravel_cte.description",
-                "images.url as image"
-            ])
-            ->toTree();
-        return $this->SuccessResponse($categories);
     }
 }

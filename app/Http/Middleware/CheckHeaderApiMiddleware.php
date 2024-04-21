@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\URL;
 
 class CheckHeaderApiMiddleware 
 {
@@ -25,11 +26,19 @@ class CheckHeaderApiMiddleware
             }
             // return abort(400, __("header.miss_param.location"));
         }
-
-        // if(!$request->hasHeader('X-DateTime')){
-        //     return abort(400, __("header.miss_param.date_time"));
-        // }
-
+        $date = $request->header('X-DateTime');
+        $version = $this->detectVersionApi($date);
+        $request->server->set('REQUEST_URI', $version . $request->getRequestUri());
         return $next($request);
+    }
+
+    private function detectVersionApi($date)
+    {
+        switch($date){
+            case "2024-04-15":
+                return "/v2";
+            default:
+                return "/v1";
+        }
     }
 }

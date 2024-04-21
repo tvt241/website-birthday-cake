@@ -6,6 +6,8 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
 use Modules\Order\Services\PaymentService\IPaymentService;
 use Modules\Order\Services\PaymentService\VnPayService;
+use Modules\Order\Services\Shipping\IShippingService;
+use Modules\Order\Services\Shipping\ShippingGhnService;
 
 class OrderServiceProvider extends ServiceProvider
 {
@@ -41,7 +43,7 @@ class OrderServiceProvider extends ServiceProvider
     {
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
-        // $this->app->bind(IPaymentService::class, VnPayService::class);
+        // $this->app->bind(IPaymentService::class, VnPayService::class);        
     }
 
     /**

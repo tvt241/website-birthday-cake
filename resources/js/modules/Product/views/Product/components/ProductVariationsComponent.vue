@@ -110,7 +110,7 @@
 <script setup>
 import { ref, reactive, defineEmits, defineProps, onMounted } from 'vue';
 import draggable from 'vuedraggable';
-import { IMG_DEFAULT } from "~/Core/helpers/imageHelper";
+import imageHelper, { IMG_DEFAULT } from "~/Core/helpers/imageHelper";
 import debounce from 'lodash/debounce';
 
 const emit = defineEmits(['variationsChange']);
@@ -148,7 +148,7 @@ function removeVariation(index) {
 
 const handleUpdateOption = (event, index) => {
     const options = event.target.value.split(",");
-    variations[index].options = options.map(option => option.trim());
+    variations[index].options = options;
     items.splice(0, items.length);
     updateVariations();
 }
@@ -184,14 +184,14 @@ const emitVariationChange = debounce(() => {
     emit("variationsChange", simpleData, variations);
 }, 1000);
 
-function previewImage(event, index) {
-    if (event.target.files && event.target.files[0]) {
-        items[index].image = event.target.files[0];
-        var reader = new FileReader();
-        reader.onload = function (e) {
-            items[index].image_src = e.target.result;
-        }
-        reader.readAsDataURL(event.target.files[0]);
+async function previewImage(event, index) {
+    try {
+        const result = await imageHelper.previewImage(event);
+        items[index].image = result.image;
+        items[index].image_src = result.image_src;
+        emitVariationChange();
+    } catch (error) {
+        console.log(error);
     }
 }
 

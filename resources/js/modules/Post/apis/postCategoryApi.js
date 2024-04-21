@@ -26,7 +26,7 @@ export default {
         return apiHelper.delete(url);
     },
     changeActiveCategory: function(id){
-        const url = `posts/categories/${id}`;
+        const url = `posts/categories/${id}/change-active`;
         return apiHelper.put(url);
     },
     
