@@ -59,7 +59,7 @@ class RoleApiController extends Controller
         if (!$role) {
             return $this->ErrorResponse(message: __("No Results Found."), status_code: 422);
         }
-        $permissions = Permission::tree()->get(["id", "title", "name", "type", "depth", "menu_parent"]);
+        $permissions = Permission::tree()->get(["id", "title", "name", "depth", "menu_parent"]);
         $rolePermission = $role->permissions->pluck("id")->toArray();
         foreach($permissions as $permission){
             if(in_array($permission->id, $rolePermission)){

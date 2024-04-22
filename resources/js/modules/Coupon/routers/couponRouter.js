@@ -10,22 +10,22 @@ export default [
             {
                 path: "",
                 component: CouponList,
-                name: 'customers',
+                name: 'coupons',
             },
             {
                 path: "create",
                 component: CouponCreate,
-                name: 'customers.create',
+                name: 'coupons.create',
             },
             {
                 path: ":id",
                 component: CouponDetails,
-                name: 'customers.show',
+                name: 'coupons.show',
             },
             {
                 path: ":id/edit",
                 component: CouponEdit,
-                name: 'customers.edit',
+                name: 'coupons.edit',
             },
         ],
     },

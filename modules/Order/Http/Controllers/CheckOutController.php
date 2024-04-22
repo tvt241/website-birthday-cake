@@ -6,6 +6,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Coupon\Models\Coupon;
+use Modules\Order\Enums\OrderChannelEnum;
 use Modules\Order\Enums\OrderTypeEnum;
 use Modules\Order\Http\Requests\CheckOut\StoreCheckoutRequest;
 use Modules\Order\Models\Order;
@@ -34,7 +35,8 @@ class CheckOutController extends Controller
         $address = "$request->province_name, $request->district_name, $request->ward_name";
         $order["address"] = $address;
         $order["order_code"] = renderOrderCode();
-        $order["order_type"] = OrderTypeEnum::WEB;
+        $order["order_type"] = OrderTypeEnum::BOOKING;
+        $order["order_channel"] = OrderChannelEnum::WEB;
         if($request->coupon_code){
             $coupon = Coupon::where("code")->first();
             if($coupon){

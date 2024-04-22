@@ -3,9 +3,10 @@ namespace Modules\Order\Enums;
 
 use Modules\Core\Traits\EnumTrait;
 
-enum OrderTypeEnum : int
+enum OrderChannelEnum : int
 {
     use EnumTrait;
-    case BOOKING = 0;
-    case SALES = 1;
+    case WEB = 0;
+    case POS = 1;
+    case APP = 2;
 }

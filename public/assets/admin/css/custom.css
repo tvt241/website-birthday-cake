@@ -3016,9 +3016,9 @@ body > #printableAreaContent {
   word-break: break-word;
 }
 
-.sidebar.sidebar-with-footer{
+/* .sidebar.sidebar-with-footer{
   overflow-y: auto;
-}
+} */
 
 .card-header {
   display: -ms-flexbox;
@@ -3038,4 +3038,3 @@ body > #printableAreaContent {
 .card-header:first-child {
   border-radius: 0.6875rem 0.6875rem 0 0;
 }
-  

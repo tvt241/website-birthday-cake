@@ -17,6 +17,7 @@ class Order extends Model
         "user_id",
         "order_code",
         "order_type",
+        "order_channel",
         "order_date",
         "address",
         "address2",

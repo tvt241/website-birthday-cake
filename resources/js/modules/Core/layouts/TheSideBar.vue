@@ -9,13 +9,12 @@
                 </a>
             </div>
             <!-- begin sidebar scrollbar -->
-            <div class="sidebar-left" data-simplebar style="height: 100%">
-                <!-- sidebar menu -->
+            <Simplebar class="sidebar-left" style="height: 100%;">
                 <ul class="nav sidebar-inner" id="sidebar-menu">
                     <template v-for="(mdl, key) in menus">
                         <li v-if="key" class="section-title">{{ key }}</li>
                         <template v-for="menu in mdl">
-                            <li v-if="checkLabelChildren(menu.children)" class="has-sub">
+                            <li v-if="menu.is_sub === '1'" class="has-sub">
                                 <a class="sidenav-item-link" href="javascript:void(0)" data-toggle="collapse-custom"
                                     :data-target="'#' + menu.name">
                                     <i :class="menu.icon"></i>
@@ -24,12 +23,6 @@
                                 </a>
                                 <ul class="collapse-custom" style="display: none;" :id="menu.name"
                                     data-parent="#sidebar-menu">
-                                    <li>
-                                        <router-link class="sidenav-item-link" active-class="active"
-                                            :to="'/' + menu.url">
-                                            <span class="nav-text">Danh sách {{ menu.label }}</span>
-                                        </router-link>
-                                    </li>
                                     <template v-for="sub_menu in menu.children">
                                         <li v-if="sub_menu.label">
                                             <router-link class="sidenav-item-link" active-class="active"
@@ -50,12 +43,15 @@
                         </template>
                     </template>
                 </ul>
-            </div>
+            </Simplebar>
         </div>
     </aside>
 </template>
 
 <script setup>
+import Simplebar from 'simplebar-vue';
+import 'simplebar-vue/dist/simplebar.min.css';
+
 import { ref } from 'vue';
 import { useAuthStore } from '~/User/store/authStore';
 
@@ -76,3 +72,7 @@ function checkLabelChildren(data){
     return true;
 }
 </script>
+
+<style>
+
+</style>

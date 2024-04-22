@@ -7,9 +7,10 @@ import i18n from "~/Core/i18n";
 import { useAuthStore } from "~/User/store/authStore";
 import { getItem } from "~/Core/helpers/localStorageHelper";
 import dashboardRouter from "~/Core/routes/dashboardRouter";
-import orderRouter from "~/Order/routers/orderRouter";
+import orderRouter from "~/Order/router";
 import userRouter from "~/User/router";
 import couponRouter from "~/Coupon/router";
+import notificationRouter from "~/Notification/router";
 import customerRouter from "~/Customer/router";
 import postRoutes from "~/Post/router";
 
@@ -17,6 +18,7 @@ const routes = [].concat(
     dashboardRouter,
     userRouter,
     couponRouter,
+    notificationRouter,
     customerRouter,
     orderRouter,
     productRoutes,

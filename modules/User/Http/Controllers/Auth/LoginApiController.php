@@ -64,8 +64,8 @@ class LoginApiController extends Controller
                 "permissions.module",
                 "permissions.label",
                 "permissions.icon",
-                "permissions.type",
                 "permissions.url",
+                "permissions.is_sub",
                 "permissions.menu_parent",
             ])->toArray();
 

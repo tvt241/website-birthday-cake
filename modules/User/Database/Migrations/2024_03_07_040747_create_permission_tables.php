@@ -29,13 +29,13 @@ return new class extends Migration
             $table->bigIncrements('id'); // permission id
             $table->string('title'); 
             $table->string('label')->nullable(); 
-            $table->string('name');       // For MySQL 8.0 use string('name', 125);
+            $table->string('name')->nullable();       // For MySQL 8.0 use string('name', 125);
             $table->string('guard_name')->default("api"); // For MySQL 8.0 use string('guard_name', 125);
             $table->string('url');
             $table->string('icon')->nullable();
             $table->string('menu_parent')->nullable();
-            $table->string('is_sub')->default(0);
             $table->string('module')->nullable();
+            $table->string('is_sub')->default(0);
             $table->timestamps();
 
             // $table->unique(['name', 'guard_name']);

@@ -29,7 +29,7 @@ export default [
                 }
             },
             {
-                path: "pages-medias",
+                path: "page-medias",
                 children: [
                     {
                         path: "page-setups",
@@ -37,14 +37,14 @@ export default [
                         children: [
                             {
                                 path: "",
-                                name: "settings.pages-media.page-setups",
+                                name: "settings.page-medias.page-setups",
                                 redirect: {
-                                    name: "settings.pages-media.page-setups.about_us"
+                                    name: "settings.page-medias.page-setups.about_us"
                                 },
                             },
                             {
                                 path: "about-us",
-                                name: "settings.pages-media.page-setups.about_us",
+                                name: "settings.page-medias.page-setups.about_us",
                                 component: AboutUs,
                                 meta: {
                                     title: "setting_about_us"
@@ -52,7 +52,7 @@ export default [
                             },
                             {
                                 path: "terms-and-condition",
-                                name: "settings.pages-media.page-setups.terms_and_condition",
+                                name: "settings.page-medias.page-setups.terms_and_condition",
                                 component: TermsAndCondition,
                                 meta: {
                                     title: "setting_mail"
@@ -60,7 +60,7 @@ export default [
                             },
                             {
                                 path: "privacy-policy",
-                                name: "settings.pages-media.page-setups.privacy_policy",
+                                name: "settings.page-medias.page-setups.privacy_policy",
                                 component: PrivacyPolicy,
                                 meta: {
                                     title: "setting_privacy_policy"
@@ -68,7 +68,7 @@ export default [
                             },
                             {
                                 path: "return-policy",
-                                name: "settings.pages-media.page-setups.return_policy",
+                                name: "settings.page-medias.page-setups.return_policy",
                                 component: ReturnPolicy,
                                 meta: {
                                     title: "setting_return_policy"
@@ -76,7 +76,7 @@ export default [
                             },
                             {
                                 path: "refund-policy",
-                                name: "settings.pages-media.page-setups.refund_policy",
+                                name: "settings.page-medias.page-setups.refund_policy",
                                 component: RefundPolicy,
                                 meta: {
                                     title: "setting_refund_policy"
@@ -84,7 +84,7 @@ export default [
                             },
                             {
                                 path: "cancellation-policy",
-                                name: "settings.pages-media.page-setups.cancellation_policy",
+                                name: "settings.page-medias.page-setups.cancellation_policy",
                                 component: CancellationPolicy,
                                 meta: {
                                     title: "setting_cancellation_policy"
