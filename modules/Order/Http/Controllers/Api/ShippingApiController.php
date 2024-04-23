@@ -22,7 +22,7 @@ class ShippingApiController extends Controller
     public function fee(Request $request)
     {
         if(!auth()->check()){
-            $carts = session("carts");
+            $carts = session("carts", []);
             $order = [
                 "amount" => getPriceCart($carts)
             ];

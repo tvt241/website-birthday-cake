@@ -61,8 +61,8 @@
                                     <th>Danh mục</th>
                                     <th>Giá</th>
                                     <th>Kho</th>
-                                    <th>Hiển thị</th>
-                                    <th class="text-center">Khác</th>
+                                    <th style="width: 10%;">Hiển thị</th>
+                                    <th class="text-center" style="width: 10%;">Khác</th>
                                 </tr>
                             </thead>
 
@@ -102,6 +102,12 @@
                                         <div class="d-flex justify-content-center gap-2">
                                             <router-link 
                                                 class="btn btn-outline-info btn-sm edit square-btn"
+                                                :to="{ name: 'products.details', params: { id: product.id }}"
+                                            >
+                                                <i class="mdi mdi-eye"></i>
+                                            </router-link>
+                                            <router-link 
+                                                class="btn btn-outline-warning btn-sm edit square-btn"
                                                 :to="{ name: 'products.edit', params: { id: product.id }}"
                                             >
                                                 <i class="mdi mdi-pencil"></i>

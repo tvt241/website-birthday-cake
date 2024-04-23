@@ -2,7 +2,11 @@ import apiHelper from "~/Core/helpers/apiHelper";
 
 export default {
     getProductsPaginate: function (paramSearch = {}){
-    const url = "products";
+        const url = "products";
+        return apiHelper.get(url, paramSearch);
+    },
+    getProductItemsPaginate: function(paramSearch = {}){
+        const url = "products/items";
         return apiHelper.get(url, paramSearch);
     },
     addProduct: function(form){

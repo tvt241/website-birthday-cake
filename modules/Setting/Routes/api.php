@@ -1,6 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Modules\Setting\Http\Controllers\Api\BusinessApiSettingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,6 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/setting', function (Request $request) {
-    return $request->user();
-});
+Route::post("/get-config", [BusinessApiSettingController::class, "getConfig"]);
+
+Route::post("/get-service", [BusinessApiSettingController::class, "getService"]);

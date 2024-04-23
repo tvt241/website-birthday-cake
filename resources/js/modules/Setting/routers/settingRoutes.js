@@ -1,7 +1,11 @@
 import BusinessSetup from "../views/BusinessSetup.vue";
+import BusinessSetupChild from "../views/business-setups/BusinessSetup.vue";
+import BranchSetup from "../views/business-setups/BranchSetup.vue";
+import NotificationSetup from "../views/business-setups/NotificationSetup.vue";
+
 
 import SystemSetup from "../views/SystemSetup.vue";
-import LanguageSettingComponent from "../views/system-setups/LanguageSettingComponent.vue";
+// import LanguageSettingComponent from "../views/system-setups/LanguageSettingComponent.vue";
 import NotificationSettingComponent from "../views/system-setups/NotificationSettingComponent.vue";
 import MailSettingComponent from "../views/system-setups/MailSettingComponent.vue";
 import SmsSettingComponent from "../views/system-setups/SmsSettingComponent.vue";
@@ -23,10 +27,30 @@ export default [
             {
                 path: "business-setups",
                 name: "settings.business_setup",
-                component: SocialMedia,
-                meta: {
-                    title: ""
-                }
+                component: BusinessSetup,
+                children: [
+                    {
+                        path: "",
+                        redirect: {
+                            name: "settings.business_setup.page_setup"
+                        },
+                    },
+                    {
+                        path: "page-setup",
+                        component: BusinessSetupChild,
+                        name: "settings.business_setup.page_setup"
+                    },
+                    // {
+                    //     path: "branch-setup",
+                    //     component: BranchSetup,
+                    //     name: "settings.business_setup.branch_setup"
+                    // },
+                    {
+                        path: "notification-setup",
+                        component: NotificationSetup,
+                        name: "settings.business_setup.notification_setup"
+                    }
+                ],
             },
             {
                 path: "page-medias",
@@ -118,17 +142,17 @@ export default [
                         path: "",
                         name: "settings.system-setups",
                         redirect: {
-                            name: "settings.system-setups.languages"
+                            name: "settings.system-setups.mail"
                         },
                     },
-                    {
-                        path: "languages",
-                        name: "settings.system-setups.languages",
-                        component: LanguageSettingComponent,
-                        meta: {
-                            title: "setting language"
-                        }
-                    },
+                    // {
+                    //     path: "languages",
+                    //     name: "settings.system-setups.languages",
+                    //     component: LanguageSettingComponent,
+                    //     meta: {
+                    //         title: "setting language"
+                    //     }
+                    // },
                     {
                         path: "mail",
                         name: "settings.system-setups.mail",

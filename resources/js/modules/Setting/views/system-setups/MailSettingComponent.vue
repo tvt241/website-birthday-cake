@@ -34,8 +34,10 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue';
+import { ref, onMounted, reactive } from "vue";
+import settingApi from "~/Setting/api/settingApi";
 import InputPasswordComponent from "~/Core/components/Input/InputPasswordComponent.vue";
+import imageHelper, { IMG_DEFAULT } from "~/Core/helpers/imageHelper";
 import toastHelper from '~/Core/helpers/toastHelper';
 
 const form = reactive({
@@ -47,8 +49,18 @@ const form = reactive({
     mail_encryption: ""
 });
 
-function save() {
-    toastHelper.info();
+async function getConfig(){
+    try {
+        const response = await settingApi.getService("mail");
+        // response.data.forEach(config => {
+        //     form[config.key] = config.value;
+        // });
+    } catch (error) {
+    }
 }
+
+onMounted(() => {
+    getConfig();
+})
 
 </script>

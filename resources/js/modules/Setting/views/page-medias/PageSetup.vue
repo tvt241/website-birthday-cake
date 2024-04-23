@@ -1,13 +1,6 @@
 <template>
-    <div class="d-flex flex-wrap gap-2 align-items-center mb-4">
-        <h2 class="h1 mb-0 d-flex align-items-center gap-2">
-            <img width="20" class="avatar-img" src=""
-                alt="">
-            <span class="page-header-title">
-                Thiết lập trang web
-            </span>
-        </h2>
-    </div>
+    <PageHeaderTitleComponent header-title="Thiết lập trang">
+    </PageHeaderTitleComponent>
     <div class="mt-5 mb-5">
         <ul class="nav nav-underline-active-primary">
             <li class="nav-item">
@@ -46,14 +39,10 @@
             </li>
         </ul>
     </div>
-    <div class="row g-2">
-        <div class="col-12">
-            <form action="" method="post">
-                <div class="d-flex justify-content-end gap-3 align-items-center">
-                    <button type="reset" class="btn btn-secondary">Reset</button>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-            </form>
-        </div>
-    </div>
+    <router-view></router-view>
 </template>
+
+<script setup>
+import PageHeaderTitleComponent from "~/Core/components/PageHeaderTitleComponent.vue";
+
+</script>

@@ -36,24 +36,6 @@ class CoreServiceProvider extends ServiceProvider
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->moduleName, 'Database/Migrations'));
 
-        $categories = ProductCategory::treeOf(function($query) {
-            $query->where("is_active", 1);
-        })
-        ->leftJoin("images", function ($join) {
-            $join->on("laravel_cte.id", "=", "images.model_id")
-                ->where("images.model_type", ProductCategory::class);
-        })
-        ->get([
-            "laravel_cte.id",
-            "laravel_cte.name",
-            "laravel_cte.slug",
-            "laravel_cte.category_id",
-            "laravel_cte.depth",
-            "laravel_cte.is_active",
-            "laravel_cte.description",
-            "images.url as image"
-        ])->toTree();
-        View::share("categories", $categories);
         $kernel = $this->app->make('Illuminate\Contracts\Http\Kernel');
         $kernel->appendMiddlewareToGroup("web", \Modules\Core\Http\Middleware\CoreMiddleware::class);
     }

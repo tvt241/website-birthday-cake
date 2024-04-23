@@ -53,6 +53,7 @@ class ShippingGhnService implements IShippingService
 
         $response = $this->http->postWithShopId($url, $data);
         $result = $response->object();
+
         if($result->code != 200){
             return $this->ErrorResponse($result->message);
         }

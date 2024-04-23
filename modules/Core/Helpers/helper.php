@@ -1,5 +1,9 @@
 <?php
 
+function cacheSimple($key, $value, $time){
+    
+}
+
 function totalPriceCart($carry, $cart){ 
     $carry += $cart->quantity * $cart->price;
     return $carry;

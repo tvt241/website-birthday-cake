@@ -1,5 +1,6 @@
 import ProductCategoryList from "../views/Category/ProductCategoryList.vue";
 import ProductCreate from "../views/Product/ProductCreate.vue";
+import ProductDetails from "../views/Product/ProductDetails.vue";
 import ProductEdit from "../views/Product/ProductEdit.vue";
 import ProductList from "../views/Product/ProductList.vue";
 
@@ -17,6 +18,11 @@ export default [
                 path: "create",
                 component: ProductCreate,
                 name: 'products.create',
+            },
+            {
+                path: ":id",
+                component: ProductDetails,
+                name: 'products.details',
             },
             {
                 path: ":id/edit",

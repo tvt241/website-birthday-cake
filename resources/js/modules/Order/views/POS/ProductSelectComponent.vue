@@ -1,5 +1,5 @@
 <template>
-    <div class="col-lg-7">
+    <div class="col-lg-6">
             <div class="card">
                 <!-- POS Title -->
                 <div class="pos-title">
@@ -10,6 +10,7 @@
                     <div class="w-100 mr-xl-2">
                         <select name="category" id="category" class="form-control" title="select category">
                             <option value="">Tất cả danh mục</option>
+                            <option v-for="category in categories" :value="category.id">{{ category.name }}</option>
                         </select>
                     </div>
                     <div class="w-100 ml-xl-2">
@@ -22,17 +23,20 @@
                 </div>
                 <div class="card-body pt-0" id="items">
                     <div class="pos-item-wrap justify-content-center">
-                        <div class="pos-product-item card" onclick="quickView('1')">
+                        <div v-for="product in products.data" class="pos-product-item card" @click="onProductSelected(product)">
                             <div class="pos-product-item_thumb">
-                                <img src="" class="img-fit">
+                                <img :src="product.image_url ?? IMG_DEFAULT" class="img-fit">
                             </div>
 
-                            <div class="pos-product-item_content clickable">
+                            <div class="pos-product-item_content">
                                 <div class="pos-product-item_title">
-                                    Test Product
+                                    {{ product.name }}
+                                </div>
+                                <div class="">
+                                    {{ renderVariation(product.variation) }}
                                 </div>
                                 <div class="pos-product-item_price">
-                                    10.00$
+                                    {{ formatCurrency(product.price) }}
                                 </div>
                             </div>
                         </div>
@@ -44,3 +48,63 @@
             </div>
         </div>
 </template>
+
+<script setup>
+import { ref, onMounted, reactive, defineEmits } from 'vue';
+import { formatCurrency } from '~/Core/helpers/currencyHelper';
+import { IMG_DEFAULT } from '~/Core/helpers/imageHelper';
+import productApi from '~/Product/apis/productApi';
+import productCategoryApi from "~/Product/apis/productCategoryApi";
+
+const products = ref({});
+const categories = ref([]);
+
+const emits = defineEmits(["productSelected"]);
+
+const filter = reactive({
+    page: 1,
+
+});
+
+async function getProductItemsPaginate(page = 1) {
+    filter.page = page;
+    try {
+        const response = await productApi.getProductItemsPaginate(filter);
+        products.value = response.data;
+    } catch (error) {
+
+    }
+}
+
+async function getCategories() {
+    try {
+        const response = await productCategoryApi.getCategories();
+        categories.value = response.data;
+    } catch (error) {
+    }
+}
+
+function renderVariation(variations = []){
+    let html = "";
+    const max = variations.length - 2;
+    variations.forEach((variation, index) => {
+        html += variation.value;
+        if(index == max){
+            html += ", ";
+        }
+    })
+    return html;
+}
+
+function onProductSelected(product){
+    const productFormat = product;
+    productFormat.max_quantity = productFormat.quantity;
+    productFormat.quantity = 1;
+    emits("productSelected", productFormat);
+}
+
+onMounted(() => { 
+    getProductItemsPaginate();
+    getCategories();
+});
+</script>

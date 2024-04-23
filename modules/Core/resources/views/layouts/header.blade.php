@@ -6,7 +6,7 @@
                 <div class="col-lg-6 col-md-6">
                     <div class="header__top__left">
                         <ul>
-                            <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
+                            <li><i class="fa fa-envelope"></i>{{ $company["email"] }}</li>
                             <li>
                                 <a href="" class="text-dark">
                                     Tra cứu đơn hàng
@@ -18,10 +18,9 @@
                 <div class="col-lg-6 col-md-6">
                     <div class="header__top__right">
                         <div class="header__top__right__social">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-linkedin"></i></a>
-                            <a href="#"><i class="fa fa-pinterest-p"></i></a>
+                            @foreach ($social_media as $key => $social)
+                                <a href="{{ $social }}"><i class="fa fa-{{ $key }}"></i></a>
+                            @endforeach
                         </div>
                         <div class="header__top__right__auth">
                             @auth
@@ -42,7 +41,9 @@
         <div class="row">
             <div class="col-lg-3">
                 <div class="header__logo">
-                    <a href ="{{ route("home") }}"><img src="{{ asset("assets/img/logo.png") }}" alt=""></a>
+                    <a href ="{{ route("home") }}">
+                        <img width="120px" height="50px" src="{{ $company["logo"] }}" alt="">
+                    </a>
                 </div>
             </div>
             <div class="col-lg-6">
@@ -127,7 +128,7 @@
                             <i class="fa fa-phone"></i>
                         </div>
                         <div class="hero__search__phone__text">
-                            <h5>0987654321</h5>
+                            <h5>{{ $company["phone"] }}</h5>
                             <span>Hỗ trợ 24/7 </span>
                         </div>
                     </div>

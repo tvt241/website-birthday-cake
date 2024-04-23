@@ -112,61 +112,40 @@
 </section>
 
 <section class="from-blog spad">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="section-title product__discount__title">
-                    <h2>Tin tức</h2>
+    @if(isset($new_posts) && $new_posts->count())
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title product__discount__title">
+                        <h2>Tin tức</h2>
+                    </div>
                 </div>
+            </div>
+            <div class="row">
+                @foreach ($new_posts as $post)
+                    <div class="col-lg-4 col-md-4 col-sm-6">
+                        <div class="blog__item">
+                            <div class="featured__item__pic">
+                                <img src="{{ $post->image ? $post->image->url : asset("assets/img/img-default.jpg") }}" alt="">
+                            </div>
+                            <div class="blog__item__text">
+                                <ul>
+                                    <li>
+                                        <i class="fa fa-calendar-o"></i>
+                                        {{ $post->created_at->format("d-m-Y") }}
+                                    </li>
+                                    <li><i class="fa fa-comment-o"></i> 5</li>
+                                </ul>
+                                <h5>
+                                    <a href="{{ $post->slug }}">{{ str()->limit($post->name, 30) }}</a>
+                                </h5>
+                                <p>{{ str()->limit($post->desc_sort, 90) }}</p>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
             </div>
         </div>
-        <div class="row">
-            <div class="col-lg-4 col-md-4 col-sm-6">
-                <div class="blog__item">
-                    <div class="blog__item__pic">
-                        <img src="{{ asset("assets/img/blog/blog-1.jpg") }}" alt="">
-                    </div>
-                    <div class="blog__item__text">
-                        <ul>
-                            <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
-                            <li><i class="fa fa-comment-o"></i> 5</li>
-                        </ul>
-                        <h5><a href="#">Cooking tips make cooking simple</a></h5>
-                        <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-6">
-                <div class="blog__item">
-                    <div class="blog__item__pic">
-                        <img src="{{ asset("assets/img/blog/blog-2.jpg") }}" alt="">
-                    </div>
-                    <div class="blog__item__text">
-                        <ul>
-                            <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
-                            <li><i class="fa fa-comment-o"></i> 5</li>
-                        </ul>
-                        <h5><a href="#">6 ways to prepare breakfast for 30</a></h5>
-                        <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-6">
-                <div class="blog__item">
-                    <div class="blog__item__pic">
-                        <img src="{{ asset("assets/img/blog/blog-3.jpg") }}" alt="">
-                    </div>
-                    <div class="blog__item__text">
-                        <ul>
-                            <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
-                            <li><i class="fa fa-comment-o"></i> 5</li>
-                        </ul>
-                        <h5><a href="#">Visit the clean farm in the US</a></h5>
-                        <p>Sed quia non numquam modi tempora indunt ut labore et dolore magnam aliquam quaerat </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    @endif
 </section>
 @endsection

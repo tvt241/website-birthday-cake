@@ -872,6 +872,10 @@ ol {
 	transition: all, 0.3s;
 }
 
+.featured__item__pic img{
+	width: 100%;
+}
+
 .featured__item__text {
 	text-align: center;
 	padding-top: 15px;
@@ -3555,4 +3559,26 @@ footer .back-to-top.show {
 footer .back-to-top:hover {
     color: #fff;
     background-color: #7fad39;
+}
+
+.fa-messager:before{
+	content: "";
+	display: block;
+	position: relative;
+	top: 5px;
+	background-size: 20px;
+	width: 20px;
+	height: 20px;
+	background-image: url("/assets/fonts/messager.png");
+}
+
+.fa-zalo:before{
+	content: "";
+	display: block;
+	position: relative;
+	top: 5px;
+	background-size: 20px;
+	width: 20px;
+	height: 20px;
+	background-image: url("/assets/fonts/zalo.png");
 }

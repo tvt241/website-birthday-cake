@@ -4,12 +4,14 @@
             <div class="col-lg-4 col-md-6 col-sm-6">
                 <div class="footer__about">
                     <div class="footer__about__logo">
-                        <a href="{{ route("home") }}"><img src="{{ asset("assets/img/logo.png") }}" alt=""></a>
+                        <a href="{{ route("home") }}">
+                            <img width="120px" height="50px" style="object-fit: cover" src="{{ $company["logo"] }}" alt="">
+                        </a>
                     </div>
                     <ul>
-                        <li>Địa chỉ: 60-49 Road 11378 New York</li>
-                        <li>Số điện thoại: +65 11.188.888</li>
-                        <li>Email: hello@colorlib.com</li>
+                        <li>Địa chỉ: {{ $company["address"] }}</li>
+                        <li>Số điện thoại: {{ $company["phone"] }}</li>
+                        <li>Email: {{ $company["email"] }}</li>
                     </ul>
                 </div>
             </div>
@@ -41,10 +43,9 @@
                         <button type="submit" class="site-btn">Đăng ký</button>
                     </form>
                     <div class="footer__widget__social">
-                        <a href="#"><i class="fa fa-facebook"></i></a>
-                        <a href="#"><i class="fa fa-instagram"></i></a>
-                        <a href="#"><i class="fa fa-twitter"></i></a>
-                        <a href="#"><i class="fa fa-pinterest"></i></a>
+                        @foreach ($social_media as $key => $social)
+                            <a href="{{ $social }}"><i class="fa fa-{{ $key }}"></i></a>
+                        @endforeach
                     </div>
                 </div>
             </div>
@@ -54,7 +55,7 @@
                 <div class="footer__copyright">
                     <div class="footer__copyright__text">
                         <p>
-                            Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved
+                            Copyright &copy;<script>document.write(new Date().getFullYear());</script> {{ $company["name"] }}
                         </p>
                     </div>
                     <div class="footer__copyright__payment"><img src="img/payment-item.png" alt=""></div>
@@ -72,7 +73,7 @@
 		<div class=""  id="message">
 			<div class="button__circle__fill"></div>
 			<div class="button__circle__img">
-				<a target="_blank" href="https://m.me/283633054835585">			
+				<a target="_blank" href="{{ isset($social_media["messager"]) ? $social_media["messager"] : "#" }}">			
 					<img src="{{ asset("assets/img/messenger.png") }}" alt="">
 				</a>
 			</div>
@@ -82,7 +83,7 @@
 		<div class="" id="zalo">
 			<div class="button__circle__fill"></div>
 			<div class="button__circle__img" >
-				<a target="_blank" class="text-dark" href="https://zalo.me/0919677164">
+				<a target="_blank" class="text-dark" href="{{ isset($social_media["zalo"]) ? $social_media["zalo"] : "#" }}">
 					<img src="{{ asset("assets/img/zalo.png") }}" alt="">
 				</a>
 			</div>
@@ -92,7 +93,7 @@
 		<div class="" id="phone">
 			<div class="button__circle__fill" ></div>
 			<div class="button__circle__img">
-				<a href="tel:0919677164">				
+				<a href="tel:{{ isset($company["phone"]) ? $company["phone"] : "#" }}">				
 					<img src="{{ asset("assets/img/phone.png") }}" alt="Phone">
 				</a>
 			</div>
