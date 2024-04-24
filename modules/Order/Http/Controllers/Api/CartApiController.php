@@ -42,9 +42,9 @@ class CartApiController extends Controller
                         else{
                             $carts[$key]->quantity += $request->quantity;
                         }
+                        $carts[$key]->price = $productItem->price;
                     }
-                    $carts[$key]->price = $productItem->price;
-                    $totalPrice += $productItem->price * $carts[$key]->quantity;
+                    $totalPrice += $carts[$key]->price * $carts[$key]->quantity;
                 }
             }
             if(!$flag){
@@ -53,7 +53,7 @@ class CartApiController extends Controller
                     "quantity" => $request->quantity,
                     "price" => $productItem->price,
                     "image" => $productItem->image?->url,
-                    "id" => $sizeCart
+                    "id" => rand(1000, 9999)
                 ];
                 $product = $productItem->product;
 
@@ -147,11 +147,79 @@ class CartApiController extends Controller
         return $this->SuccessResponse($data, $message);
     }
 
-    public function update(){
+    public function update(Request $request, $id){
+        if(!auth()->check()){
+            $carts = session("carts", []);
+            $totalPrice = 0;
+            $flag = false;
+            $sizeCart = sizeof($carts);
+            $data = [
+                "total_product" => sizeof($carts)
+            ];
 
+            if($sizeCart){
+                foreach ($carts as $key => $cart){
+                    if($id == $cart->id){
+                        $flag = true;
+                        $productItem = ProductItem::find($cart->product_item_id);
+
+                        if($request->quantity >= $productItem->quantity) $carts[$key]->quantity = $productItem->quantity;
+                        else $carts[$key]->quantity = $request->quantity;
+
+                        $carts[$key]->price = $productItem->price;
+                        $data["quantity"] = $carts[$key]->quantity;
+                        $data["price"] = $carts[$key]->quantity * $carts[$key]->price;
+                    }
+                    $totalPrice += $carts[$key]->quantity * $carts[$key]->price;
+                }
+            }
+            if(!$flag){
+                return $this->ErrorResponse("Mã giỏ hàng không hợp lệ");
+            }
+            session()->put("carts", $carts);
+
+            $data["total_price"] = $totalPrice;
+            $message = "Thành công";
+            return $this->SuccessResponse($data, $message);
+        }
+
+        $user = auth()->user();
+        $cart = $user->carts()->find($id);
+        if(!$cart){
+            return $this->ErrorResponse("Mã giỏ hàng không hợp lệ");
+        }
+        $productItem = ProductItem::find($cart->product_item_id);
+
+        if($request->quantity >= $productItem->quantity) $cart->quantity = $productItem->quantity;
+        else $cart->quantity = $request->quantity;
+
+        $cart->update();
+
+        $userId = $user->id;
+        
+        $subQuery = DB::table('product_items')
+        ->select('id', 'price', "quantity", "product_variation_id");
+
+        $carts = Cart::query()->where("user_id", $userId)
+        ->select(DB::raw("pItemSub.price * carts.quantity as total_price"))
+        ->joinSub($subQuery, 'pItemSub', function ($join) {
+            $join->on('pItemSub.id', '=', 'carts.product_item_id');
+        })
+        ->get();
+
+        $totalPrice = $carts->sum("total_price");
+
+        $data = [
+            "quantity" => $cart->quantity,
+            "price" => $cart->quantity * $productItem->price,
+            "total_price" => $totalPrice,
+            "total_product" => $carts->count()
+        ];
+        $message = "Sản phẩm đã được xóa khỏi giỏ hàng";
+        return $this->SuccessResponse($data, $message);
     }
 
-    public function delete(Request $request, $id){
+    public function destroy(Request $request, $id){
         if(!auth()->check()){
             $carts = session("carts", []);
             $totalPrice = 0;
@@ -161,10 +229,10 @@ class CartApiController extends Controller
                 foreach ($carts as $key => $cart){
                     if($id == $cart->id){
                         $flag = true;
-                        $carts = array_slice($carts, $id);
+                        array_splice($carts, $key, 1);
                     }
                     else{
-                        $totalPrice += $cart->price * $carts[$key]->quantity;
+                        $totalPrice += $cart->price * $cart->quantity;
                     }
                 }
             }

@@ -1,5 +1,15 @@
 @extends("core::main")
 
+@section("seo")
+<meta name="description" content="{{ $company["name"] }}">
+    <meta name="twitter:title" content="Trang chủ" />
+    <meta name="twitter:description" content="Trang chủ -  {{ $company["name"] }}" />
+    <meta property="og:title" content="Trang chủ" />
+    <meta property="og:image" content="{{ $company["logo"] }}">
+    <meta property="og:image:alt" content="{{ $company["name"] }}">
+    <meta property="og:description" content="Trang chủ - {{ $company["name"] }}" />
+@endsection
+
 @section("content")
 
 <section class="pb-3">
@@ -97,11 +107,11 @@
                             </div>
                             <div class="featured__item__text">
                                 <h6>
-                                    <a href="{{ route("products.details", $product->slug) }}">
-                                        {{  $product->name }}
+                                    <a title="{{ $product->name }}" href="{{ route("products.details", $product->slug) }}">
+                                        {{ $product->name }}
                                     </a>
                                 </h6>
-                                <h5>$30.00</h5>
+                                <h5>{{ $product->price  }} VND</h5>
                             </div>
                         </div>
                     </div>
@@ -123,7 +133,7 @@
             </div>
             <div class="row">
                 @foreach ($new_posts as $post)
-                    <div class="col-lg-4 col-md-4 col-sm-6">
+                    <div class="col-lg-3 col-md-4 col-sm-6">
                         <div class="blog__item">
                             <div class="featured__item__pic">
                                 <img src="{{ $post->image ? $post->image->url : asset("assets/img/img-default.jpg") }}" alt="">
@@ -137,9 +147,9 @@
                                     <li><i class="fa fa-comment-o"></i> 5</li>
                                 </ul>
                                 <h5>
-                                    <a href="{{ $post->slug }}">{{ str()->limit($post->name, 30) }}</a>
+                                    <a title="{{ $post->name }}" href="{{ route("blogs.details", ["slug" => $post->slug ]) }}">{{ $post->name }}</a>
                                 </h5>
-                                <p>{{ str()->limit($post->desc_sort, 90) }}</p>
+                                <p title="{{ $post->desc_sort }}">{{ $post->desc_sort }}</p>
                             </div>
                         </div>
                     </div>

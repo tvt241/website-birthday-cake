@@ -1,5 +1,31 @@
 @extends("core::main")
 
+@section("seo")
+@if($is_invalid)
+    <meta name="description" content="{{ $product->desc_sort }}">
+    <meta name="twitter:title" content="Trang chủ" />
+    <meta name="twitter:description" content="Sản phẩm - {{ $product->name }}" />
+    <meta property="og:title" content="{{ $product->name }}" />
+    <meta property="og:image" content="{{ $product->image ? $product->image->url : asset("assets/img/img-default.jpg") }}">
+    <meta property="og:image:alt" content="{{ $product->name }}">
+    <meta property="og:description" content="{{ $product->desc_sort }}" />
+    <meta property="og:availability" content="instock" />
+    <meta property="og:price:amount" content="{{ $product->min_price }}">
+    <meta property="og:price:currency" content="VND">
+@else
+    <meta name="description" content="{{ $company["name"] }}">
+    <meta name="twitter:title" content="Trang chủ" />
+    <meta name="twitter:description" content="Trang chủ -  {{ $company["name"] }}" />
+    <meta property="og:title" content="Trang chủ" />
+    <meta property="og:image" content="{{ $company["logo"] }}">
+    <meta property="og:image:alt" content="{{ $company["name"] }}">
+    <meta property="og:description" content="Trang chủ - {{ $company["name"] }}" />
+    <meta property="og:availability" content="instock" />
+    <meta property="og:price:amount" content="0">
+    <meta property="og:price:currency" content="VND">
+@endif
+@endsection
+
 @section("content")
 <div class="container">
     <div class="row">
@@ -119,7 +145,7 @@
             <h5 class="py-md-5">Sản phẩm không tồn tại trên hệ thống hoặc đã bị xóa</h5>
         @endif
     </div>
-    <input type="hidden" id="carts_store_url" value="{{ route("carts.store") }}">
+    <input type="hidden" id="carts_store_url" value="{{ route("api.carts.store") }}">
 </section>
 <section class="featured spad">
     <div class="container">

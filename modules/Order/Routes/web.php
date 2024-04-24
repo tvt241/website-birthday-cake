@@ -16,8 +16,10 @@ Route::post("checkout", [CheckOutController::class, "store"])->name("checkout.st
 
 Route::get("payment", [PaymentController::class, "payment"])->name("payment.index");
 
+Route::prefix('api')->as('api.')->group(function () {
+    Route::apiResource("carts", CartApiController::class)->except("show");
+});
 
-Route::apiResource("api/carts", CartApiController::class)->except("show");
 Route::get('/carts', [CartController::class, 'index'])->name("carts.index");
 
 Route::get("shippings/services", [ShippingApiController::class, "services"])->name("shippings.services");

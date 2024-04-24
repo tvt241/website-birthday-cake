@@ -18,8 +18,9 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Mã đơn hàng</th>
-                                    <th>Người mua hàng</th>
+                                    <th>Loại đơn hàng</th>
                                     <th>Kênh bán</th>
+                                    <th>Người mua hàng</th>
                                     <th>Hình thức thanh toán</th>
                                     <th>Tình trạng thanh toán</th>
                                     <th class="text-center">Khác</th>
@@ -29,9 +30,10 @@
                             <tbody>
                                 <tr v-for="(order, index) in orders.data">
                                     <td class="vertical-middle">{{ index + 1 }}</td>
-                                    <td>  {{ order.order_code }} </td>
+                                    <td>{{ order.order_code }} </td>
+                                    <td>{{ order.order_type }} </td>
+                                    <td>{{ order.order_channel }}</td>
                                     <td>{{ order.customer_name }}</td>
-                                    <td>{{ order.order_type }}</td>
                                     <td>{{ order.payment_method }}</td>
                                     <td>{{ order.payment_status }}</td>
                                     <td>

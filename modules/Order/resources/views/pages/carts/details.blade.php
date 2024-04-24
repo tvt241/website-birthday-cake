@@ -32,7 +32,7 @@
                         </thead>
                         <tbody>
                             @foreach ($carts as $cart)
-                                <tr>
+                                <tr class="cart__container" data-cart-id="{{ $cart->id }}">
                                     <td class="shoping__cart__item">
                                         <div class="d-flex">
                                             <img src="{{ $cart->image ?  $cart->image :  asset("assets/img/img-default.jpg") }}" alt="">
@@ -54,12 +54,14 @@
                                                 <input type="text" value="{{ $cart->quantity }}">
                                             </div>
                                         </div>
+                                        <input type="hidden" class="product-item-quantity" value="{{ $cart->max_quantity }}">
+                                        <input type="hidden" class="product-item-price" value="{{ $cart->price }}">
                                     </td>
-                                    <td class="shoping__cart__total">
-                                        {{ formatCurrency($cart->price *  $cart->quantity) }}
+                                    <td class="shoping__cart__total price__container">
+                                        <span>{{ formatCurrency($cart->price *  $cart->quantity) }}</span>
                                     </td>
                                     <td class="shoping__cart__item__close">
-                                        <span class="icon_close" data-cart-id="{{ $cart->id }}"></span>
+                                        <span class="icon_close"></span>
                                     </td>
                                 </tr>
                             @endforeach
@@ -87,7 +89,14 @@
         </div>
     </div>
 </section>
+<input type="hidden" id="cart_update_url" value="{{ route("api.carts.update", ["cart" => ":id"]) }}">
+<input type="hidden" id="cart_delete_url" value="{{ route("api.carts.destroy", ["cart" => ":id"]) }}">
 @endsection
+
+@push("js")
+    <script src="{{ asset("assets/js/lodash.min.js") }}"></script>
+    <script src="{{ asset("assets/js/carts/cart.js") }}"></script>
+@endpush
 
 @push("css")
     <style>

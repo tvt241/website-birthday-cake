@@ -4,18 +4,18 @@ namespace Modules\Core\Traits;
 
 trait EnumTrait
 {
-    public static function getValue($value) {
+    public static function getValue($key) {
         $cases = self::cases();
-        $index = array_search($value, array_column($cases, "name"));
+        $index = array_search($key, array_column($cases, "name"));
         if ($index !== false) {
             return __($cases[$index]->value);
         }
         return null;
     }
 
-    public static function getKey($key){
+    public static function getKey($value){
         $cases = self::cases();
-        $index = array_search($key, array_column($cases, "value"));
+        $index = array_search($value, array_column($cases, "value"));
         if ($index !== false) {
             return __($cases[$index]->name);
         }

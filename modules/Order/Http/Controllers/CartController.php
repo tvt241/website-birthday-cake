@@ -27,11 +27,13 @@ class CartController extends Controller
             }
             $cartIds = collect($carts)->pluck("product_item_id");
             $cartIdsString = implode(',',array_fill(0, count($cartIds), '?'));
-            $productItems = ProductItem::whereIn("id", $cartIds)->with(["image", "product"])->orderByRaw("field(id,{$cartIdsString})", $cartIds)->get();            
+            $productItems = ProductItem::whereIn("id", $cartIds)->with(["image", "product"])->orderByRaw("field(id,{$cartIdsString})", $cartIds)->get();   
             foreach($productItems as $key => $item){
                 if($item->quantity < $carts[$key]->quantity){
                     $carts[$key]->quantity = $item->quantity;
                 }
+                $carts[$key]->price = $item->price;
+                $carts[$key]->max_quantity = $item->quantity;
             }
             session()->put("carts", $carts);
         }

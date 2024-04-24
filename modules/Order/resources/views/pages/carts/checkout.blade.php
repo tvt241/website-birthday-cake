@@ -135,9 +135,9 @@
         </div>
     </div>
 </section>
-<input type="hidden" id="provinces_url" value="{{ route("locations.provinces") }}">
-<input type="hidden" id="districts_url" value="{{ route("locations.districts", ["province" => ":province"]) }}">
-<input type="hidden" id="wards_url" value="{{ route("locations.wards", ["district" => ":district"]) }}">
+<input type="hidden" id="provinces_url" value="{{ route("api.locations.provinces") }}">
+<input type="hidden" id="districts_url" value="{{ route("api.locations.districts", ["province" => ":province"]) }}">
+<input type="hidden" id="wards_url" value="{{ route("api.locations.wards", ["district" => ":district"]) }}">
 <input type="hidden" id="fee_url" value="{{ route("shippings.fee") }}">
 
 @endsection

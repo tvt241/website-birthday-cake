@@ -17,6 +17,9 @@ use Modules\Post\Http\Controllers\Api\PostCategoryApiController;
 */
 Route::get("posts/categories/get-all", [PostCategoryApiController::class, "getAll"]);
 Route::put("posts/categories/{id}/change-active", [PostCategoryApiController::class, "changeActive"]);
-Route::apiResource("posts/categories", PostCategoryApiController::class);
+
+Route::prefix('posts')->as('posts.')->group(function () {
+    Route::apiResource("categories", PostCategoryApiController::class);
+});
 
 Route::apiResource("posts", PostApiController::class);

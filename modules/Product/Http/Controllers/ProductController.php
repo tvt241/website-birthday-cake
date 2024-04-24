@@ -8,9 +8,16 @@ use Modules\Product\Models\Product;
 
 class ProductController extends Controller
 {
-    public function index(){
-        $products = Product::inValidByCategory()->with("image")->paginate();
-        return view("pages.products.index", [
+    public function index(Request $request){
+        $queryCategories = function ($query) use ($request) {
+            $query->where("is_active", 1);
+            if ($request->category) {
+                $query->where("slug", $request->category);
+            }
+        };
+        $query = Product::with("image")->whereRelation("category", $queryCategories);
+        $products = $query->paginate();
+        return view("product::pages.products.index", [
             "products" => $products,
         ]);
     }

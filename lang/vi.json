@@ -725,5 +725,9 @@
     "DELIVERED_FAILED": "Giao hàng thất bại",
     "REFUNDED": "Đã hoàn tiền",
     "RETURNED": "Đã trả hàng",
-    "ONHOLD": "Tạm dừng"
+    "ONHOLD": "Tạm dừng",
+    "DONE": "Hoàn thành",
+    "LACK": "Thiếu",
+    "BOOKING": "Đơn đặt",
+    "SALES": "Đơn bán"
 }

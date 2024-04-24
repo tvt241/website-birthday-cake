@@ -6,6 +6,6 @@ use Modules\Core\Traits\EnumTrait;
 enum OrderTypeEnum : int
 {
     use EnumTrait;
-    case BOOKING = 0;
-    case SALES = 1;
+    case SALES = 0;
+    case BOOKING = 1;
 }

@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Modules\Core\Models\Image;
+use Modules\Core\Models\Traits\CategoryTrait;
 
 class Post extends Model
 {
-    use HasFactory;
+    use HasFactory, CategoryTrait;
 
     protected $fillable = [
         "name",

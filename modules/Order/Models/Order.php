@@ -29,6 +29,7 @@ class Order extends Model
         "payment_status",
         "status",
         "note",
+        "total"
     ];
 
     public function orderDetails(){

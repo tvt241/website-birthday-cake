@@ -105,7 +105,7 @@
                     <ul style="max-height: 500px; overflow-y: auto">
                         @forelse ($categories as $category)
                             <li>
-                                <a href="{{ route("products", ["catergory" => $category->slug]) }}">{{ $category->name }}</a>
+                                <a href="{{ route("products", ["category" => $category->slug]) }}">{{ $category->name }}</a>
                             </li>
                         @empty
                             <li>

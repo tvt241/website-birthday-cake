@@ -2,6 +2,7 @@
 
 namespace Modules\Core\Providers;
 
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Laravel\Passport\Passport;
@@ -35,6 +36,8 @@ class CoreServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->moduleName, 'Database/Migrations'));
+
+        Paginator::defaultView('vendor/pagination/custom');
 
         $kernel = $this->app->make('Illuminate\Contracts\Http\Kernel');
         $kernel->appendMiddlewareToGroup("web", \Modules\Core\Http\Middleware\CoreMiddleware::class);

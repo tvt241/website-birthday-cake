@@ -6,48 +6,42 @@
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="breadcrumb__text">
-                    <h2>Contact Us</h2>
-                    <div class="breadcrumb__option">
-                        <a href="./index.html">Home</a>
-                        <span>Contact Us</span>
-                    </div>
+                    <h2>Liên hệ</h2>
                 </div>
             </div>
         </div>
     </div>
 </section>
-<!-- Breadcrumb Section End -->
 
-<!-- Contact Section Begin -->
 <section class="contact spad">
     <div class="container">
         <div class="row">
             <div class="col-lg-3 col-md-3 col-sm-6 text-center">
                 <div class="contact__widget">
                     <span class="icon_phone"></span>
-                    <h4>Phone</h4>
-                    <p>+01-3-8888-6868</p>
+                    <h4>Số điện thoại</h4>
+                    <p>{{ $company["phone"] }}</p>
                 </div>
             </div>
             <div class="col-lg-3 col-md-3 col-sm-6 text-center">
                 <div class="contact__widget">
                     <span class="icon_pin_alt"></span>
-                    <h4>Address</h4>
-                    <p>60-49 Road 11378 New York</p>
+                    <h4>Địa chỉ</h4>
+                    <p>{{ $company["address"] }}</p>
                 </div>
             </div>
             <div class="col-lg-3 col-md-3 col-sm-6 text-center">
                 <div class="contact__widget">
                     <span class="icon_clock_alt"></span>
-                    <h4>Open time</h4>
-                    <p>10:00 am to 23:00 pm</p>
+                    <h4>Mở cửa</h4>
+                    <p>24/ 24</p>
                 </div>
             </div>
             <div class="col-lg-3 col-md-3 col-sm-6 text-center">
                 <div class="contact__widget">
                     <span class="icon_mail_alt"></span>
                     <h4>Email</h4>
-                    <p>hello@colorlib.com</p>
+                    <p>{{ $company["email"] }}</p>
                 </div>
             </div>
         </div>
@@ -63,10 +57,10 @@
     <div class="map-inside">
         <i class="icon_pin"></i>
         <div class="inside-widget">
-            <h4>New York</h4>
+            <h4>Việt nam</h4>
             <ul>
-                <li>Phone: +12-345-6789</li>
-                <li>Add: 16 Creek Ave. Farmingdale, NY</li>
+                <li>Số điện thoại: {{ $company["phone"] }}</li>
+                <li>Địa chỉ: {{ $company["address"] }}</li>
             </ul>
         </div>
     </div>
@@ -77,21 +71,21 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="contact__form__title">
-                    <h2>Leave Message</h2>
+                    <h2>Bạn có góp ý hoặc muốn hợp tác</h2>
                 </div>
             </div>
         </div>
         <form action="#">
             <div class="row">
                 <div class="col-lg-6 col-md-6">
-                    <input type="text" placeholder="Your name">
+                    <input type="text" placeholder="Nhập tên">
                 </div>
                 <div class="col-lg-6 col-md-6">
-                    <input type="text" placeholder="Your Email">
+                    <input type="text" placeholder="Nhập email">
                 </div>
                 <div class="col-lg-12 text-center">
-                    <textarea placeholder="Your message"></textarea>
-                    <button type="submit" class="site-btn">SEND MESSAGE</button>
+                    <textarea placeholder="Nhập nội dung"></textarea>
+                    <button type="submit" class="site-btn">Gửi</button>
                 </div>
             </div>
         </form>

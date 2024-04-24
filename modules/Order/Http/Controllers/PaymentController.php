@@ -21,17 +21,18 @@ class PaymentController extends Controller
                     "value" => json_encode($request->except(["name", "vnp_SecureHash"]))
                 ];
                 Payment::create($payment);
-                if($request->vnp_ResponseCode == "00" || $request->vnp_TransactionStatus == "00"){
+                if($request->vnp_ResponseCode != "00" || $request->vnp_TransactionStatus != "00"){
                     $message = "Thanh toán thất bại! Bạn có thể thanh toán lại sau hoặc liên hệ nhà cung cấp để chuyển trang SHIP COD";
                     return redirect()->route("orders.index", ["order_code" => $request->vnp_OrderInfo])->with("error", $message);
                 }
+
                 $order = Order::where("order_code", $request->vnp_OrderInfo)->first();
                 if(!$order){
                     $message = "Không tìm thấy đơn hàng. Vui lòng liên hệ nhà cung cấp";
                     return redirect()->route("orders.index", ["order_code" => $request->vnp_OrderInfo])->with("error", $message);
                 }
                 $data = [];
-                if($order->amount == $request->vnp_Amount){
+                if($order->amount == $request->vnp_Amount / 100){ 
                     $data["payment_status"] = PaymentStatusEnum::DONE;
                     $message = "Thanh toán đơn hàng thành công. Cảm ơn bạn đã sử dụng website của chúng tôi";
                 }

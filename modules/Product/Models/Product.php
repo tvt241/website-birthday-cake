@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Modules\Core\Models\Image;
 use Modules\Core\Models\Traits\CategoryTrait;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Product extends Model
 {
@@ -79,6 +80,17 @@ class Product extends Model
         return $this->morphOne(Image::class, 'model');
     }
 
+    public function price() :  Attribute
+    {
+        return Attribute::make(
+            get: function ($value){
+                if($this->min_price > 0){
+                    return "{formatCurrency($this->min_price)} - {formatCurrency($this->max_price)";
+                }
+                return formatCurrency($this->max_price);
+            },
+        );
+    }
     
     // protected static function newFactory()
     // {

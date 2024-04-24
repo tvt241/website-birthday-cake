@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use Modules\Coupon\Models\Coupon;
 use Modules\Order\Enums\OrderChannelEnum;
 use Modules\Order\Enums\OrderTypeEnum;
+use Modules\Order\Enums\PaymentMethodEnum;
 use Modules\Order\Http\Requests\CheckOut\StoreCheckoutRequest;
 use Modules\Order\Models\Order;
 use Modules\Order\Models\OrderDetail;
@@ -53,6 +54,9 @@ class CheckOutController extends Controller
         if(!auth()->check()){
             $carts = session("carts");
             $order["total"] = getPriceCart($carts, "");
+            $order["amount"] = $order["total"] + $order["shipping_price"] + $order["coupon_value"];
+            $order["payment_method"] = PaymentMethodEnum::getValue($request->method_payment);
+            $orderNew = Order::create($order);
             $orderDetails = [];
             foreach($carts as $key => $cart){
                 $orderDetails[$key]["name"] = $cart->name;
@@ -61,6 +65,7 @@ class CheckOutController extends Controller
                 $orderDetails[$key]["price"] = $cart->price;
                 $orderDetails[$key]["quantity"] = $cart->quantity;
                 $orderDetails[$key]["product_item_id"] = $cart->product_item_id;
+                $orderDetails[$key]["order_id"] = $orderNew->id;
                 $string = "";
                 $sizeVariation = sizeof($cart->variation);
                 if($sizeVariation){
@@ -75,9 +80,7 @@ class CheckOutController extends Controller
             }
         }
         try {
-            $order["amount"] = $order["total"] + $order["shipping_price"] + $order["coupon_value"];
-            $orderNew = Order::create($order);
-            $orderNew->orderDetails()->insert($orderDetails);
+            OrderDetail::insert($orderDetails);
             if($request->method_payment == "VNPAY"){
                 return $vnPayService->create($order);
             }

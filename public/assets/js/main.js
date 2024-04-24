@@ -208,25 +208,26 @@
     proQty.prepend('<span class="dec qtybtn">-</span>');
     proQty.append('<span class="inc qtybtn">+</span>');
     proQty.on('click', '.qtybtn', function () {
-        const cartContainer = proQty.closest("div.cart__container");
-        const maxQty = $(".product-item-quantity", cartContainer).val();
-        const price = Number($(".product-item-price", cartContainer).val());
-
         var $button = $(this);
+        const proQtyContainer = $button.parent();
+        const cartContainer = proQtyContainer.closest(".cart__container");
+        const maxQty = Number($(".product-item-quantity", cartContainer).val());
+        const price = Number($(".product-item-price", cartContainer).val());
+        var oldValue = Number($button.parent().find('input').val());
         var newVal = 0;
-        var oldValue = $button.parent().find('input').val();
         if ($button.hasClass('inc')) {
             if(oldValue == maxQty){
                 return;
             }
-            newVal = parseFloat(oldValue) + 1;
+            newVal = Number(oldValue) + 1;
         } else {
             if (oldValue > 1) {
                 if(oldValue > maxQty){
+                    console.log("maxQty" + oldValue);
                     newVal = maxQty;
                 }
                 else{
-                    newVal = parseFloat(oldValue) - 1;
+                    newVal = Number(oldValue) - 1;
                 }
             } else {
                 newVal = 1;

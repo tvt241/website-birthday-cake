@@ -3,12 +3,17 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="Ogani Template">
-    <meta name="keywords" content="Ogani, unica, creative, html">
+    <meta name="author" content="{{ $company["name"] }}">
+    <meta name="keywords" content="bánh ngọt, bánh kem, bánh sinh nhật, sinh nhật, quà tặng, tiệm bánh, {{ $company["name"] }}">
+    <meta property="og:locale" content="vi_VN" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="{{ $company["name"] . " - " . env("APP_URL_SORT") }}" />
+    @yield("seo", "")
+    <meta property="og:url" content="{{ url()->current() }}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield("title", "Bánh kem hương vị Việt")</title>
+    <title>@yield("title", $company["name"])</title>
     <link rel="stylesheet" href="{{ asset("assets/css/bootstrap.min.css") }}" type="text/css">
     <link rel="stylesheet" href="{{ asset("assets/css/font-awesome.min.css") }}" type="text/css">
     <link rel="stylesheet" href="{{ asset("assets/css/elegant-icons.css") }}" type="text/css">  
