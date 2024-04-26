@@ -8,7 +8,7 @@
                         <ul>
                             <li><i class="fa fa-envelope"></i>{{ $company["email"] }}</li>
                             <li>
-                                <a href="" class="text-dark">
+                                <a href="{{ route("orders.index") }}" class="text-dark">
                                     Tra cứu đơn hàng
                                 </a>
                             </li>
@@ -24,7 +24,7 @@
                         </div>
                         <div class="header__top__right__auth">
                             @auth
-                                <a href="#">
+                                <a href="{{ route("profile.index") }}">
                                     {{ auth()->user()->username }}
                                 </a>
                             @endauth
@@ -82,7 +82,7 @@
                     </ul>
                     <div class="header__cart__price">
                         Giá: 
-                        <span>{{ $carts_price }} VND</span>
+                        <span>{{ $carts_price }} ₫</span>
                     </div>                    
                 </div>
             </div>
@@ -105,7 +105,11 @@
                     <ul style="max-height: 500px; overflow-y: auto">
                         @forelse ($categories as $category)
                             <li>
-                                <a href="{{ route("products", ["category" => $category->slug]) }}">{{ $category->name }}</a>
+                                <a href="{{ route("products", ["category" => $category->slug]) }}">
+                                    {{ $category->name }}
+                                    @if($category)
+                                    @endif
+                                </a>
                             </li>
                         @empty
                             <li>

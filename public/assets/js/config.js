@@ -39,8 +39,7 @@ window.Echo = new Echo({
 
 Echo.channel(`notifications`)
     .listen('.notifications', (e) => {
-        console.log(e.message);
-        showNotification(e.message);
+        toastOrder(e.message);
     });
 
 // Echo.channel(`private-notifications`)

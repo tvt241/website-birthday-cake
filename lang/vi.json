@@ -711,7 +711,7 @@
     "(and :count more error)": "(và :count lỗi khác)",
     "(and :count more errors)": "(và :count lỗi khác)",
     "WEB": "Website",
-    "POS": "POS",
+    "POS": "Tại quầy",
     "CANCELLED": "Đã hủy",
     "CANCELLED_SELLER": "Người bán hủy",
     "PENDING": "Chờ sử lý",
@@ -729,5 +729,7 @@
     "DONE": "Hoàn thành",
     "LACK": "Thiếu",
     "BOOKING": "Đơn đặt",
-    "SALES": "Đơn bán"
+    "SALES": "Đơn bán",
+    "success": "Thành công",
+    "error": "Thất bại"
 }

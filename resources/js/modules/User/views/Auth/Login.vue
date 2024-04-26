@@ -119,7 +119,7 @@ async function login(){
         const response = await authApi.login(form);
         const data = response.data;
         await store.setToken(data);
-        router.push({name: "dashboard"});
+        router.push({name: "pos"});
     } catch (error) {
         alertHelper.error(error.response.data.message);
     }
@@ -142,13 +142,13 @@ onMounted(() => {
 
 const listUser = {
     Admin: {
-        email: "admin@mail.com",
+        email: "admin@gmail.com",
         password: "12345678"
     },
-    Employee: {
-        email: "employee@gmail.com",
-        password: "12345678"
-    },
+    // Employee: {
+    //     email: "employee@gmail.com",
+    //     password: "12345678"
+    // },
 }
 
 function copyInfo(keyCopy) {

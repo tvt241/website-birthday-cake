@@ -14,6 +14,7 @@ class Order extends Model
         "id",
         "name",
         "phone",
+        "email",
         "user_id",
         "order_code",
         "order_type",

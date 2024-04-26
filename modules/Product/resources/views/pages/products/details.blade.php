@@ -11,7 +11,7 @@
     <meta property="og:description" content="{{ $product->desc_sort }}" />
     <meta property="og:availability" content="instock" />
     <meta property="og:price:amount" content="{{ $product->min_price }}">
-    <meta property="og:price:currency" content="VND">
+    <meta property="og:price:currency" content="₫">
 @else
     <meta name="description" content="{{ $company["name"] }}">
     <meta name="twitter:title" content="Trang chủ" />
@@ -22,19 +22,11 @@
     <meta property="og:description" content="Trang chủ - {{ $company["name"] }}" />
     <meta property="og:availability" content="instock" />
     <meta property="og:price:amount" content="0">
-    <meta property="og:price:currency" content="VND">
+    <meta property="og:price:currency" content="₫">
 @endif
 @endsection
 
 @section("content")
-<div class="container">
-    <div class="row">
-        <div class="col-lg-12 text-center">
-            <div class="breadcrumb__text">
-            </div>
-        </div>
-    </div>
-</div>
 <section class="breadcrumb-section set-bg" data-setbg="{{ asset("assets/img/breadcrumb.jpg") }}">
     <div class="container">
         <div class="row">
@@ -81,7 +73,7 @@
                         <p>Mô tả: {{ $product->desc_sort ? $product->desc_sort : "Chưa có mô tả" }}</p>
                         <div class="product__details__price price__container">
                             <span class=""></span>
-                            <span> VND</span>
+                            <span> ₫</span>
                         </div>
                         <div class="product__details__variations">
                             @if($variations->count() > 1)
@@ -194,7 +186,7 @@
             cursor: pointer;
         }
         .variation__btn.active{
-            background: #7fad39;
+            background: #f36957;
             color: #ffffff;
         }
         .variation__label{

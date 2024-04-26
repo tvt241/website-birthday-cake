@@ -15,13 +15,13 @@
 
 <section class="blog spad">
     <div class="container">
-        <div class="row">
+        <div class="row featured__filter">
             @include("post::pages.blogs.sider-bar", ["post_categories" => $post_categories, "post_news" => $post_news])
             <div class="col-lg-8 col-md-7">
                 <div class="row">
                     @foreach ($posts as $post)
-                        <div class="col-lg-4 col-md-4 col-sm-6">
-                            <div class="blog__item">
+                        <div class="col-lg-4 col-md-4 col-sm-6" style="padding: 0 5px">
+                            <div class="blog__item shadow">
                                 <div class="featured__item__pic">
                                     <img src="{{ $post->image ? $post->image->url :  asset("assets/img/img-default.jpg")  }}" alt="">
                                 </div>

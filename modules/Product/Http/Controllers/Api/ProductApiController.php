@@ -88,7 +88,9 @@ class ProductApiController extends Controller
                 }
             }
             if(sizeof($productVariationIds) == sizeof($items)){
-                $min = $max = $items[0]["price"];
+                if(sizeof($items) == 1) $min = 0;
+                else $min = $items[0]["price"];
+                $max = $items[0]["price"];
                 foreach($items as $key => $item){
                     if($item["price"] < $min){
                         $min = $item["price"];

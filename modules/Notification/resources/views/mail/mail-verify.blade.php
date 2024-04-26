@@ -11,7 +11,7 @@
         readonly>
     <p>Ngoài ra bạn cũng có thể trực tiếp thay đồi mật khẩu của mình.</p>
     <button 
-        style="width: 150px; height: 40px; background-color: #7fad39; color: white; font-size: 18px; border: none; border-radius: 5px;"
+        style="width: 150px; height: 40px; background-color: #f36957; color: white; font-size: 18px; border: none; border-radius: 5px;"
         >
         <a href="{{ $url }}" style="text-decoration: none; color: white;">
             Đổi mật khẩu

@@ -38,12 +38,12 @@ class Customer extends Authenticatable
         return $this->hasMany(Cart::class, "user_id");
     }
 
-    public function getCartPrice(){
+    public function getCartFormat(){
         $subQuery = DB::table('product_items')
-        ->select('id', 'price', "quantity", "product_variation_id");
+        ->select('id', 'price', "quantity", "product_variation_id", "product_id");
 
         $carts = $this->carts()
-        ->select(DB::raw("pItemSub.price, carts.quantity, pItemSub.price * carts.quantity as total_price"))
+        ->select(DB::raw("pItemSub.id as product_item_id, pItemSub.price, pItemSub.product_variation_id, pItemSub.product_id, carts.quantity, pItemSub.price * carts.quantity as total_price"))
         ->joinSub($subQuery, 'pItemSub', function ($join) {
             $join->on('pItemSub.id', '=', 'carts.product_item_id');
         })

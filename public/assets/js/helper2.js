@@ -6,8 +6,6 @@ const swalBs = Swal.mixin({
     buttonsStyling: false
 });
 
-
-
 const Toast = Swal.mixin({
     toast: true,
     position: 'top-end',
@@ -19,6 +17,21 @@ const Toast = Swal.mixin({
     timer: 1500,
     timerProgressBar: true,
 });
+
+function toastOrder(text = "098765xxx1 đã mua hàng", title = "Cảm ơn"){
+    Toast.fire({
+        iconHtml: '<img height="70px" width="70px" style="max-width: unset; margin-left: 20px;" src="http://localhost:8000/storage/categories/phu-kien.jpg">',
+        icon: "success",
+        position: 'bottom-start',
+        timer: 5000,
+        timerProgressBar: false,
+        customClass: {
+            popup: 'order-toast',
+        },
+        text,
+        title,
+    });
+}
 
 function toastSuccess(title = "Thành công"){
     Toast.fire({

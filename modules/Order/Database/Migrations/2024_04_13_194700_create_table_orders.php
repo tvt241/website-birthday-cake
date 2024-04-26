@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string("name"); // ten người nhận
             $table->string("phone"); // sdt
+            $table->string("email")->nullable(); 
             $table->string("address"); 
             $table->string("address2");
             $table->string("note")->nullable();

@@ -110,8 +110,8 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="checkout__order__shipping">Phí ship <span>0</span></div>
-                            <div class="checkout__order__total">Tổng tiền <span>{{ getPriceCart($carts) }}</span></div>
+                            <div class="checkout__order__shipping" style="display: none">Phí ship <span>0</span></div>
+                            <div class="checkout__order__total">Tổng tiền <span>{{ $carts_price }}</span></div>
                             
                             <div class="checkout__input__checkbox">
                                 <input type="radio" value="VNPAY" checked name="method_payment" id="">
@@ -119,7 +119,7 @@
                                     Thanh toán online (VNPAY)
                                 </label>
                             </div>
-                            <div class="checkout__input__checkbox">
+                            <div class="checkout__input__checkbox" >
                                 <input type="radio" value="COD" name="method_payment">
                                 <label for="paypal">
                                     Ship Cod

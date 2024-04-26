@@ -41,7 +41,7 @@ router.beforeEach(async (to, from) => {
     }
     if(token && to.name == 'auth.login'){
       return {
-        name: "dashboard"
+        name: "pos"
       }
     }
     if(!token && to.name != "auth.login"){

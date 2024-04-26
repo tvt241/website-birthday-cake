@@ -10,8 +10,8 @@ use Modules\Product\Models\Product;
 class HomeController extends Controller
 {
     public function index(){
-        $newProducts = Product::whereRelation("category", "is_active", 1)->with("image:model_id,url")->where("is_active", 1)->latest()->limit(8)->get();
-        $newPosts = Post::whereRelation("category", "is_active", 1)->with("image:model_id,url")->where("is_active", 1)->latest()->limit(8)->get();
+        $newProducts = Product::whereRelation("category", "is_active", 1)->with("image:model_id,url")->where("is_active", 1)->latest()->limit(12)->get();
+        $newPosts = Post::whereRelation("category", "is_active", 1)->with("image:model_id,url")->where("is_active", 1)->latest()->limit(6)->get();
         return view("customer::pages.home", [
             "new_products" => $newProducts,
             "new_posts" => $newPosts,

@@ -7,7 +7,7 @@ import { useLoadingStore } from "../stores/loadingStore";
 
 
 const instance = axios.create({
-    baseURL: ENV.API_URL,
+    baseURL: "/api/",
     headers: {
         // "X-Locale": i18n.global.locale,
         "X-Locale": "vi",

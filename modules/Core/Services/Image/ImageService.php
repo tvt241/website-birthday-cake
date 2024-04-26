@@ -9,7 +9,8 @@ class ImageService implements IImageService {
     public $hostPath;
     public function __construct()
     {
-        $this->hostPath = env("APP_URL") . "/storage/";
+        // $this->hostPath = env("APP_URL") . "/storage/";
+        $this->hostPath = "/storage/";
     }
 
     public function store(UploadedFile $file, $model, $prefix = ""){

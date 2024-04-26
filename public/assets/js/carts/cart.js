@@ -19,59 +19,83 @@ $(document).ready(function(){
         });
     });
 
-    $('.pro-qty').on('click', '.qtybtn',_.debounce(function () {
-        const itemContainer = $(this).closest(".cart__container");
-        const cartId = itemContainer.data("cart-id");
 
-        const inputQty = $(".pro-qty input", itemContainer);
-        const quantity = inputQty.val();
 
-        let url = $("#cart_update_url").val();
-        url = url.replace(":id", cartId);
 
-        $.ajax({
-            method: "PUT",
-            url: url,
-            data: {
-                quantity
-            },
-            success: function(response){
-                toastSuccess(response.message);
-                $(".pro-qty input", itemContainer).val(response.data.quantity);
-                $(".price__container span", itemContainer).html(formatCurrency(response.data.price));
+    // $('.pro-qty').on('click', '.qtybtn',_.debounce(function () {
+    //     const itemContainer = $(this).closest(".cart__container");
+    //     const cartId = itemContainer.data("cart-id");
+
+    //     const inputQty = $(".pro-qty input", itemContainer);
+    //     const quantity = inputQty.val();
+
+    //     let url = $("#cart_update_url").val();
+    //     url = url.replace(":id", cartId);
+
+    //     $.ajax({
+    //         method: "PUT",
+    //         url: url,
+    //         data: {
+    //             quantity
+    //         },
+    //         success: function(response){
+    //             toastSuccess(response.message);
+    //             $(".pro-qty input", itemContainer).val(response.data.quantity);
+    //             $(".price__container span", itemContainer).html(formatCurrency(response.data.price));
                 
-                $(".header__cart__price span").html(formatCurrency(response.data.total_price));
-                $(".shoping__checkout span").html(formatCurrency(response.data.total_price));
-            },
-        });
-    }, 700));
+    //             $(".header__cart__price span").html(formatCurrency(response.data.total_price));
+    //             $(".shoping__checkout span").html(formatCurrency(response.data.total_price));
+    //         },
+    //     });
+    // }, 700));
 
-    $('.pro-qty input').on('keyup', _.debounce(function () {
-        const itemContainer = $(this).closest(".cart__container");
-        const cartId = itemContainer.data("cart-id");
+    // $('.pro-qty input').on('keyup', _.debounce(function () {
+    //     const itemContainer = $(this).closest(".cart__container");
+    //     const cartId = itemContainer.data("cart-id");
 
-        const inputQty = $(".pro-qty input", itemContainer);
-        const quantity = inputQty.val();
+    //     const inputQty = $(".pro-qty input", itemContainer);
+    //     const quantity = inputQty.val();
 
-        let url = $("#cart_update_url").val();
-        url = url.replace(":id", cartId);
+    //     let url = $("#cart_update_url").val();
+    //     url = url.replace(":id", cartId);
 
-        $.ajax({
-            method: "PUT",
-            url: url,
-            data: {
-                quantity
-            },
-            success: function(response){
-                toastSuccess(response.message);
-                inputQty.val(response.data.quantity);
-                $(".price__container span", itemContainer).html(formatCurrency(response.data.price));
+    //     $.ajax({
+    //         method: "PUT",
+    //         url: url,
+    //         data: {
+    //             quantity
+    //         },
+    //         success: function(response){
+    //             toastSuccess(response.message);
+    //             inputQty.val(response.data.quantity);
+    //             $(".price__container span", itemContainer).html(formatCurrency(response.data.price));
                 
-                $(".header__cart__price span").html(formatCurrency(response.data.total_price));
-                $(".shoping__checkout span").html(formatCurrency(response.data.total_price));
-            },
-        });
-    }, 700));
+    //             $(".header__cart__price span").html(formatCurrency(response.data.total_price));
+    //             $(".shoping__checkout span").html(formatCurrency(response.data.total_price));
+    //         },
+    //     });
+    // }, 700));
 });
 
+function handleUpdateQuantity(itemContainer, quantity){
+    const cartId = itemContainer.data("cart-id");
+    let url = $("#cart_update_url").val();
+    url = url.replace(":id", cartId);
 
+    $.ajax({
+        method: "PUT",
+        url: url,
+        data: {
+            quantity
+        },
+        success: function(response){
+            toastSuccess(response.message);
+            $(".pro-qty input", itemContainer).val(response.data.quantity);
+            $(".price__container span", itemContainer).html(formatCurrency(response.data.price));
+            
+            $(".header__cart__price span").html(formatCurrency(response.data.total_price));
+            $(".shoping__checkout span").html(formatCurrency(response.data.total_price));
+        }
+    });
+
+}

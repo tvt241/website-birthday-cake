@@ -13,7 +13,7 @@ class ProductCategoryDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $hostPath = env("APP_URL") . "/storage/categories/";
+        $hostPath = "/storage/categories/";
         
         $category = ProductCategory::create([
             "name" => "Mới - Bán chạy",

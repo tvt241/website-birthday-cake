@@ -23,7 +23,7 @@
             <h4>Mới nhất</h4>
             <div class="blog__sidebar__recent">
                 @foreach ($post_news as $post)
-                    <a href="{{ route("blogs.details", ["slug" => $post->slug]) }}" class="blog__sidebar__recent__item">
+                    <a href="{{ route("blogs.details", ["slug" => $post->slug]) }}" class="blog__sidebar__recent__item shadow rounded">
                         <div class="blog__sidebar__recent__item__pic">
                             <img src="{{ $post->image ? $post->image->url : asset("assets/img/img-default.jpg") }}" alt="">
                         </div>

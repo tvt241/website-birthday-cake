@@ -85,7 +85,7 @@ class Product extends Model
         return Attribute::make(
             get: function ($value){
                 if($this->min_price > 0){
-                    return "{formatCurrency($this->min_price)} - {formatCurrency($this->max_price)";
+                    return formatCurrency($this->min_price) . " - " . formatCurrency($this->max_price);
                 }
                 return formatCurrency($this->max_price);
             },

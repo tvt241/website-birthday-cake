@@ -16,7 +16,7 @@ class ProductController extends Controller
             }
         };
         $query = Product::with("image")->whereRelation("category", $queryCategories);
-        $products = $query->paginate();
+        $products = $query->paginate(12);
         return view("product::pages.products.index", [
             "products" => $products,
         ]);

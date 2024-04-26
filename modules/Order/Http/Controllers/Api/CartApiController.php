@@ -25,18 +25,19 @@ class CartApiController extends Controller
         if($productItem->quantity < $request->quantity){
             return $this->ErrorResponse("Số lượng sản phẩm không đủ", 422);
         }
+        $message = "Sản phẩm đã được thêm vào giỏ hàng";
+
         if(!auth()->check()){
             $carts = session("carts", []);
             $totalPrice = 0;
             $flag = false;
-            $isMax = false;
             $sizeCart = sizeof($carts);
             if($sizeCart){
                 foreach ($carts as $key => $cart){
                     if($cart->product_item_id == $request->product_item_id){
                         $flag = true;
                         if($cart->quantity + $request->quantity >= $productItem->quantity){
-                            $isMax = true;
+                            $message = "Sản phẩm đã đạt tối đa";
                             $carts[$key]->quantity = $productItem->quantity;
                         }
                         else{
@@ -86,34 +87,23 @@ class CartApiController extends Controller
                 "total_price" => $totalPrice,
                 "total_product" => sizeof($carts)
             ];
-            if($isMax){
-                $message = "Sản phẩm đã đạt tối đa";
-            }
-            else{
-                $message = "Sản phẩm đã được thêm vào giỏ hàng";
-            }
             return $this->SuccessResponse($data, $message);
         }
         
         $cart = auth()->user()->carts()->where("product_item_id", $productItem->id)->first();
-        $isMax = false;
-        $flag = false;
         if($cart){
-            $flag = true;
             if($cart->quantity + $request->quantity >= $productItem->quantity){
-                $isMax = true;
+                $message = "Sản phẩm đã đạt tối đa";
                 $cart->quantity = $productItem->quantity;
             }
             else{
                 $cart->quantity += $request->quantity;
             }
-            // $cart->price = $productItem->price;
             $cart->save();
         }
 
-        $userId = auth()->id();
-        
-        if(!$flag){
+        if(!$cart){
+            $userId = auth()->id();
             $cart = [
                 "quantity" => $request->quantity,
                 "user_id" => $userId,
@@ -121,25 +111,10 @@ class CartApiController extends Controller
             ];
             Cart::create($cart);
         }
-        
-        $subQuery = DB::table('product_items')
-        ->select('id', 'price', "quantity", "product_variation_id");
-
-        $carts = Cart::query()->where("user_id", $userId)
-        ->select(DB::raw("pItemSub.price * carts.quantity as total_price"))
-        ->joinSub($subQuery, 'pItemSub', function ($join) {
-            $join->on('pItemSub.id', '=', 'carts.product_item_id');
-        })
-        ->get();
+        $carts = auth()->user()->getCartFormat();
 
         $totalPrice = $carts->sum("total_price");
 
-        if($isMax){
-            $message = "Sản phẩm đã đạt tối đa";
-        }
-        else{
-            $message = "Sản phẩm đã được thêm vào giỏ hàng";
-        }
         $data = [
             "total_price" => $totalPrice,
             "total_product" => $carts->count()
@@ -195,17 +170,7 @@ class CartApiController extends Controller
 
         $cart->update();
 
-        $userId = $user->id;
-        
-        $subQuery = DB::table('product_items')
-        ->select('id', 'price', "quantity", "product_variation_id");
-
-        $carts = Cart::query()->where("user_id", $userId)
-        ->select(DB::raw("pItemSub.price * carts.quantity as total_price"))
-        ->joinSub($subQuery, 'pItemSub', function ($join) {
-            $join->on('pItemSub.id', '=', 'carts.product_item_id');
-        })
-        ->get();
+        $carts = auth()->user()->getCartFormat();
 
         $totalPrice = $carts->sum("total_price");
 
@@ -215,8 +180,7 @@ class CartApiController extends Controller
             "total_price" => $totalPrice,
             "total_product" => $carts->count()
         ];
-        $message = "Sản phẩm đã được xóa khỏi giỏ hàng";
-        return $this->SuccessResponse($data, $message);
+        return $this->SuccessResponse($data);
     }
 
     public function destroy(Request $request, $id){
@@ -254,17 +218,7 @@ class CartApiController extends Controller
         }
         $cart->delete();
 
-        $userId = $user->id;
-        
-        $subQuery = DB::table('product_items')
-        ->select('id', 'price', "quantity", "product_variation_id");
-
-        $carts = Cart::query()->where("user_id", $userId)
-        ->select(DB::raw("pItemSub.price * carts.quantity as total_price"))
-        ->joinSub($subQuery, 'pItemSub', function ($join) {
-            $join->on('pItemSub.id', '=', 'carts.product_item_id');
-        })
-        ->get();
+        $carts = auth()->user()->getCartFormat();
 
         $totalPrice = $carts->sum("total_price");
 

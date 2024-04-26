@@ -19,8 +19,8 @@ class CoreMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $categories = cache("categories", []);
-        if(!sizeof($categories)){
+        $categories = cache("categories");
+        if(!$categories){
             $categories = ProductCategory::treeOf(function($query) {
                 $query->where("is_active", 1);
             })
@@ -38,30 +38,30 @@ class CoreMiddleware
                 "laravel_cte.description",
                 "images.url as image"
             ])->toTree();
-            cache("categories", $categories, now()->addDay());
+            cache(["categories" => $categories], now()->addDay());
         }
 
         View::share("categories", $categories);
 
 
-        $company = cache("company", []);
-        if(!sizeof($company)){
+        $company = cache("company");
+        if(!$company){
             $companySetup = BusinessSetting::where("group", "company")->get();
             foreach($companySetup as $setup){
                 $company[$setup->key] = $setup->value;
             }
-            cache("company", $company, now()->addYear());
+            cache(["company" => $company], now()->addYear());
         }
 
         View::share("company", $company);
 
-        $social = cache("company", []);
-        if(!sizeof($social)){
+        $social = cache("social_media");
+        if(!$social){
             $socialSetup = BusinessSetting::where("group", "social_media")->whereNotNull("value")->get();
             foreach($socialSetup as $setup){
                 $social[$setup->key] = $setup->value;
             }
-            cache("social_media", $social, now()->addMonth());
+            cache(["social_media" => $social], now()->addMonth());
         }
         View::share("social_media", $social);
 
@@ -71,7 +71,7 @@ class CoreMiddleware
             $cartsPrice = getPriceCart($carts);
         }
         else {
-            $carts = auth()->user()->getCartPrice();
+            $carts = auth()->user()->getCartFormat();
             $cartsQuantity = $carts->count();
             $cartsPrice = formatCurrency($carts->sum("total_price"));
         }

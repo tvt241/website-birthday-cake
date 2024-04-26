@@ -28,7 +28,6 @@ class OrderCreatedEvent implements ShouldBroadcast
     {
         return [
             new Channel("notifications"),
-            new PrivateChannel("notifications")
         ];
     }
 

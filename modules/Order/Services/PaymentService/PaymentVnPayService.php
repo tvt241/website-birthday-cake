@@ -40,7 +40,7 @@ class PaymentVnPayService implements IPaymentService
             "vnp_Amount" => $order["amount"] * 100,
             "vnp_Command" => "pay",
             "vnp_CreateDate" => date('YmdHis'),
-            "vnp_CurrCode" => "VND",
+            "vnp_CurrCode" => "₫",
             "vnp_IpAddr" => request()->ip(),
             "vnp_Locale" => "vn",
             "vnp_OrderInfo" => $order["order_code"],

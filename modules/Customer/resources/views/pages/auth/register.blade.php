@@ -7,7 +7,7 @@
 
 <div class="container auth__contaner">
     <div class="row my-4 col-md-10 mx-auto">
-        <div class="col-lg-6 col-md-6" style="padding: 350px 20px 20px; background-repeat: no-repeat; background-size: cover; background-image: url('https://bizweb.dktcdn.net/100/333/744/themes/861829/assets/account-banner.jpg?1711936814284')">
+        <div class="col-lg-6 col-md-6 auth__background">
             <div class="account_policy_title">Quyền lợi thành viên</div>
             <div class="account_policy_content">
                 <p>Chương trình khuyến mãi, quay số</p>
@@ -106,7 +106,7 @@
             bottom: -2px;
             width: 100%;
             height: 2px;
-            background: #7fad39;
+            background: #f36957;
             content: "";
             opacity: 0;
         }
@@ -137,7 +137,7 @@
             content: "";
             height: 15px;
             width: 15px;
-            background-image: url("https://bizweb.dktcdn.net/100/333/744/themes/861829/assets/account_policy_icon.svg?1711936814284");
+            background-image: url("/assets/img/account_policy_icon.svg");
             background-repeat: no-repeat;
             background-position: center;
             background-size: contain;
@@ -145,6 +145,12 @@
             top: 50%;
             transform: translate(0, -50%);
             position: absolute;
+        }
+        .auth__background{
+            padding: 350px 20px 20px; 
+            background-repeat: no-repeat; 
+            background-size: cover; 
+            background-image: url("/assets/img/account-banner.jpg");
         }
     </style>
 @endpush

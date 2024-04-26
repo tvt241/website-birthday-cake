@@ -18,11 +18,11 @@ class UserDatabaseSeeder extends Seeder
     {
         $permissions = [
             [ "title" => "Tổng quan", "label" => "Tổng quan", "name" => "dashboard", "url" => "dashboard", "icon" => "mdi mdi-view-dashboard-outline", "menu_parent" => null, "module" => null],
-            [ "title" => "POS", "title" => "POS", "name" => "pos", "url" => "pos", "icon" => "mdi mdi-shopping", "menu_parent" => null, "module" => null],
+            [ "title" => "POS", "label" => "POS", "name" => "pos", "url" => "pos", "icon" => "mdi mdi-shopping", "menu_parent" => null, "module" => null],
         ];
         Permission::insert($permissions);
 
-        $permissions_parent = Permission::create(["title" => "Đơn hàng", "label" => "Đơn hàng", "name" => "orders", "url" => "orders", "icon" => "mdi mdi-cart-outline", "menu_parent" => null, "module" => "Bán hàng"]);
+        $permissions_parent = Permission::create(["title" => "Đơn hàng", "label" => "Đơn hàng", "name" => "module-orders", "url" => "orders", "icon" => "mdi mdi-cart-outline", "menu_parent" => null, "module" => "Bán hàng"]);
         $permissions = [
             [ "title" => "Danh sách đơn hàng", "label" => "Danh sách đơn hàng", "name" => "orders", "url" => "orders", "menu_parent" => $permissions_parent->id, "module" => "Bán hàng"],
             [ "title" => "Thêm đơn hàng", "label" => "Thêm đơn hàng", "name" => "orders_create", "url" => "orders/create", "menu_parent" => $permissions_parent->id, "module" =>  "Bán hàng"],
@@ -31,7 +31,7 @@ class UserDatabaseSeeder extends Seeder
             [ "title" => "Xóa đơn hàng", "label" => null, "name" => "orders_delete", "url" => "orders/:id", "menu_parent" => $permissions_parent->id, "module" => "Bán hàng"],
         ];
 
-        $permissions_parent = Permission::create(["title" => "Sản phẩm", "label" => "Sản phẩm", "name" => "products", "icon" => "mdi mdi-alpha-p-box", "url" => "products", "menu_parent" => null, "module" => "Hàng hóa", "is_sub" => 1]);
+        $permissions_parent = Permission::create(["title" => "Sản phẩm", "label" => "Sản phẩm", "name" => "module-products", "icon" => "mdi mdi-alpha-p-box", "url" => "products", "menu_parent" => null, "module" => "Hàng hóa", "is_sub" => 1]);
         $permissions = [
             [ "title" => "Danh sách sản phẩm", "label" => "Danh sách sản phẩm", "name" => "products", "url" => "products", "menu_parent" => $permissions_parent->id, "module" => "Hàng hóa"],
             [ "title" => "Thêm sản phẩm", "label" => "Thêm sản phẩm", "name" => "products_create", "url" => "products/create", "menu_parent" => $permissions_parent->id, "module" => "Hàng hóa"],
@@ -41,7 +41,7 @@ class UserDatabaseSeeder extends Seeder
         ];
         Permission::insert($permissions);
 
-        $permissions_parent = Permission::create([ "title" => "Danh mục sản phẩm", "label" => "Danh mục sản phẩm", "name" => "product_categories", "url" => "categories", "icon" => "mdi mdi-text-short", "menu_parent" => null, "module" => "Hàng hóa"]);
+        $permissions_parent = Permission::create([ "title" => "Danh mục sản phẩm", "label" => "Danh mục sản phẩm", "name" => "module-product_categories", "url" => "categories", "icon" => "mdi mdi-text-short", "menu_parent" => null, "module" => "Hàng hóa"]);
         $permissions = [
             [ "title" => "Danh mục sản phẩm", "label" => "Danh mục sản phẩm", "name" => "product_categories", "url" => "categories", "menu_parent" => $permissions_parent->id, "module" => "Hàng hóa"],
             [ "title" => "Thêm danh mục sản phẩm", "label" => null, "name" => "product_categories_create", "url" => "categories/create", "menu_parent" => $permissions_parent->id, "module" => "Hàng hóa"],
@@ -51,7 +51,7 @@ class UserDatabaseSeeder extends Seeder
         ];
         Permission::insert($permissions);
 
-        $permissions_parent = Permission::create([ "title" => "Bài viết", "label" => "Bài viết", "name" => "posts", "url" => "posts", "icon" => "mdi mdi-newspaper", "menu_parent" => null, "module" => "Marketing", "is_sub" => 1]);
+        $permissions_parent = Permission::create([ "title" => "Bài viết", "label" => "Bài viết", "name" => "posts", "url" => "module-posts", "icon" => "mdi mdi-newspaper", "menu_parent" => null, "module" => "Marketing", "is_sub" => 1]);
         $permissions = [
             [ "title" => "Danh sách bài viết", "label" => "Danh sách bài viết", "name" => "posts", "url" => "posts", "menu_parent" => $permissions_parent->id, "module" => "Marketing",],
             [ "title" => "Thêm bài viết", "label" => "Thêm bài viết", "name" => "posts_create", "url" => "posts/create", "menu_parent" => $permissions_parent->id, "module" => "Marketing"],
@@ -61,7 +61,7 @@ class UserDatabaseSeeder extends Seeder
         ];
         Permission::insert($permissions);
 
-        $permissions_parent = Permission::create([ "title" => "Danh mục bài viết", "label" => "Danh mục bài viết", "name" => "post_categories", "url" => "posts/categories", "icon" => "mdi mdi-text-short", "menu_parent" => null, "module" => "Marketing"]);
+        $permissions_parent = Permission::create([ "title" => "Danh mục bài viết", "label" => "Danh mục bài viết", "name" => "module-post_categories", "url" => "posts/categories", "icon" => "mdi mdi-text-short", "menu_parent" => null, "module" => "Marketing"]);
         $permissions = [
             [ "title" => "Danh mục bài viết", "label" => "Danh mục bài viết", "name" => "post_categories", "url" => "posts/categories", "menu_parent" => $permissions_parent->id, "module" => "Marketing"],
             [ "title" => "Thêm danh mục bài viết", "label" => null, "name" => "post_categories_create", "url" => "posts/categories/create", "menu_parent" => $permissions_parent->id, "module" => "Marketing"],
@@ -71,7 +71,7 @@ class UserDatabaseSeeder extends Seeder
         ];
         Permission::insert($permissions);
 
-        $permissions_parent = Permission::create([ "title" => "Mã giảm giá", "label" => "Mã giảm giá", "name" => "coupons", "url" => "coupons", "icon" => "mdi mdi-ticket-percent", "menu_parent" => null, "module" => "Marketing", "is_sub" => 1]);
+        $permissions_parent = Permission::create([ "title" => "Mã giảm giá", "label" => "Mã giảm giá", "name" => "coupons", "url" => "module-coupons", "icon" => "mdi mdi-ticket-percent", "menu_parent" => null, "module" => "Marketing", "is_sub" => 1]);
         $permissions = [
             [ "title" => "Mã giảm giá", "label" => "Mã giảm giá", "name" => "coupons", "url" => "coupons", "menu_parent" => $permissions_parent->id, "module" => "Marketing"],
             [ "title" => "Thêm mã giảm giá", "label" => "Thêm mã giảm giá", "name" => "coupons_create", "url" => "coupons/create", "menu_parent" => $permissions_parent->id, "module" => "Marketing"],
@@ -81,7 +81,7 @@ class UserDatabaseSeeder extends Seeder
         ];
         Permission::insert($permissions);
 
-        $permissions_parent = Permission::create([ "title" => "Thông báo", "label" => "Thông báo", "name" => "notifications", "url" => "notifications", "icon" => "mdi mdi-bell-ring", "menu_parent" => null, "module" => "Marketing"]);
+        $permissions_parent = Permission::create([ "title" => "Thông báo", "label" => "Thông báo", "name" => "notifications", "url" => "module-notifications", "icon" => "mdi mdi-bell-ring", "menu_parent" => null, "module" => "Marketing"]);
         $permissions = [
             [ "title" => "Thêm thông báo", "label" => null, "name" => "notifications_create", "url" => "notifications/create", "menu_parent" => $permissions_parent->id, "module" => "Marketing"],
             [ "title" => "Sửa thông báo", "label" => null, "name" => "notifications_edit", "url" => "notifications/:id/edit", "menu_parent" => $permissions_parent->id, "module" => "Marketing"],
@@ -90,7 +90,7 @@ class UserDatabaseSeeder extends Seeder
         ];
         Permission::insert($permissions);
 
-        $permissions_parent = Permission::create([ "title" => "Khách hàng", "label" => "Khách hàng", "name" => "customers", "url" => "customers", "icon" => "mdi mdi-account-group", "menu_parent" => null, "module" => "Người dùng", "is_sub" => 1]);
+        $permissions_parent = Permission::create([ "title" => "Khách hàng", "label" => "Khách hàng", "name" => "customers", "url" => "module-customers", "icon" => "mdi mdi-account-group", "menu_parent" => null, "module" => "Người dùng", "is_sub" => 1]);
         $permissions = [
             [ "title" => "Khách hàng", "label" => "Khách hàng", "name" => "customers", "url" => "customers", "menu_parent" => $permissions_parent->id, "module" => "Người dùng"],
             [ "title" => "Thêm khách hàng", "label" => "Thêm khác hàng", "name" => "customers_create", "url" => "customers/create", "menu_parent" => $permissions_parent->id, "module" => "Người dùng"],
@@ -100,7 +100,7 @@ class UserDatabaseSeeder extends Seeder
         ];
         Permission::insert($permissions);
 
-        $permissions_parent = Permission::create([ "title" => "Nhân viên", "label" => "Nhân viên", "name" => "employees", "url" => "employees", "icon" => "mdi mdi-account-multiple", "menu_parent" => null, "module" => "Người dùng", "is_sub" => 1]);
+        $permissions_parent = Permission::create([ "title" => "Nhân viên", "label" => "Nhân viên", "name" => "employees", "url" => "module-employees", "icon" => "mdi mdi-account-multiple", "menu_parent" => null, "module" => "Người dùng", "is_sub" => 1]);
         $permissions = [
             [ "title" => "Nhân viên", "label" => "Nhân viên", "name" => "employees", "url" => "employees", "menu_parent" => $permissions_parent->id, "module" => "Người dùng"],
             [ "title" => "Thêm nhân viên", "label" => "Thêm nhân viên", "name" => "employees_create", "url" => "employees/create", "menu_parent" => $permissions_parent->id, "module" => "Người dùng"],
@@ -115,7 +115,7 @@ class UserDatabaseSeeder extends Seeder
         ];
         Permission::insert($permissions);
 
-        $permissions_parent = Permission::create([ "title" => "Trang và mạng xã hội", "label" => "Trang và mạng xã hội", "name" => "setting_page_medias", "url" => "settings/page-medias", "icon" => "mdi mdi-account-multiple", "menu_parent" => null, "module" => "Thiết lập", "is_sub" => 1]);
+        $permissions_parent = Permission::create([ "title" => "Trang và mạng xã hội", "label" => "Trang và mạng xã hội", "name" => "module-setting_page_medias", "url" => "settings/page-medias", "icon" => "mdi mdi-account-multiple", "menu_parent" => null, "module" => "Thiết lập", "is_sub" => 1]);
         $permissions = [
             [ "title" => "Thiết lập trang", "label" => "Trang", "name" => "setting_page_setup", "url" => "settings/page-medias/page-setups", "menu_parent" => $permissions_parent->id, "module" => "Người dùng"],
             [ "title" => "Mạng xã hội", "label" => "Mạng xã hội", "name" => "setting_social_media", "url" => "settings/page-medias/social-medias", "menu_parent" => $permissions_parent->id, "module" => "Người dùng"],

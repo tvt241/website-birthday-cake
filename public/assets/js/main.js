@@ -1,7 +1,11 @@
 'use strict';
+let image_default;
 
+function handleUpdateQuantity(element, quantity){
+    console.log("main");
+}
 (function ($) {
-
+    image_default = $("#image_url_default").val();
     /*------------------
         Preloader
     --------------------*/
@@ -72,8 +76,8 @@
     ------------------------*/
     $(".categories__slider").owlCarousel({
         loop: true,
-        margin: 0,
-        items: 6,
+        margin: 10,
+        items: 8,
         dots: false,
         nav: true,
         navText: ["<span class='fa fa-angle-left'><span/>", "<span class='fa fa-angle-right'><span/>"],
@@ -85,19 +89,19 @@
         responsive: {
 
             0: {
-                items: 2,
+                items: 3,
             },
 
             480: {
-                items: 2,
-            },
-
-            768: {
                 items: 4,
             },
 
-            992: {
+            768: {
                 items: 6,
+            },
+
+            992: {
+                items: 8,
             }
         }
     });
@@ -180,12 +184,12 @@
         max: maxPrice,
         values: [minPrice, maxPrice],
         slide: function (event, ui) {
-            minamount.val('$' + ui.values[0]);
-            maxamount.val('$' + ui.values[1]);
+            minamount.val(ui.values[0]);
+            maxamount.val(ui.values[1]);
         }
     });
-    minamount.val('$' + rangeSlider.slider("values", 0));
-    maxamount.val('$' + rangeSlider.slider("values", 1));
+    minamount.val(rangeSlider.slider("values", 0));
+    maxamount.val(rangeSlider.slider("values", 1));
 
     /*------------------
 		Single Product
@@ -222,17 +226,12 @@
             newVal = Number(oldValue) + 1;
         } else {
             if (oldValue > 1) {
-                if(oldValue > maxQty){
-                    console.log("maxQty" + oldValue);
-                    newVal = maxQty;
-                }
-                else{
-                    newVal = Number(oldValue) - 1;
-                }
+                newVal = Number(oldValue) - 1;
             } else {
                 newVal = 1;
             }
         }
+        handleUpdateQuantity(cartContainer, newVal);
         $(".price__container span", cartContainer).first().html(formatCurrency(price * newVal));
         $button.parent().find('input').val(newVal);
     });
@@ -249,7 +248,10 @@
                 currentValue = maxQty;
             }
         }
-        else currentValue = 1;
+        else{
+            currentValue = 1;
+        };
+        handleUpdateQuantity(cartContainer, currentValue);
         $(".price__container span", cartContainer).first().html(formatCurrency(price * currentValue));
         input.val(currentValue);
     });
@@ -259,6 +261,11 @@
         $('html,body').animate({
             scrollTop: 0
         }, 700);
+    });
+
+    $(".featured__item").on("click", function(e){
+        const src = $("a", this).attr("href");
+        window.location = src;
     });
 })(jQuery);
 

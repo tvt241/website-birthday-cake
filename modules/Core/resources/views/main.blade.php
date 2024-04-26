@@ -28,6 +28,8 @@
 </head>
 
 <body>
+    <input type="hidden" id="image_url_default" value="{{ asset("assets/img/img-default.jpg") }}">
+
     <div id="preloder">
         <div class="loader"></div>
     </div>

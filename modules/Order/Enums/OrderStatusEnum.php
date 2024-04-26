@@ -3,21 +3,21 @@ namespace Modules\Order\Enums;
 
 use Modules\Core\Traits\EnumTrait;
 
-enum OrderStatusEnum : string
+enum OrderStatusEnum : int
 {
     use EnumTrait;
-    case CANCELLED = "Đã hủy";
-    case CANCELLED_SELLER = "Người bán hủy";
-    case PENDING = "Chờ sử lý";
-    case PROCESSING = "Chuẩn bị hàng";
-    case SHIPPED = "Đã gửi hàng";
-    case IN_TRANSIT = "Đang vận chuyển";
-    case OUT_FOR_DELIVERY = "Đang giao đến bạn";
-    case DELIVERED = "Đã giao hàng";
-    case COMPLETED = "Hoàn thành";
-    case AUTO_COMPLETED = "Hoàn thành (a)";
-    case DELIVERED_FAILED = "Giao hàng thất bại";
-    case REFUNDED = "Đã hoàn tiền";
-    case RETURNED = "Đã trả hàng";
-    case PAUSE = "Tạm dừng";
+    case CANCELLED = -2;
+    case CANCELLED_SELLER = -1;
+    case PENDING = 0;
+    case PROCESSING = 1;
+    case SHIPPED = 2;
+    case IN_TRANSIT = 3;
+    case OUT_FOR_DELIVERY = 4;
+    case DELIVERED = 5;
+    case COMPLETED = 6;
+    case AUTO_COMPLETED = 7;
+    case PAUSE = 8;
+    case DELIVERED_FAILED = 10;
+    case REFUNDED = 20;
+    case RETURNED = 21;
 }
