@@ -5,9 +5,12 @@ namespace Modules\Customer\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\DB;
+use Modules\Core\Models\Image;
 use Modules\Order\Models\Cart;
+use Modules\Order\Models\Order;
 
 class Customer extends Authenticatable
 {
@@ -23,8 +26,13 @@ class Customer extends Authenticatable
         "email",
         "last_name",
         "social",
-        "status_active"
+        "is_active"
     ];
+
+    public function image(): MorphOne
+    {
+        return $this->morphOne(Image::class, 'model');
+    }
 
     protected function password(): Attribute
     {
@@ -32,6 +40,10 @@ class Customer extends Authenticatable
             get: fn ($value) => $value,
             set: fn ($value) => bcrypt($value),
         );
+    }
+
+    public function orders(){
+        return $this->hasMany(Order::class, "user_id");
     }
 
     public function carts(){

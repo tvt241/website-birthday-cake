@@ -1,7 +1,7 @@
 @extends("core::main")
 
 @section("content")
-<section class="breadcrumb-section set-bg" data-setbg="{{ asset("assets/img/breadcrumb.jpg") }}">
+<section class="breadcrumb-section set-bg" data-setbg="{{ asset("storage/setup/header.jpg") }}">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
@@ -51,7 +51,7 @@
         </div>
     </div>
 </section>
-<input type="hidden" id="order_details_url" value="{{ route("orders.show", ["order" => ":id"]) }}">
+<input type="hidden" id="order_details_url" value="{{ route("orders.details", ["order" => ":id"]) }}">
 @endsection
 
 @push("js")

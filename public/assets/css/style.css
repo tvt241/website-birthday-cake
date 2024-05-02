@@ -2372,7 +2372,9 @@ ol {
 	margin-right: 10px;
 }
 .blog__sidebar__recent__item__pic img{
-	margin: 10px 0 0 5px;
+	/* margin: 10px 0 0 5px; */
+	margin: 10px 0 0 0x;
+
 	width: 60px;
 	height: 60px;
 }
@@ -2808,8 +2810,8 @@ ol {
 }
 
 .contact-form {
-	padding-top: 80px;
-	padding-bottom: 80px;
+	padding-top: 50px;
+	padding-bottom: 50px;
 }
 
 .contact-form form input {

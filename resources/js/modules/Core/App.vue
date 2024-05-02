@@ -31,16 +31,22 @@ import { onMounted, ref } from "vue";
 import toastHelper from './helpers/toastHelper';
 import LoadingComponent from "~/Core/components/LoadingComponent.vue";
 import { useAuthStore } from '~/User/store/authStore';
+import { useSettingStore } from '~/Setting/store/settingStore';
 
 const store = useAuthStore();
+const settingStore = useSettingStore();
 
-onMounted(() => {
+onMounted(async () => {
   window.addEventListener("offline", () => {
     toastHelper.error("Có vẻ bạn đã mất internet");
   });
   window.addEventListener("online", () => {
     toastHelper.success("Internet đã quay trở lại");
   });
+  // Echo.channel(`notifications`)
+  //   .listen('.notifications', (e) => {
+  //       console.log(e);
+  // });
 
   Echo.channel(`notifications`)
     .listen('.notifications', (e) => {
@@ -51,6 +57,9 @@ onMounted(() => {
   //     toastHelper.success("Chào mừng trở lại");
   //   }
   // });
+  if(!settingStore.getSettings().name){
+    await settingStore.setSettings();
+  }
 })
 </script>
 

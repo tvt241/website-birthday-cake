@@ -38,7 +38,7 @@
                                         <div class="d-flex justify-content-center gap-2">
                                             <router-link 
                                                 class="btn btn-outline-info btn-sm edit square-btn"
-                                                :to="{ name: 'orders.show', params: { id: order.id }}"
+                                                :to="{ name: 'orders.details', params: { id: order.id }}"
                                             >
                                                 <i class="mdi mdi-eye"></i>
                                             </router-link>

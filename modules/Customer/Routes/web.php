@@ -10,6 +10,7 @@ use Modules\Customer\Http\Controllers\ProfileController;
 
 Route::get("/", [HomeController::class, "index"])->name("home");
 Route::get('/contact', [HomeController::class, "contact"])->name("contact");
+Route::post('/contact', [HomeController::class, "storeContact"])->name("store_contact");
 Route::get('/about-us', [HomeController::class, "aboutUs"])->name("about_us");
 
 
@@ -37,8 +38,8 @@ Route::group(["middleware" => "guest"], function(){
 Route::group(["middleware" => "auth"], function(){
     Route::get("profile", [ProfileController::class, "index"])->name("profile.index");
     Route::put("profile", [ProfileController::class, "update"])->name("profile.update");
-    Route::get("change-password", [ProfileController::class, "update"])->name("profile.update");
-    Route::post("change-password", [ProfileController::class, "update"])->name("profile.update");
+    Route::get("change-password", [ProfileController::class, "update"])->name("password.index");
+    Route::post("change-password", [ProfileController::class, "update"])->name("password.update");
 });
 
 Route::get('/logout', [LogoutController::class, "logout"])->name("logout");

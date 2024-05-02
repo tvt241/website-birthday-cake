@@ -12,9 +12,9 @@ export default [
                 name: 'roles',
             },
             {
-                path: ":id/permissions",
+                path: ":id",
                 component: RolePermissionEdit,
-                name: 'roles.permissions',
+                name: 'roles.details',
             },
         ]
     },

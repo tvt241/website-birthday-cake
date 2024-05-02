@@ -58,7 +58,6 @@
                             Copyright &copy;<script>document.write(new Date().getFullYear());</script> {{ $company["name"] }}
                         </p>
                     </div>
-                    <div class="footer__copyright__payment"><img src="img/payment-item.png" alt=""></div>
                 </div>
             </div>
         </div>

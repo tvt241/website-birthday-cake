@@ -307,38 +307,33 @@
                     <!-- User Account -->
                     <li class="dropdown user-menu">
                         <button class="dropdown-toggle nav-link" data-toggle="dropdown">
-                            <img src="images/user/user-xs-01.jpg" class="user-image rounded-circle" alt="User Image" />
-                            <span class="d-none d-lg-inline-block">John Doe</span>
+                            <img :src="info.image ? info.image : IMG_DEFAULT" class="user-image rounded-circle" alt="User Image" />
+                            <span class="d-none d-lg-inline-block">{{ info.name }}</span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right">
                             <li>
                                 <a class="dropdown-link-item" href="user-profile.html">
                                     <i class="mdi mdi-account-outline"></i>
-                                    <span class="nav-text">My Profile</span>
+                                    <span class="nav-text">Thông tin của tôi</span>
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-link-item" href="email-inbox.html">
                                     <i class="mdi mdi-email-outline"></i>
-                                    <span class="nav-text">Message</span>
+                                    <span class="nav-text">Tin nhắn</span>
                                     <span class="badge badge-pill badge-primary">24</span>
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-link-item" href="user-activities.html">
-                                    <i class="mdi mdi-diamond-stone"></i>
-                                    <span class="nav-text">Activitise</span></a>
-                            </li>
-                            <li>
                                 <a class="dropdown-link-item" href="user-account-settings.html">
                                     <i class="mdi mdi-settings"></i>
-                                    <span class="nav-text">Account Setting</span>
+                                    <span class="nav-text">Cài đặt tài khoản</span>
                                 </a>
                             </li>
 
                             <li class="dropdown-footer">
                                 <a class="dropdown-link-item" href="sign-in.html">
-                                    <i class="mdi mdi-logout"></i> Log Out
+                                    <i class="mdi mdi-logout"></i> Đăng xuất
                                 </a>
                             </li>
                         </ul>
@@ -350,4 +345,10 @@
 </template>
 
 <script setup>
+import { useAuthStore } from '~/User/store/authStore';
+import { IMG_DEFAULT } from '../helpers/imageHelper';
+
+const authStore = useAuthStore();
+
+const info = authStore.getInfo();
 </script>

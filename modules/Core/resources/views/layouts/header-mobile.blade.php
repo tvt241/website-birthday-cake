@@ -1,6 +1,6 @@
 <div class="humberger__menu__wrapper">
     <div class="humberger__menu__logo">
-        <a href="#"><img src="img/logo.png" alt=""></a>
+        <a href="#"><img src="{{ asset("assets/img/logo.png") }}" alt=""></a>
     </div>
     <div class="humberger__menu__cart">
         <ul>
@@ -8,7 +8,7 @@
             <li>
                 <a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
         </ul>
-        <div class="header__cart__price">Giá: <span>$150.00</span></div>
+        <div class="header__cart__price">Giá: <span>0 d</span></div>
     </div>
     <div class="humberger__menu__widget">
         <div class="header__top__right__language">

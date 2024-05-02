@@ -41,8 +41,8 @@ class ImageService implements IImageService {
         if(isset($image->url)){
             $path = str_replace($this->hostPath, "", $image->url);
             Storage::disk("public")->delete($path);
+            $image->delete();
         }
-        $image->delete();
     }
 
 }

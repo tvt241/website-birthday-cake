@@ -26,7 +26,7 @@ Route::get("shippings/services", [ShippingApiController::class, "services"])->na
 Route::get("shippings/fee", [ShippingApiController::class, "fee"])->name("shippings.fee");
 
 Route::get('/order-details', [OrderController::class, 'index'])->name("orders.index");
-Route::post('/order-details/{order}', [OrderController::class, 'show'])->name("orders.show");
+Route::post('/order-details/{order}', [OrderController::class, 'show'])->name("orders.details");
 
 Route::get("test", function(){
     $subQuery = DB::table('product_items')

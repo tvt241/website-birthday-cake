@@ -53,7 +53,6 @@ class CartApiController extends Controller
                     "product_item_id" => $request->product_item_id,
                     "quantity" => $request->quantity,
                     "price" => $productItem->price,
-                    "image" => $productItem->image?->url,
                     "id" => rand(1000, 9999)
                 ];
                 $product = $productItem->product;
@@ -64,6 +63,7 @@ class CartApiController extends Controller
                 $variationInfo = $productItem->variationsCollect();
                 $variation = [];
                 if($variationInfo->name != "default"){
+                    $cart["image"]  = $productItem->image?->url;
                     $variation[] = (object)[
                         "name" => $variationInfo->name,
                         "value" => $variationInfo->value
@@ -76,6 +76,9 @@ class CartApiController extends Controller
                             ];
                         }
                     }
+                }
+                else{
+                    $cart["image"]  = $productItem->product->image?->url;
                 }
                 $cart["variation"] = $variation;
                 $carts[] = (object)$cart;

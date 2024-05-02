@@ -16,5 +16,4 @@ export default {
         const url = "get-service";
         return apiHelper.post(url, data, "");
     },
-    
 }

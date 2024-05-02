@@ -16,6 +16,7 @@ class StoreCheckoutRequest extends FormRequest
         return [
             "name" => "required",
             "phone" => "required|numeric",
+            "email" => "nullable",
             "province_name" => "required",
             "district_name" => "required",
             "ward_name" => "required",
@@ -23,6 +24,13 @@ class StoreCheckoutRequest extends FormRequest
             "note" => "nullable",
             "coupon_code" => "nullable",
             "method_payment" => "required"
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            "address2" => "địa chỉ cụ thể"
         ];
     }
 

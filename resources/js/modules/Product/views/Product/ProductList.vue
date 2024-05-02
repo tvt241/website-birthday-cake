@@ -126,6 +126,9 @@
 
                     <div class="table-responsive mt-4 px-3">
                         <div class="d-flex justify-content-lg-end">
+                            <Bootstrap4Pagination :data="products"
+                                @pagination-change-page="getProductsPaginate">
+                            </Bootstrap4Pagination>
                         </div>
                     </div>
                 </div>
@@ -137,6 +140,7 @@
 
 <script setup>
 import { ref, reactive, onMounted } from "vue";
+import { Bootstrap4Pagination } from 'laravel-vue-pagination';
 import PageHeaderTitleComponent from "~/Core/components/PageHeaderTitleComponent.vue";
 import alertHelper from "~/Core/helpers/alertHelper";
 import { IMG_DEFAULT } from "~/Core/helpers/imageHelper";

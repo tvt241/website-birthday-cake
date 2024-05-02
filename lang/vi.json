@@ -731,5 +731,8 @@
     "BOOKING": "Đơn đặt",
     "SALES": "Đơn bán",
     "success": "Thành công",
-    "error": "Thất bại"
+    "error": "Thất bại",
+    "ACTIVATE": "Kích hoạt",
+    "DEACTIVATE": "Không kích hoạt",
+    "AFTER": "Sau"
 }

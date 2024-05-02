@@ -25,7 +25,7 @@ return new class extends Migration
             $table->tinyInteger('gender')->nullable();
             $table->string('phone')->nullable();
             $table->tinyInteger('social')->nullable();
-            $table->tinyInteger('status_active')->nullable();
+            $table->tinyInteger('is_active')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

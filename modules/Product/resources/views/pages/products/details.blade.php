@@ -27,7 +27,7 @@
 @endsection
 
 @section("content")
-<section class="breadcrumb-section set-bg" data-setbg="{{ asset("assets/img/breadcrumb.jpg") }}">
+<section class="breadcrumb-section set-bg" data-setbg="{{ asset("storage/setup/header.jpg") }}">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
@@ -115,18 +115,7 @@
                             </div>
                             <div class="tab-pane" id="tabs-2" role="tabpanel">
                                 <div class="product__details__tab__desc">
-                                    <h6>Products Infomation</h6>
-                                    <p>Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.
-                                        Pellentesque in ipsum id orci porta dapibus. Proin eget tortor risus.
-                                        Vivamus suscipit tortor eget felis porttitor volutpat. Vestibulum ac diam
-                                        sit amet quam vehicula elementum sed sit amet dui. Donec rutrum congue leo
-                                        eget malesuada. Vivamus suscipit tortor eget felis porttitor volutpat.
-                                        Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Praesent
-                                        sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ac
-                                        diam sit amet quam vehicula elementum sed sit amet dui. Vestibulum ante
-                                        ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
-                                        Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.
-                                        Proin eget tortor risus.</p>
+                                    <h6>Thông tin đánh giá</h6>
                                 </div>
                             </div>
                         </div>
@@ -142,24 +131,33 @@
 <section class="featured spad">
     <div class="container">
         <div class="section-title product__discount__title" bis_skin_checked="1">
-            <h2>Sản phẩm liên quan</h2>
+            <h2>Liên quan</h2>
         </div>
-        <div class="row">
-            <div class="col-lg-3 col-md-4 col-sm-6">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="{{ asset("assets/img/product/product-1.jpg") }}">
-                        <ul class="product__item__pic__hover">
-                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Crab Pool Security</a></h6>
-                        <h5>$30.00</h5>
+        <div class="row featured__filter align-items-stretch">
+            @foreach ($products as $product)
+                <div class="col-lg-2 col-md-3 col-sm-6 col-6 my-1">
+                    <div class="featured__item h-100 shadow">
+                        <div class="featured__item__pic set-bg" data-setbg="{{ $product->image ? $product->image->url : asset("assets/img/img-default.jpg") }}">
+                        </div>
+                        <div class="featured__item__text">
+                            <h6>
+                                <a title="{{ $product->name }}" href="{{ route("products.details", $product->slug) }}">
+                                    {{ $product->name }}
+                                </a>
+                            </h6>
+                            <div class="product__details__rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star-half-o"></i>
+                                <span>(18)</span>
+                            </div>
+                            <h5 class="pb-2">{{ $product->price  }} ₫</h5>
+                        </div>
                     </div>
                 </div>
-            </div>
+            @endforeach
         </div>
     </div>
 </section>

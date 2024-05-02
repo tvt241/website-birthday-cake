@@ -30,10 +30,12 @@ class LoginController extends Controller
         $customer = Auth::guard("customer_web")->attempt([
             $key => $request->username,
             "password" => $request->password,
-            "social" => null
+            "social" => null,
+            "is_active" => 1,
         ]);
         if(!$customer){
             $error = CustomerKeyLoginEnum::getValue($key) . " hoặc mật khẩu không chính xác";
+            $error = "Thông tin không chính xác hoặc tài khoản đã bị khóa";
             return back()->withInput()->with("error", $error);
         }
         return redirect()->route("home");

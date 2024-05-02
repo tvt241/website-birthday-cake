@@ -14,6 +14,9 @@ trait EnumTrait
     }
 
     public static function getKey($value){
+        if(!$value){
+            return null;
+        }
         $cases = self::cases();
         $index = array_search($value, array_column($cases, "value"));
         if ($index !== false) {

@@ -1,9 +1,9 @@
 import apiHelper from "~/Core/helpers/apiHelper";
 
 export default {
-    getRolesPaginate: function (paramSearch = {}){
+    getRoles: function (){
         const url = "roles";
-        return apiHelper.get(url, paramSearch);
+        return apiHelper.get(url);
     },
     addRole: function(form){
         const url = "roles";

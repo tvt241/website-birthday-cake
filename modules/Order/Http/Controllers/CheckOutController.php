@@ -30,7 +30,7 @@ class CheckOutController extends Controller
     {
         if(!auth()->check()){
             $carts = session("carts", []);
-            if(sizeof($carts)){
+            if(!sizeof($carts)){
                 return redirect()->route("home");
             }
             return view('order::pages.carts.checkout', [
@@ -163,7 +163,7 @@ class CheckOutController extends Controller
         DB::beginTransaction();
         try {
             $orderNew = Order::create($order);
-            foreach($orderDetails as $order){
+            foreach($orderDetails as $key => $order){
                 $orderDetails[$key]["order_id"] = $orderNew->id;
                 $productItem =  ProductItem::find($order["product_item_id"]);
                 if($productItem->quantity < $order["quantity"]){
@@ -181,11 +181,10 @@ class CheckOutController extends Controller
             }
             DB::commit();
             if($request->method_payment == "VNPAY"){
-                return $vnPayService->create($order);
+                return $vnPayService->create($orderNew);
             }
             return redirect()->route("orders.index", ["code" => $orderNew->order_code]);
         } catch (\Exception $e) {
-            dd($e->getMessage());
             DB::rollBack();
             return back()->withInput()->with("error", "Vui lòng thử lại sau");
         }

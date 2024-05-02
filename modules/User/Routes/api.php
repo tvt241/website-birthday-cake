@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Modules\User\Http\Controllers\Api\PermissionApiController;
 use Modules\User\Http\Controllers\Api\RoleApiController;
+use Modules\User\Http\Controllers\Api\UserApiController;
 use Modules\User\Http\Controllers\Auth\LoginApiController;
 
 /*
@@ -30,4 +31,6 @@ Route::group([], function(){
     Route::get("roles/{id}/permissions", [RoleApiController::class, 'permissionByRole']);
     Route::put("roles/{id}/permissions", [RoleApiController::class, 'updatePermissionByRole']);
     Route::apiResource("roles", RoleApiController::class);
+
+    Route::apiResource("employees", UserApiController::class);
 });

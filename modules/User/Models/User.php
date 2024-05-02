@@ -3,10 +3,14 @@
 namespace Modules\User\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use Modules\Core\Models\Image;
 use Modules\User\Database\Factories\UserFactory;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -24,8 +28,24 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'phone',
         'password',
+        'is_active'
     ];
+
+    protected function password(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => $value,
+            set: fn ($value) => bcrypt($value),
+        );
+    }
+
+    public function image(): MorphOne
+    {
+        return $this->morphOne(Image::class, 'model');
+    }
+
 
     /**
      * The attributes that should be hidden for serialization.

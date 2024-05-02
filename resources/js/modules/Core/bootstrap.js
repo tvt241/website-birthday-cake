@@ -3,9 +3,7 @@ import Pusher from 'pusher-js';
 import { getItem } from './helpers/localStorageHelper';
 
 window.Pusher = Pusher;
-
-
-Pusher.logToConsole = true;
+// Pusher.logToConsole = true;
 
 window.Echo = new Echo({
     broadcaster: 'pusher',

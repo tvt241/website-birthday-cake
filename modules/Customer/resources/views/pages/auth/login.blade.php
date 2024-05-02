@@ -33,7 +33,7 @@
                 @csrf
                 <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
                     <h4 class="mb-0 me-3">Đăng nhập với </h4>
-                    <a class="h3 m-2" href="https://tvt.id.vn/auth/google">
+                    <a class="h3 m-2" href="#">
                         <i class="fa fa-google text-dark"></i>
                     </a>
 
@@ -51,7 +51,7 @@
                         Tên đăng nhập
                         <span class="text-danger"> *</span>
                     </label>
-                    <input type="text" id="username" name="username" class="form-control" value="{{ old("username", "customers@gmail.com") }}" placeholder="vd: banhngot">
+                    <input type="text" id="username" name="username" class="form-control" value="{{ old("username") }}" placeholder="vd: banhngot">
                 </div>
 
                 <div class="form-outline mb-3">
@@ -59,9 +59,9 @@
                         Mât khẩu
                         <span class="text-danger"> *</span>
                     </label>
-                    <a class="float-right text-primary" href="">Quên mật khẩu?</a>
+                    <a class="float-right text-primary" href="{{ route("forgot_password") }}">Quên mật khẩu?</a>
 
-                    <input type="password" id="password" name="password" class="form-control" value="{{ old("password", "12345678") }}" placeholder="Nhập mật khẩu">
+                    <input type="password" id="password" name="password" class="form-control" value="{{ old("password") }}" placeholder="Nhập mật khẩu">
                 </div>
                 @include("core::helpers.__show__message_basic")
                 <div class="text-center text-lg-start mt-4 pt-2">

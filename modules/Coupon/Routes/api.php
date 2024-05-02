@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Modules\Coupon\Http\Controllers\Api\CouponApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +15,4 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/coupon', function (Request $request) {
-    return $request->user();
-});
+Route::apiResource("coupons", CouponApiController::class);

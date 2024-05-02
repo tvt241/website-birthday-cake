@@ -1,6 +1,6 @@
 <template>
-    <PageHeaderTitleComponent header-title="Danh sách đơn hàng">
-        <router-link :to="{ name: 'posts.create' }"  class="btn btn-primary text-nowrap">
+    <PageHeaderTitleComponent header-title="Danh sách mã giảm giá">
+        <router-link :to="{ name: 'coupons.create' }"  class="btn btn-primary text-nowrap">
             <i class="mdi mdi-plus"></i>
             Thêm
         </router-link>
@@ -17,40 +17,42 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th>#</th>
-                                    <th>Mã đơn hàng</th>
-                                    <th>Người mua hàng</th>
-                                    <th>Kênh bán</th>
-                                    <th>Hình thức thanh toán</th>
-                                    <th>Tình trạng thanh toán</th>
+                                    <th>Mã</th>
+                                    <th>Tên</th>
+                                    <th>Còn lại</th>
+                                    <th>Trạng thái</th>
+                                    <th>Ngày bắt đầu</th>
+                                    <th>Ngày kết thúc</th>
                                     <th class="text-center">Khác</th>
                                 </tr>
                             </thead>
 
                             <tbody>
-                                <tr v-for="(order, index) in orders.data">
+                                <tr v-for="(coupon, index) in coupons.data">
                                     <td class="vertical-middle">{{ index + 1 }}</td>
-                                    <td>  {{ order.order_code }} </td>
-                                    <td>{{ order.customer_name }}</td>
-                                    <td>{{ order.order_type }}</td>
-                                    <td>{{ order.payment_method }}</td>
-                                    <td>{{ order.payment_status }}</td>
+                                    <td>{{ coupon.code }} </td>
+                                    <td>{{ coupon.name }}</td>
+                                    <td>{{ coupon.quantity + "/ " + coupon.available  }}</td>
+                                    <td>{{ coupon.active_name }}</td>
+                                    <td>{{ coupon.date_start }}</td>
+                                    <td>{{ coupon.date_end }}</td>
                                     <td>
                                         <div class="d-flex justify-content-center gap-2">
                                             <router-link 
                                                 class="btn btn-outline-info btn-sm edit square-btn"
-                                                :to="{ name: 'orders.show', params: { id: order.id }}"
+                                                :to="{ name: 'coupons.details', params: { id: coupon.id }}"
                                             >
                                                 <i class="mdi mdi-eye"></i>
                                             </router-link>
                                             <router-link 
                                                 class="btn btn-outline-warning btn-sm edit square-btn"
-                                                :to="{ name: 'orders.edit', params: { id: order.id }}"
+                                                :to="{ name: 'coupons.edit', params: { id: coupon.id }}"
                                             >
                                                 <i class="mdi mdi-pencil"></i>
                                             </router-link>
                                             <button type="button"
                                                 class="btn btn-outline-danger btn-sm delete square-btn"
-                                                @click="onShowConfirm(order.id)">
+                                                @click="onShowConfirm(coupon.id)">
                                                 <i class="mdi mdi-trash-can"></i>
                                             </button>
                                         </div>
@@ -75,19 +77,19 @@
 import { ref, reactive, onMounted } from "vue";
 import PageHeaderTitleComponent from "~/Core/components/PageHeaderTitleComponent.vue";
 import alertHelper from "~/Core/helpers/alertHelper";
-import orderApi from "~/Order/apis/orderApi";
+import couponApi from "~/Coupon/apis/couponApi";
 
-const orders = ref({});
+const coupons = ref({});
 
 const filter = reactive({
     page: 1
 });
 
-async function getOrdersPaginate(page = 1) {
+async function getCouponsPaginate(page = 1) {
     filter.page = page;
     try {
-        const response = await orderApi.getOrdersPaginate(filter);
-        orders.value = response.data;
+        const response = await couponApi.getCouponsPaginate(filter);
+        coupons.value = response.data;
     } catch (error) {
 
     }
@@ -97,22 +99,22 @@ function onShowConfirm(id) {
     alertHelper.confirmDelete()
         .then((result) => {
             if (result.isConfirmed) {
-                deletePost(id);
+                deleteCoupon(id);
             }
         })
 }
 
-async function deleteOrder(id){
+async function deleteCoupon(id){
     try {
-        await orderApi.deleteOrder(id);
-        getOrdersPaginate();
+        await couponApi.deleteCoupon(id);
+        getCouponsPaginate();
     } catch (error) {
 
     }
 }
 
 onMounted(async () => { 
-   await getOrdersPaginate();
+   await getCouponsPaginate();
 });
 
 </script>

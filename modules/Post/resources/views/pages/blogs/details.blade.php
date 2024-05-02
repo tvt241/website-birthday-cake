@@ -1,7 +1,7 @@
 @extends("core::main")
 @section("content")
 @if($is_invalid)
-    <section class="blog-details-hero set-bg" data-setbg="{{ asset("assets/img/breadcrumb.jpg") }}">
+    <section class="blog-details-hero set-bg" data-setbg="{{ asset("storage/setup/header.jpg") }}">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">

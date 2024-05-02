@@ -8,7 +8,7 @@ import { BlockQuote } from '@ckeditor/ckeditor5-block-quote';
 // import { CKFinder } from '@ckeditor/ckeditor5-ckfinder';
 // import { EasyImage } from '@ckeditor/ckeditor5-easy-image';
 import { Heading } from '@ckeditor/ckeditor5-heading';
-import { Image, ImageCaption, ImageStyle, ImageToolbar, ImageUpload, PictureEditing } from '@ckeditor/ckeditor5-image';
+import { Image, ImageCaption, ImageStyle, ImageToolbar, ImageUpload, PictureEditing, ImageResize, ImageSizeAttributes } from '@ckeditor/ckeditor5-image';
 import { Indent } from '@ckeditor/ckeditor5-indent';
 import { Link } from '@ckeditor/ckeditor5-link';
 import { List } from '@ckeditor/ckeditor5-list';
@@ -36,6 +36,8 @@ ClassicEditor.builtinPlugins = [
     // EasyImage,
     Heading,
     Image,
+    ImageResize,
+    ImageSizeAttributes,
     ImageCaption, 
     ImageStyle, 
     ImageToolbar, 

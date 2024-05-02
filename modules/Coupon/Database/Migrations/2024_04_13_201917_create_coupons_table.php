@@ -19,10 +19,15 @@ return new class extends Migration
             $table->string("code");
             $table->decimal("discount_value");
             $table->string("discount_type");
-            $table->decimal("discount_max");
+            $table->decimal("discount_max")->nullable();
             $table->integer("quantity");
-            $table->integer("limit_per_user");
-            $table->string("desc");
+            $table->integer("available");
+            $table->decimal("budget")->nullable();
+            $table->integer("limit_per_user")->nullable();
+            $table->string("desc")->nullable();
+            $table->timestamp("date_start");
+            $table->timestamp("date_end")->nullable();
+            $table->tinyInteger("is_active");
             $table->timestamps();
         });
     }

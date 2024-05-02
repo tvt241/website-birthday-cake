@@ -16,7 +16,7 @@ class UploadFileApiController extends Controller
         $prefix = "upload-files";
         try {
             $url = Storage::disk("public")->putFile($prefix, $request->upload);
-            $url = env("APP_URL") . "/storage/" . $url;
+            $url = "/storage/" . $url;
             return response()->json([
                 "url" => $url
             ]);

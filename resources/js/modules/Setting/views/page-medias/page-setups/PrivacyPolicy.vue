@@ -18,7 +18,7 @@
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { reactive, onMounted } from "vue";
 import CkeditorBasicComponent from "~/Core/components/Input/CkeditorBasicComponent.vue";
 import settingApi from "~/Setting/api/settingApi";
 
@@ -32,6 +32,7 @@ async function getConfig(){
         const response = await settingApi.getConfig("site", "privacy_policy");
         form.desc = response.data[0].value;
     } catch (error) {
+        console.log(error);
     }
 }
 

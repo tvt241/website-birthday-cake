@@ -21,7 +21,7 @@ export default [
             {
                 path: ":id",
                 component: CustomerDetails,
-                name: 'customers.show',
+                name: 'customers.details',
             },
             {
                 path: ":id/edit",

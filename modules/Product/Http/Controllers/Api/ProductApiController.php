@@ -31,7 +31,7 @@ class ProductApiController extends Controller
         // if($request->is_active){
 
         // }
-        $products = $query->paginate();
+        $products = $query->paginate(10);
         $newItems = $products->getCollection()->map(function ($product) {
             return new ProductResource($product);
         });

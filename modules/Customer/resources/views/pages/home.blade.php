@@ -69,6 +69,9 @@
     <div class="container">
         <div class="section-title product__discount__title">
             <h2>Bán chạy</h2>
+            <span class="float-right mt-md-2">
+                <a class="font-weight-bold h5 text-primary" href="{{ route("products") }}">Xem thêm</a>
+            </span>
         </div>
         <div class="row featured__filter align-items-stretch">
             @foreach ($new_products as $product)
@@ -105,6 +108,9 @@
         <div class="container">
             <div class="section-title product__discount__title">
                 <h2>Mới</h2>
+                <span class="float-right mt-md-2">
+                    <a class="font-weight-bold h5 text-primary" href="{{ route("products") }}">Xem thêm</a>
+                </span>
             </div>
             <div class="row featured__filter align-items-stretch">
                 @foreach ($new_products as $product)

@@ -18,7 +18,7 @@
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { reactive, onMounted } from "vue";
 import CkeditorBasicComponent from "~/Core/components/Input/CkeditorBasicComponent.vue";
 import settingApi from "~/Setting/api/settingApi";
 

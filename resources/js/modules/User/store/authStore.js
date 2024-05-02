@@ -2,8 +2,6 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import authApi from "../apis/authApi";
 import { getItem, removeItem, setItem } from "~/Core/helpers/localStorageHelper";
-import { useRouter } from "vue-router";
-
 
 export const useAuthStore = defineStore("authInfo", () => {
     const isLogin = ref(false);
@@ -13,11 +11,15 @@ export const useAuthStore = defineStore("authInfo", () => {
     async function setToken(data){
         setItem("token", data.access_token);
         setItem("refresh_token", data.refresh_token);
-        await getInfo();
+        await setInfo();
         return;
     }
 
-    async function getInfo(){
+    function getInfo(){
+        return authInfo.value;
+    }
+
+    async function setInfo(){
         try {
             if(isLogin.value){
                 return authInfo.value;
@@ -47,7 +49,7 @@ export const useAuthStore = defineStore("authInfo", () => {
         return menus.value;
     }
 
-    return { isLogin, getInfo, getMenus, setToken, refreshToken };
+    return { isLogin, getInfo, setInfo, getMenus, setToken, refreshToken };
 });
 
 

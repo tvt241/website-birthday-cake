@@ -3,10 +3,10 @@
         <div id="sidebar" class="sidebar sidebar-with-footer">
             <!-- Aplication Brand -->
             <div class="app-brand">
-                <a href="/index.html">
-                    <img src="images/logo.png" alt="Mono" />
-                    <span class="brand-name">MONO</span>
-                </a>
+                <router-link :to="{ name: 'pos' }">
+                    <img style="width: 110px;" :src="settings.logo" :alt="settings.name" />
+                    <!-- <span class="brand-name">{{ settings.name }}</span> -->
+                </router-link>
             </div>
             <!-- begin sidebar scrollbar -->
             <Simplebar class="sidebar-left" style="height: 100%;">
@@ -26,15 +26,24 @@
                                     <template v-for="sub_menu in menu.children">
                                         <li v-if="sub_menu.label">
                                             <router-link class="sidenav-item-link" active-class="active"
-                                                :to="'/' + sub_menu.url">
+                                                :to="{ name: sub_menu.name }">
                                                 <span class="nav-text">{{ sub_menu.label }}</span>
                                             </router-link>
                                         </li>
                                     </template>
                                 </ul>
                             </li>
-                            <li v-else="!menu.children">
-                                <router-link :to="'/' + menu.url"
+                            <li v-else-if="menu.children?.length" v-for="sub_menu in menu.children">
+                                <template v-if="sub_menu.label">
+                                    <router-link :to="{ name: sub_menu.name }"
+                                        active-class="active" class="sidenav-item-link">
+                                        <i :class="sub_menu.icon"></i>
+                                        <span class="nav-text">{{ sub_menu.label }}</span>
+                                    </router-link>
+                                </template>
+                            </li>
+                            <li v-else>
+                                <router-link :to="{ name: menu.name }"
                                     active-class="active" class="sidenav-item-link">
                                     <i :class="menu.icon"></i>
                                     <span class="nav-text">{{ menu.label }}</span>
@@ -54,8 +63,12 @@ import 'simplebar-vue/dist/simplebar.min.css';
 
 import { ref } from 'vue';
 import { useAuthStore } from '~/User/store/authStore';
+import { useSettingStore } from '~/Setting/store/settingStore';
 
 const store = useAuthStore();
+const settingStore = useSettingStore();
+
+const settings = settingStore.getSettings();
 
 const menus = ref(store.getMenus());
 

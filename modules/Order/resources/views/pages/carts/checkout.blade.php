@@ -13,7 +13,11 @@
                             <div class="col-lg-6">
                                 <div class="checkout__input">
                                     <label>Tên người nhận<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control @error('name') is-invalid @enderror" name="name">
+                                    <input type="text" 
+                                        class="form-control @error('name') is-invalid @enderror"
+                                        value="{{ old("name") }}"
+                                        name="name"
+                                    >
                                     @error('name')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
@@ -21,15 +25,23 @@
 
                                 <div class="checkout__input">
                                     <label>Số điện thoại<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control @error('phone') is-invalid @enderror" name="phone">
+                                    <input type="text" 
+                                        class="form-control @error('phone') is-invalid @enderror" 
+                                        value="{{ old("phone") }}"
+                                        name="phone"
+                                    >
                                     @error('phone')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
 
                                 <div class="checkout__input">
-                                    <label>Email<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control @error('email') is-invalid @enderror" name="email">
+                                    <label>Email</label>
+                                    <input type="text" 
+                                        class="form-control @error('email') is-invalid @enderror" 
+                                        value="{{ old("email") }}"
+                                        name="email"
+                                    >
                                     @error('email')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror

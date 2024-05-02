@@ -40,11 +40,11 @@ export default [
                         component: BusinessSetupChild,
                         name: "settings.business_setup.page_setup"
                     },
-                    // {
-                    //     path: "branch-setup",
-                    //     component: BranchSetup,
-                    //     name: "settings.business_setup.branch_setup"
-                    // },
+                    {
+                        path: "branch-setup",
+                        component: BranchSetup,
+                        name: "settings.business_setup.branch_setup"
+                    },
                     {
                         path: "notification-setup",
                         component: NotificationSetup,
@@ -61,58 +61,40 @@ export default [
                         children: [
                             {
                                 path: "",
-                                name: "settings.page-medias.page-setups",
+                                name: "settings.page_medias.page_setups",
                                 redirect: {
-                                    name: "settings.page-medias.page-setups.about_us"
+                                    name: "settings.page_medias.page_setups.about_us"
                                 },
                             },
                             {
                                 path: "about-us",
-                                name: "settings.page-medias.page-setups.about_us",
+                                name: "settings.page_medias.page_setups.about_us",
                                 component: AboutUs,
-                                meta: {
-                                    title: "setting_about_us"
-                                }
                             },
                             {
                                 path: "terms-and-condition",
-                                name: "settings.page-medias.page-setups.terms_and_condition",
+                                name: "settings.page_medias.page_setups.terms_and_condition",
                                 component: TermsAndCondition,
-                                meta: {
-                                    title: "setting_mail"
-                                }
                             },
                             {
                                 path: "privacy-policy",
-                                name: "settings.page-medias.page-setups.privacy_policy",
+                                name: "settings.page_medias.page_setups.privacy_policy",
                                 component: PrivacyPolicy,
-                                meta: {
-                                    title: "setting_privacy_policy"
-                                }
                             },
                             {
                                 path: "return-policy",
-                                name: "settings.page-medias.page-setups.return_policy",
+                                name: "settings.page_medias.page_setups.return_policy",
                                 component: ReturnPolicy,
-                                meta: {
-                                    title: "setting_return_policy"
-                                }
                             },
                             {
                                 path: "refund-policy",
-                                name: "settings.page-medias.page-setups.refund_policy",
+                                name: "settings.page_medias.page_setups.refund_policy",
                                 component: RefundPolicy,
-                                meta: {
-                                    title: "setting_refund_policy"
-                                }
                             },
                             {
                                 path: "cancellation-policy",
-                                name: "settings.page-medias.page-setups.cancellation_policy",
+                                name: "settings.page_medias.page_setups.cancellation_policy",
                                 component: CancellationPolicy,
-                                meta: {
-                                    title: "setting_cancellation_policy"
-                                }
                             },
                         ],
                     },
@@ -120,19 +102,13 @@ export default [
                         path: "social-medias",
                         name: "settings.social_media",
                         component: SocialMedia,
-                        meta: {
-                            title: "setting_social_media"
-                        }
                     },
                 ],
             },
             {
                 path: "template-setups",
-                name: "settings.template_setup",
+                name: "settings.template_setups",
                 component: SocialMedia,
-                meta: {
-                    title: "setting_social_media"
-                }
             },
             {
                 path: "system-setups",
@@ -140,9 +116,9 @@ export default [
                 children: [
                     {
                         path: "",
-                        name: "settings.system-setups",
+                        name: "settings.system_setups",
                         redirect: {
-                            name: "settings.system-setups.mail"
+                            name: "settings.system_setups.mail"
                         },
                     },
                     // {
@@ -155,23 +131,17 @@ export default [
                     // },
                     {
                         path: "mail",
-                        name: "settings.system-setups.mail",
+                        name: "settings.system_setups.mail",
                         component: MailSettingComponent,
-                        meta: {
-                            title: "setting mail"
-                        }
                     },
                     {
                         path: "notification",
-                        name: "settings.system-setups.notification",
+                        name: "settings.system_setups.notification",
                         component: NotificationSettingComponent,
-                        meta: {
-                            title: "setting notification"
-                        }
                     },
                     {
                         path: "sms",
-                        name: "settings.system-setups.sms",
+                        name: "settings.system_setups.sms",
                         component: SmsSettingComponent,
                     },
                 ],

@@ -1,6 +1,6 @@
 <template>
-    <PageHeaderTitleComponent header-title="Danh sách đơn hàng">
-        <router-link :to="{ name: 'posts.create' }"  class="btn btn-primary text-nowrap">
+    <PageHeaderTitleComponent header-title="Danh sách khách hàng">
+        <router-link :to="{ name: 'employees.create' }"  class="btn btn-primary text-nowrap">
             <i class="mdi mdi-plus"></i>
             Thêm
         </router-link>
@@ -17,40 +17,61 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th>#</th>
-                                    <th>Mã đơn hàng</th>
-                                    <th>Người mua hàng</th>
-                                    <th>Kênh bán</th>
-                                    <th>Hình thức thanh toán</th>
-                                    <th>Tình trạng thanh toán</th>
-                                    <th class="text-center">Khác</th>
+                                    <th>Tên</th>
+                                    <th>Tên đăng nhập</th>
+                                    <th>Email</th>
+                                    <th>Số điện thoại</th>
+                                    <th>Mạng xã hội</th>
+                                    <th>Trạng thái</th>
+                                    <th class="text-center">Hành động</th>
                                 </tr>
                             </thead>
 
                             <tbody>
-                                <tr v-for="(order, index) in orders.data">
+                                <tr v-for="(customer, index) in customers.data">
                                     <td class="vertical-middle">{{ index + 1 }}</td>
-                                    <td>  {{ order.order_code }} </td>
-                                    <td>{{ order.customer_name }}</td>
-                                    <td>{{ order.order_type }}</td>
-                                    <td>{{ order.payment_method }}</td>
-                                    <td>{{ order.payment_status }}</td>
+                                    <td>
+                                        <div class="media align-items-center gap-3">
+                                            <div class="avatar">
+                                                <img :src="customer.image ? customer.image : IMG_DEFAULT"
+                                                    class="rounded img-fit">
+                                            </div>
+
+                                            <div class="media-body">
+                                                <a class="text-dark" href="#">
+                                                    {{ customer.username }}
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{{ customer.full_name }}</td>
+                                    <td>{{ customer.email }}</td>
+                                    <td>{{ customer.phone }}</td>
+                                    <td>{{ customer.social }}</td>
+                                    <td>
+                                        <select class="form-control">
+                                            <option value="1">Kích hoạt</option>
+                                            <option value="0">Chưa kích hoạt</option>
+                                            <option value="2">Khóa</option>
+                                        </select>
+                                    </td>
                                     <td>
                                         <div class="d-flex justify-content-center gap-2">
                                             <router-link 
-                                                class="btn btn-outline-info btn-sm edit square-btn"
-                                                :to="{ name: 'orders.show', params: { id: order.id }}"
+                                                class="btn btn-outline-info btn-sm square-btn"
+                                                :to="{ name: 'employees.details', params: { id: customer.id }}"
                                             >
                                                 <i class="mdi mdi-eye"></i>
                                             </router-link>
                                             <router-link 
-                                                class="btn btn-outline-warning btn-sm edit square-btn"
-                                                :to="{ name: 'orders.edit', params: { id: order.id }}"
+                                                class="btn btn-outline-warning btn-sm square-btn"
+                                                :to="{ name: 'employees.edit', params: { id: customer.id }}"
                                             >
                                                 <i class="mdi mdi-pencil"></i>
                                             </router-link>
                                             <button type="button"
-                                                class="btn btn-outline-danger btn-sm delete square-btn"
-                                                @click="onShowConfirm(order.id)">
+                                                class="btn btn-outline-danger btn-sm square-btn"
+                                                @click="onShowConfirm(customer.id)">
                                                 <i class="mdi mdi-trash-can"></i>
                                             </button>
                                         </div>
@@ -74,20 +95,21 @@
 <script setup>
 import { ref, reactive, onMounted } from "vue";
 import PageHeaderTitleComponent from "~/Core/components/PageHeaderTitleComponent.vue";
+import { IMG_DEFAULT } from "~/Core/helpers/imageHelper";
 import alertHelper from "~/Core/helpers/alertHelper";
-import orderApi from "~/Order/apis/orderApi";
+import customerApi from "~/Customer/apis/customerApi";
 
-const orders = ref({});
+const customers = ref({});
 
 const filter = reactive({
     page: 1
 });
 
-async function getOrdersPaginate(page = 1) {
+async function getUsersPaginate(page = 1) {
     filter.page = page;
     try {
-        const response = await orderApi.getOrdersPaginate(filter);
-        orders.value = response.data;
+        const response = await customerApi.getCustomersPaginate(filter);
+        customers.value = response.data;
     } catch (error) {
 
     }
@@ -97,22 +119,22 @@ function onShowConfirm(id) {
     alertHelper.confirmDelete()
         .then((result) => {
             if (result.isConfirmed) {
-                deletePost(id);
+                deleteUser(id);
             }
         })
 }
 
-async function deleteOrder(id){
+async function deleteUser(id){
     try {
-        await orderApi.deleteOrder(id);
-        getOrdersPaginate();
+        await customerApi.deleteUser(id);
+        getUsersPaginate();
     } catch (error) {
 
     }
 }
 
 onMounted(async () => { 
-   await getOrdersPaginate();
+   await getUsersPaginate();
 });
 
 </script>

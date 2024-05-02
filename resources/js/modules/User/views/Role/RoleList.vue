@@ -24,7 +24,7 @@
                                         <i class="mdi mdi-key"></i>
                                     </button>
                                     <router-link 
-                                        :to="{ name: 'roles.permissions', params: { id: role.id} }"
+                                        :to="{ name: 'roles.details', params: { id: role.id} }"
                                         class="btn btn-sm btn-outline-info square-btn"
                                     >
                                         <i class="mdi mdi-key"></i>
@@ -116,10 +116,10 @@ const filter = reactive({
 // list
 const rolesPaginate = ref({});
 
-async function getRolesPaginate(page = 1) {
+async function getRoles() {
     filter.page = page;
     try {
-        const response = await roleApi.getRolesPaginate(filter);
+        const response = await roleApi.getRoles();
         rolesPaginate.value = response.data;
     } catch (error) {
     }
@@ -148,7 +148,7 @@ async function handleModelAction() {
         } else {
             await roleApi.updateRole(states.id, form);
         }
-        getRolesPaginate();
+        getRoles();
     } catch (error) {
     }
 }
@@ -157,7 +157,7 @@ async function deleteRole(id) {
     states.id = id;
     try {
         await roleApi.deleteRole(states.id);
-        getRolesPaginate();
+        getRoles();
     } catch (error) {
     }
 }
@@ -177,6 +177,6 @@ function resetData() {
 }
 
 onMounted(async () => {
-    await getRolesPaginate();
+    await getRoles();
 });
 </script>

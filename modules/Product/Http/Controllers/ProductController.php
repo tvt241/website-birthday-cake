@@ -29,13 +29,21 @@ class ProductController extends Controller
                 "is_invalid" => false,
             ]);
         }
+        if(!$product->is_active){
+            return view("product::pages.products.details", [
+                "is_invalid" => false,
+            ]);
+        }
         $variations = $product->variationsCollect();
         $items = $product->productItems()->with("image:model_id,url")->get(["id", "price", "quantity", "product_variation_id"]);
+        $products = Product::where("category_id", $product->category_id)->where("id", "<>", $product->id)->whereRelation("category", "is_active", 1)->limit(6)->latest()->get();
+        
         return view("product::pages.products.details", [
             "is_invalid" => true,
             "product" => $product,
             "variations" => $variations,
-            "items" => $items
+            "items" => $items,
+            "products" => $products
         ]);
     }
 }

@@ -15673,7 +15673,7 @@ table.dataTable thead .sorting {
 }
 @media (min-width: 992px) {
   .pagination .page-link {
-    padding: 1rem 1.3125rem;
+    /* padding: 1rem 1.3125rem; */
     font-size: 0.94rem;
   }
 }

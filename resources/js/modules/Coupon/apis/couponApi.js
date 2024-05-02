@@ -1,24 +1,24 @@
 import apiHelper from "~/Core/helpers/apiHelper";
 
 export default {
-    getOrdersPaginate: function (paramSearch = {}){
-    const url = "orders";
+    getCouponsPaginate: function (paramSearch = {}){
+    const url = "coupons";
         return apiHelper.get(url, paramSearch);
     },
-    addOrder: function(form){
-        const url = "orders";
+    addCoupon: function(form){
+        const url = "coupons";
         return apiHelper.postRaw(url, form);
     },
-    getOrder: function(id){
-        const url = `orders/${id}`;
+    getCoupon: function(id){
+        const url = `coupons/${id}`;
         return apiHelper.get(url);
     },
-    updateOrder: function(id, form){
-        const url = `orders/${id}`;
+    updateCoupon: function(id, form){
+        const url = `coupons/${id}`;
         return apiHelper.putRaw(url, form);
     },
-    deleteOrder: function(id){
-        const url = `orders/${id}`;
+    deleteCoupon: function(id){
+        const url = `coupons/${id}`;
         return apiHelper.delete(url);
     },
     // changeActiveOrder: function(id){

@@ -23,7 +23,7 @@ export default [
             {
                 path: ":id",
                 component: OrderDetails,
-                name: 'orders.show',
+                name: 'orders.details',
             },
             {
                 path: ":id/edit",
@@ -43,7 +43,7 @@ export default [
             {
                 path: ":id",
                 component: PaymentDetails,
-                name: 'payment.show',
+                name: 'payment.details',
             }
         ]
     }

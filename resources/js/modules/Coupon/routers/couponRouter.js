@@ -20,7 +20,7 @@ export default [
             {
                 path: ":id",
                 component: CouponDetails,
-                name: 'coupons.show',
+                name: 'coupons.details',
             },
             {
                 path: ":id/edit",

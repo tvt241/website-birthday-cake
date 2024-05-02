@@ -22,7 +22,7 @@
                     </div>
                     <div class="col-md-12 d-flex gap-3 justify-content-end">
                         <button type="reset" class="btn btn-secondary">Đặt lại</button>
-                        <button type="button" class="btn btn-primary" @click="submitForm">Lưu</button>
+                        <button type="button" class="btn btn-primary" @click="submitForm">Cập nhật</button>
                     </div>
                 </div>
             </div>
@@ -53,10 +53,6 @@
                     </td>
                     <td>
                         <div class="d-flex justify-content-center align-items-center gap-2">
-                            <button class="btn btn-sm btn-outline-info square-btn" type="button" data-target="#modal-category"
-                                data-toggle="modal" @click="getConfig(social.key)">
-                                <i class="mdi mdi-pencil"></i>
-                            </button>
                             <button class="btn btn-sm btn-outline-danger square-btn" @click="onShowConfirm(social.key)">
                                 <i class="mdi mdi-trash-can"></i>
                             </button>
