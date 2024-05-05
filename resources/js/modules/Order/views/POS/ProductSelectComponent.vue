@@ -14,11 +14,14 @@
                         </select>
                     </div>
                     <div class="w-100 ml-xl-2">
-                        <form id="search-form">
-                            <div class="input-group border rounded">
-                                <input type="search" class="form-control border-0" placeholder="Tên sản phẩm">
-                            </div>
-                        </form>
+                        <div class="input-group border rounded">
+                            <input
+                                type="search"
+                                @keyup="searchProductItem"
+                                class="form-control border-0" 
+                                placeholder="Tên sản phẩm"
+                            >
+                        </div>
                     </div>
                 </div>
                 <div class="card-body pt-0" id="items">
@@ -101,6 +104,16 @@ function onProductSelected(product){
     productFormat.max_quantity = productFormat.quantity;
     productFormat.quantity = 1;
     emits("productSelected", productFormat);
+}
+
+function searchProductItem(e){
+    if(e.key == "Enter"){
+
+    }
+}
+
+function getProductByBarcode(barcode){
+    
 }
 
 onMounted(() => { 

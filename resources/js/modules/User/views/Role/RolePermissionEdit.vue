@@ -4,62 +4,15 @@
             Danh sách vai trò
         </button>
     </PageHeaderTitleComponent>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="py-3">
-                    <div class="table-responsive">
-                        <table
-                            class="table table-borderless table-hover table-thead-bordered table-nowrap table-align-middle card-table text-center">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th class="border-top-0">#</th>
-                                    <th class="border-top-0">Trang</th>
-                                    <th class="border-top-0">Thêm</th>
-                                    <th class="border-top-0">Sửa</th>
-                                    <th class="border-top-0">Xem</th>
-                                    <th class="border-top-0">Xóa</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="permission in permissions">
-                                    <td>
-                                        <input type="checkbox" @click="handleActiveChild" :value="permission.name" :checked="handleCheckWithChildrenAll(permission.children)">
-                                    </td>
-                                    <td class="text-left">{{ permission.title }}</td>
-                                    <template v-if="permission.children.length">
-                                        <td v-if="temp = handleCheckChild(permission.children, 'create')">
-                                            <input :value="temp.name" @click="handleActiveParent" type="checkbox" :checked="temp.asset" name="">
-                                        </td>
-                                        <td v-else></td>
-                                        
-                                        <td v-if="temp = handleCheckChild(permission.children, 'edit')">
-                                            <input :value="temp.name" @click="handleActiveParent" type="checkbox" :checked="temp.asset" name="">
-                                        </td>
-                                        <td v-else></td>
-
-                                        <td v-if="temp = handleCheckChild(permission.children, 'show')">
-                                            <input :value="temp.name" @click="handleActiveParent" type="checkbox" :checked="temp.asset" name="">
-                                        </td>
-                                        <td v-else></td>
-
-                                        <td v-if="temp = handleCheckChild(permission.children, 'delete')">
-                                            <input :value="temp.name" @click="handleActiveParent" type="checkbox" :checked="temp.asset" id="">
-                                        </td>
-                                        <td v-else></td>
-                                    </template>
-                                    <template v-else>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </template>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="d-flex justify-content-end gap-3 mt-4 mr-2">
-                        <button type="button" class="btn btn-primary" @click="submitForm">Lưu</button>
+    <div v-for="permission in permissions">
+        <div class="card">
+            <div class="card-body">
+                <input type="checkbox" @click="handleActiveChild" :value="permission.name" :checked="handleCheckWithChildrenAll(permission.children)">
+                <label class="text-left">{{ permission.title }}</label>
+                <div class="row">
+                    <div class="col-md-3" v-for="permission in permission.children">
+                        <input :value="permission.name" @click="handleActiveParent" type="checkbox" :checked="temp.asset" id="">
+                        <label for="">{{ permission.title }}</label>
                     </div>
                 </div>
             </div>

@@ -12,6 +12,7 @@ use Modules\Product\Models\ProductItem;
 // });
 
 Route::get("products/items", [ProductItemApiController::class, "index"]);
+Route::get("products/items/{barcode}", [ProductItemApiController::class, "barcode"]);
 Route::put("products/{id}/change-active", [ProductApiController::class, "changeActive"]);
 Route::apiResource("products", ProductApiController::class);
 Route::get("categories/get-all", [ProductCategoryApiController::class, "getAll"]);

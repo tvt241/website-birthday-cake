@@ -193,7 +193,7 @@ async function onUpdateActive(id){
 function handleViewPrice(min, max){
     if(min && max){
         const minFormat = formatCurrency(min);
-        if(minFormat){
+        if(minFormat == "0"){
             return formatCurrency(max);
         }
         return `${ minFormat } - ${ formatCurrency(max) }`

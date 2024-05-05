@@ -13,12 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('comments', function (Blueprint $table) {
-            $table->id();
-            $table->string("post_id");
-            $table->string("content");
-            $table->string("comment_id");
-            $table->timestamps();
+        Schema::table('product_items', function (Blueprint $table) {
+            $table->string("barcode")->after("quantity")->nullable();
+            $table->integer("available")->after("barcode")->nullable();
         });
     }
 
@@ -29,6 +26,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('comments');
+        Schema::table('product_items', function (Blueprint $table) {
+            $table->dropColumn(['barcode', 'available']);
+        });
     }
 };

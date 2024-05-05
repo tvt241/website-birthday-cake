@@ -3,8 +3,10 @@
 namespace Modules\Product\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Product\Enums\ProductStatusEnum;
+use Modules\Product\Models\ProductItem;
 
-class ProductResource extends JsonResource
+class ProductDetailResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,12 +20,16 @@ class ProductResource extends JsonResource
             "id" => $this->id,
             "name" => $this->name,
             "slug" => $this->slug,
-            "is_active" => $this->is_active,
+            "active_name" => ProductStatusEnum::getKey($this->is_active),
             "min_price" => $this->min_price,
             "max_price" => $this->max_price,
             "category_name" => $this->category->name,
             "quantity" => $this->productItems?->sum("quantity"),
+            "available" => $this->productItems?->sum("available"),
             "image" => $this->image?->url,
+            "desc_sort" => $this->desc_sort,
+            "desc" => $this->desc,
+            "product_items" => ProductItemResource::collection($this->productItems)
         ];
     }
 }

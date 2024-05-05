@@ -4,11 +4,25 @@
     </div>
     <div class="humberger__menu__cart">
         <ul>
-            <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
+            @auth
+                <li>
+                    <a href="#">
+                        <i class="fa fa-bell"></i> 
+                        <span>1</span>
+                    </a>
+                </li>
+            @endauth
             <li>
-                <a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                <a href="{{ route("carts.index") }}">
+                    <i class="fa fa-shopping-bag"></i>
+                    <span>{{ $carts_quantity }}</span>
+                </a>
+            </li>
         </ul>
-        <div class="header__cart__price">Giá: <span>0 d</span></div>
+        <div class="header__cart__price">
+            Giá: 
+            <span>{{ $carts_price }} ₫</span>
+        </div>
     </div>
     <div class="humberger__menu__widget">
         <div class="header__top__right__language">

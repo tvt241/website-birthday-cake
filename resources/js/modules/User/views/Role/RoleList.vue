@@ -20,9 +20,6 @@
                                     </div>
                                 </span>
                                 <div class="d-flex justify-content-start align-items-center gap-2">
-                                    <button class="btn btn-sm btn-outline-info square-btn">
-                                        <i class="mdi mdi-key"></i>
-                                    </button>
                                     <router-link 
                                         :to="{ name: 'roles.details', params: { id: role.id} }"
                                         class="btn btn-sm btn-outline-info square-btn"
@@ -116,10 +113,10 @@ const filter = reactive({
 // list
 const rolesPaginate = ref({});
 
-async function getRoles() {
+async function getRolesPaginate(page = 1) {
     filter.page = page;
     try {
-        const response = await roleApi.getRoles();
+        const response = await roleApi.getRoles(filter);
         rolesPaginate.value = response.data;
     } catch (error) {
     }
@@ -148,7 +145,7 @@ async function handleModelAction() {
         } else {
             await roleApi.updateRole(states.id, form);
         }
-        getRoles();
+        getRolesPaginate();
     } catch (error) {
     }
 }
@@ -157,7 +154,7 @@ async function deleteRole(id) {
     states.id = id;
     try {
         await roleApi.deleteRole(states.id);
-        getRoles();
+        getRolesPaginate();
     } catch (error) {
     }
 }
@@ -177,6 +174,6 @@ function resetData() {
 }
 
 onMounted(async () => {
-    await getRoles();
+    await getRolesPaginate();
 });
 </script>

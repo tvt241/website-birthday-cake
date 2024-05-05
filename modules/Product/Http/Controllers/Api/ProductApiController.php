@@ -13,6 +13,7 @@ use Modules\Product\Models\Product;
 use Modules\Product\Models\ProductItem;
 use Modules\Product\Models\ProductVariation;
 use Modules\Product\Resources\ProductCategoryResource;
+use Modules\Product\Resources\ProductDetailResource;
 use Modules\Product\Resources\ProductResource;
 
 class ProductApiController extends Controller
@@ -98,6 +99,7 @@ class ProductApiController extends Controller
                     if($item["price"] > $max){
                         $max = $item["price"];
                     }
+                    $item["available"] = $item["quantity"];
                     $item["product_id"] = $productId;
                     $item["product_variation_id"] = $productVariationIds[$key];
                     $productItem = ProductItem::create($item);
@@ -116,12 +118,12 @@ class ProductApiController extends Controller
 
     public function show($id)
     {
-        $product = Product::with(["image:model_id,url", "category:id,name"])->find($id);
+        $product = Product::with(["image:model_id,url", "category:id,name", "productItems"])->find($id);
         if (!$product) {
             return $this->ErrorResponse(message: __("No Results Found."), status_code: 422);
         }
-        $product->variations = $product->variationsCollectFull();
-        return $this->SuccessResponse($product);
+
+        return $this->SuccessResponse(new ProductDetailResource($product));
     }
 
 

@@ -24,12 +24,15 @@
                         </div>
                         <div class="header__top__right__auth">
                             @auth
-                                <a href="{{ route("profile.index") }}">
+                                <a href="{{ route("profile.index") }}" title="Thông tin người dùng">
                                     {{ auth()->user()->username }}
+                                </a>
+                                <a href="{{ route("logout") }}" title="Đăng xuất">
+                                    <i class="fa fa-sign-out"></i>
                                 </a>
                             @endauth
                             @guest
-                                <a href="{{ route("login") }}"><i class="fa fa-user"></i> Đăng nhập</a>
+                                <a title="Đăng nhập" href="{{ route("login") }}"><i class="fa fa-user"></i> Đăng nhập</a>
                             @endguest
                         </div>
                     </div>
@@ -67,12 +70,14 @@
             <div class="col-lg-3">
                 <div class="header__cart">
                     <ul>
-                        <li class="header__heart__count">
-                            <a href="#">
-                                <i class="fa fa-heart"></i> 
-                                <span>0</span>
-                            </a>
-                        </li>
+                        @auth
+                            <li class="header__heart__count">
+                                <a href="#">
+                                    <i class="fa fa-bell"></i> 
+                                    <span>0</span>
+                                </a>
+                            </li>
+                        @endauth
                         <li class="header__cart__count">
                             <a href="{{ route("carts.index") }}">
                                 <i class="fa fa-shopping-bag"></i>

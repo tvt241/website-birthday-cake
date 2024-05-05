@@ -1,5 +1,15 @@
 version: '3'
 services:
+  mysql:
+    container_name: shop-mysql
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_DATABASE}
+    volumes:
+      - ./:/app
+    networks:
+      - shop-networks
   php:
     container_name: shop-php
     build:

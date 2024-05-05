@@ -5,6 +5,7 @@ namespace Modules\Product\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 use Modules\Core\Services\Image\IImageService;
 use Modules\Core\Traits\ResponseTrait;
 use Modules\Product\Http\Requests\StoreProductRequest;
@@ -71,7 +72,11 @@ class ProductItemApiController extends Controller
         return $this->SuccessResponse($items);
     }
 
-    public function barcode(Request $request){
-
+    public function barcode(Request $request, $barcode){
+        $productItem = ProductItem::where("barcode", $barcode)->first();
+        if(!$productItem){
+            throw ValidationException::withMessages(["barcode" => "Mã barcode không hợp lệ"]);
+        }
+        return $this->SuccessResponse(new Product);
     }
 }

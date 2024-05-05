@@ -14,7 +14,7 @@ trait EnumTrait
     }
 
     public static function getKey($value){
-        if(!$value){
+        if(!$value && $value !== 0){
             return null;
         }
         $cases = self::cases();

@@ -366,7 +366,7 @@ ol {
 }
 
 .header__top__right__auth a {
-	display: block;
+	/* display: block; */
 	margin-left: 10px;
 	color: #1c1c1c;
 }

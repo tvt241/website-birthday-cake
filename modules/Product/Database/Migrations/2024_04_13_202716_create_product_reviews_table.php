@@ -15,7 +15,9 @@ return new class extends Migration
     {
         Schema::create('product_reviews', function (Blueprint $table) {
             $table->id();
-
+            $table->string("product_id");
+            $table->string("content");
+            $table->tinyInteger("rate");
             $table->timestamps();
         });
     }

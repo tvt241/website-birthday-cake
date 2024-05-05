@@ -22,11 +22,11 @@ return new class extends Migration
             $table->string("address2");
             $table->string("note")->nullable();
             $table->string("order_code");
-            $table->string("payment_method")->default(0);
-            $table->string("payment_status")->default(0);
+            $table->tinyInteger("payment_method")->default(0);
+            $table->tinyInteger("payment_status")->default(0);
             $table->string("user_id")->nullable();
-            $table->string("order_type")->default(0); // POS / WEB
-            $table->string("order_channel")->default(0); // POS / WEB
+            $table->tinyInteger("order_type")->default(0); // POS / WEB
+            $table->tinyInteger("order_channel")->default(0); // POS / WEB
             $table->timestamp("order_date")->nullable();
             $table->decimal("total", 10);
             $table->decimal("amount", 10);

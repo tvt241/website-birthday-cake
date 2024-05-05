@@ -19,8 +19,27 @@ class ProductItem extends Model
         "value",
         "price_import",
         "price",
-        "quantity"
+        "quantity",
+        "barcode",
+        "available"
     ];
+
+    public function genBarCode(){
+        $productItemId = (string)$this->id;
+        $barcode = env("BARCODE_LOCALE") . env("BARCODE_COMPANY_CODE") . str_pad($productItemId, 5, "0", STR_PAD_LEFT);
+        $totalOld = 0;
+        $totalEvent = 0;
+        for($i = 0; $i < strlen($barcode); $i++){
+            if($i % 2 == 0){
+                $totalEvent += (int)$barcode[$i];
+                continue;
+            }
+            $totalOld += (int)$barcode[$i];
+        }
+        $total = $totalEvent * 3 + $totalOld;
+        $checkDigit = ($total % 10 != 0) ? 10 - ($total % 10) : 0;
+        return $barcode . $checkDigit;
+    }
 
     public function variation(){
         return $this->belongsTo(ProductVariation::class, "id");
@@ -40,10 +59,4 @@ class ProductItem extends Model
     public function product(){
         return $this->belongsTo(Product::class);
     }
-
-    
-    // protected static function newFactory()
-    // {
-    //     return \Modules\Product\Database\factories\ProductFactory::new();
-    // }
 }

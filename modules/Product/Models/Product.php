@@ -38,6 +38,7 @@ class Product extends Model
                 "laravel_cte.path",
                 "images.url as image",
                 "product_items.price_import",
+                "product_items.available",
                 "product_items.price",
                 "product_items.quantity",
             ]);

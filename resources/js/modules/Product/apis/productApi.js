@@ -9,6 +9,10 @@ export default {
         const url = "products/items";
         return apiHelper.get(url, paramSearch);
     },
+    getProductItemsByBarcode: function(barcode){
+        const url = `products/items/${barcode}`;
+        return apiHelper.get(url);
+    },
     addProduct: function(form){
         const url = "products";
         return apiHelper.postRaw(url, form);
