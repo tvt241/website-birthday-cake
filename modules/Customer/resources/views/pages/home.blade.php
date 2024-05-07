@@ -16,28 +16,13 @@
     <div class="container">
         <div class="row">
             <div class="banner__slider owl-carousel">
-                <div class="col-lg-12">
-                    <div class="banner__item set-bg" data-setbg="{{ asset("storage/categories/tang-nguoi-yeu.jpg") }}">
+                @foreach ($banners as $banner)
+                    <div class="col-lg-12">
+                        <div class="banner__item set-bg" 
+                            data-setbg="{{ $banner->image ? $banner->image->url : asset("storage/categories/tang-nguoi-yeu.jpg") }}">
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-12">
-                    <div class="banner__item set-bg" data-setbg="{{ asset("storage/categories/tang-cha-me.jpg") }}">
-                    </div>
-                </div>
-                <div class="col-lg-12">
-                    <div class="banner__item set-bg" data-setbg="{{ asset("storage/categories/banh-1-tang.jpg") }}">
-                    </div>
-                </div>
-                <div class="col-lg-12">
-                    <div class="banner__item set-bg" data-setbg="{{ asset("storage/categories/tang-chong-anh-em-trai.jpg") }}">
-                    </div>
-                </div>
-               
-                <div class="col-lg-12">
-                    <div class="banner__item set-bg" data-setbg="{{ asset("storage/categories/tang-sep-doi-tac.jpg") }}">
-                    </div>
-                </div>
-                
+                @endforeach                
             </div>
         </div>
     </div>    
@@ -65,7 +50,7 @@
 </section>
 
 <section class="featured spad">
-    @if(isset($new_products) && $new_products->count())
+    @if(isset($product_best_sales) && $product_best_sales->count())
     <div class="container">
         <div class="section-title product__discount__title">
             <h2>Bán chạy</h2>
@@ -74,7 +59,7 @@
             </span>
         </div>
         <div class="row featured__filter align-items-stretch">
-            @foreach ($new_products as $product)
+            @foreach ($product_best_sales as $product)
                 <div class="col-lg-2 col-md-3 col-sm-6 col-6 my-1">
                     <div class="featured__item h-100 shadow">
                         <div class="featured__item__pic set-bg" data-setbg="{{ $product->image ? $product->image->url : asset("assets/img/img-default.jpg") }}">
@@ -104,7 +89,7 @@
 </section>
 
 <section class="featured spad">
-    @if(isset($new_products) && $new_products->count())
+    @if(isset($product_news) && $product_news->count())
         <div class="container">
             <div class="section-title product__discount__title">
                 <h2>Mới</h2>
@@ -113,7 +98,7 @@
                 </span>
             </div>
             <div class="row featured__filter align-items-stretch">
-                @foreach ($new_products as $product)
+                @foreach ($product_news as $product)
                     <div class="col-lg-2 col-md-3 col-sm-6 col-6 my-1">
                         <div class="featured__item h-100 shadow">
                             <div class="featured__item__pic set-bg" data-setbg="{{ $product->image ? $product->image->url : asset("assets/img/img-default.jpg") }}">
@@ -143,7 +128,7 @@
 </section>
 
 <section class="featured spad">
-    @if(isset($new_posts) && $new_posts->count())
+    @if(isset($post_news) && $post_news->count())
         <div class="container">
             <div class="section-title product__discount__title">
                 <h2>Tin tức</h2>
@@ -152,7 +137,7 @@
                 </span>
             </div>
             <div class="row featured__filter align-items-stretch align-items-stretch">
-                @foreach ($new_posts as $post)
+                @foreach ($post_news as $post)
                     <div class="col-xl-2 col-lg-3 col-md-3 col-sm-4 col-6">
                         <div class="blog__item h-100 shadow">
                             <div class="featured__item__pic">

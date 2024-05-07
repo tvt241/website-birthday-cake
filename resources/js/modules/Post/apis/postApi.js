@@ -22,7 +22,7 @@ export default {
         return apiHelper.delete(url);
     },
     changeActivePost: function(id){
-        const url = `posts/${id}`;
+        const url = `posts/${id}/change-active`;
         return apiHelper.put(url);
     },
 }

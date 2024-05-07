@@ -17,7 +17,8 @@ class RegisterController extends Controller
     public function handleRegister(RegisterCustomerRequest $request)
     {
         $customer = $request->validated();
-        $customer["is_active"] = 1;
+        $customer["is_active"] = 0;
+        $customer["name"] = $request->username;
         $customer = Customer::create($customer);
         if(!$customer){
             $error = "Vui lòng thử lại sau";

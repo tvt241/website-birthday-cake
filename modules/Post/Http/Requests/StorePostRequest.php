@@ -16,11 +16,19 @@ class StorePostRequest extends FormRequest
         return [
             "name" => "required|max:100",
             "slug" => "|regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/|unique:posts,slug|max:100",
-            "category_id" => "nullable|exists:post_categories,id",
+            "category_id" => "required|exists:post_categories,id",
             "desc_sort" => "nullable",
             "desc" => "nullable",
             "is_active" => "nullable|boolean",
             "image" => "nullable|file|image",
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            "category_id" => "Danh mục bài viết",
+            "image" => "Hình ảnh"
         ];
     }
 

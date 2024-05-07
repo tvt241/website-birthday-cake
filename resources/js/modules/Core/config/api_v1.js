@@ -29,13 +29,12 @@ instance.interceptors.response.use(
         const store = useLoadingStore();
         store.hideLoading();
         if (response.status === 200) {
-            const method = response.config.method;
             const headers = response.config.headers;
 
-            if(method == "post" && headers["X-Action"] == "create"){
+            if(headers["X-Action"] == "create"){
                 alertHelper.success("Thêm thành công");
             }
-            else if(method == "put" && headers["X-Action"] == "edit"){
+            else if(headers["X-Action"] == "edit"){
                 alertHelper.success("Cập nhật thành công");
             }
             return response.data;
@@ -52,13 +51,12 @@ instance.interceptors.response.use(
                 msg = error.response.data.msg;
                 return;
             }
-            const method = error.config.method;
             const message = error.response.data.message;
             const headers = error.config.headers;
-            if(method == "post" && headers["X-Action"] == "create"){
+            if(headers["X-Action"] == "create"){
                 alertHelper.error("Thêm thất bại", message);
             }
-            else if(method == "put" && headers["X-Action"] == "edit"){
+            else if(headers["X-Action"] == "edit"){
                 alertHelper.error("Cập nhật thất bại", message);
             }
         }

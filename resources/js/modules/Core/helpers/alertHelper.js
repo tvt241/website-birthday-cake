@@ -18,15 +18,16 @@ export default {
             timer: 1500
         })
     },
-    confirmDelete: function (title) {
+    confirmDelete: function (title = "Bạn có chắc không", text = "Bạn sẽ không thể hoàn tác") {
         return Swal.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
+            title,
+            text,
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!"
+            confirmButtonText: "Đồng ý",
+            cancelButtonText: "Hủy"
         })
     }
 };

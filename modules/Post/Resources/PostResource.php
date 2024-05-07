@@ -14,12 +14,14 @@ class PostResource extends JsonResource
      */
     public function toArray($request)
     {
+        $category = $this->category;
         return [
             "id" => $this->id,
             "name" => $this->name,
             "slug" => $this->slug,
             "is_active" => $this->is_active,
-            "category_name" => $this->category->name,
+            "category_name" => $category->name,
+            "category_id" => $category->id,
             "image" => $this->image?->url,
             "desc_sort" => $this->desc_sort,
             "desc" => $this->desc,

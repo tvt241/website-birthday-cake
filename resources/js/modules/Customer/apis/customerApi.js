@@ -21,8 +21,11 @@ export default {
         const url = `customers/${id}`;
         return apiHelper.delete(url);
     },
-    // changeActiveCustomer: function(id){
-    //     const url = `customers/${id}`;
-    //     return apiHelper.put(url);
-    // },
+    changeActiveCustomer: function(id, is_active){
+        const form = {
+            is_active
+        }
+        const url = `customers/${id}/change-active`;
+        return apiHelper.put(url, form);
+    },
 }

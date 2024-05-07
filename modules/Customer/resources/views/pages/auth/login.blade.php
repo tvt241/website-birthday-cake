@@ -33,11 +33,11 @@
                 @csrf
                 <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
                     <h4 class="mb-0 me-3">Đăng nhập với </h4>
-                    <a class="h3 m-2" href="#">
+                    <a class="h3 m-2" href="{{ route("social.login", ["social" => "google"]) }}">
                         <i class="fa fa-google text-dark"></i>
                     </a>
 
-                    <a class="h3 m-2" href="#">
+                    <a class="h3 m-2" href="{{ route("social.login", ["social" => "facebook"]) }}">
                         <i class="fa fa-facebook-square text-dark"></i>
                     </a>
                 </div>

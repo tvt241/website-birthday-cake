@@ -51,6 +51,63 @@ class ProductItem extends Model
             ->first(["id", "name", "value", "product_variation_id"]);
     }
 
+    public function variationsToArray()
+    {
+        $variation = $this->variationsCollect();
+        if($variation->name == "default"){
+            return null;
+        }
+        $variations = [
+            [
+                "name" => $variation->name,
+                "value" => $variation->value,
+            ]
+        ];
+        if($variation->ancestors->count()){
+            foreach($variation->ancestors as $variation_parent){
+                array_unshift($variations, [
+                    "name" => $variation_parent->name,
+                    "value" => $variation_parent->value,
+                ]);
+            }
+        }
+        return $variations;
+    }
+
+    public function variationString() : Attribute
+    {
+        $variations = $this->variationsToArray();
+        $variationString = "";
+        if($variations){
+            foreach($variations as $key => $variation){
+                $variationString .= $variation['value'];
+                if($key != sizeof($variations) - 1){
+                    $variationString .= ", ";
+                }
+            }
+        }
+        return Attribute::make(
+            get: fn () => $variationString,
+        );
+    }
+
+    public function variationFullString() : Attribute
+    {
+        $variations = $this->variationsToArray();
+        $variationString = "";
+        if($variations){
+            foreach($variations as $key => $variation){
+                $variationString .= $variation['name'] . ": " . $variation['value'];
+                if($key != sizeof($variations) - 1){
+                    $variationString .= ", ";
+                }
+            }
+        }
+        return Attribute::make(
+            get: fn () => $variationString,
+        );
+    }
+
     public function image(): MorphOne
     {
         return $this->morphOne(Image::class, 'model');

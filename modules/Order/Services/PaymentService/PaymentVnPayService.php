@@ -50,7 +50,6 @@ class PaymentVnPayService implements IPaymentService
             "vnp_ExpireDate"=> now()->addMinutes(3)->format("YmdHis"),
         ];
         $vnp_Url = $this->secureHash($inputData);
-        header('Location: ' . $vnp_Url);
-        die();
+        return $vnp_Url;
     }
 }

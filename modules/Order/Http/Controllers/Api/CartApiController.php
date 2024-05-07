@@ -22,7 +22,7 @@ class CartApiController extends Controller
         if(!$productItem){
             return $this->ErrorResponse("Sản phẩm không tồn tại hoặc đã bị xóa", 422);
         }
-        if($productItem->quantity < $request->quantity){
+        if($productItem->available < $request->quantity){
             return $this->ErrorResponse("Số lượng sản phẩm không đủ", 422);
         }
         $message = "Sản phẩm đã được thêm vào giỏ hàng";
@@ -36,54 +36,26 @@ class CartApiController extends Controller
                 foreach ($carts as $key => $cart){
                     if($cart->product_item_id == $request->product_item_id){
                         $flag = true;
-                        if($cart->quantity + $request->quantity >= $productItem->quantity){
+                        if($cart->quantity + $request->quantity >= $productItem->available){
                             $message = "Sản phẩm đã đạt tối đa";
-                            $carts[$key]->quantity = $productItem->quantity;
+                            $carts[$key]->quantity = $productItem->available;
                         }
                         else{
                             $carts[$key]->quantity += $request->quantity;
                         }
-                        $carts[$key]->price = $productItem->price;
                     }
-                    $totalPrice += $carts[$key]->price * $carts[$key]->quantity;
+                    $productItemByCart = ProductItem::find($cart->product_item_id);
+                    $totalPrice += $productItemByCart->price * $carts[$key]->quantity;
                 }
             }
             if(!$flag){
                 $cart = [
                     "product_item_id" => $request->product_item_id,
                     "quantity" => $request->quantity,
-                    "price" => $productItem->price,
                     "id" => rand(1000, 9999)
                 ];
-                $product = $productItem->product;
-
-                $cart["name"] = $product->name;
-                $cart["slug"] = $product->slug;
-
-                $variationInfo = $productItem->variationsCollect();
-                $variation = [];
-                if($variationInfo->name != "default"){
-                    $cart["image"]  = $productItem->image?->url;
-                    $variation[] = (object)[
-                        "name" => $variationInfo->name,
-                        "value" => $variationInfo->value
-                    ];
-                    if($variationInfo->ancestors->count()){
-                        foreach($variationInfo->ancestors as $variationParent){
-                            $variation[] = (object)[
-                                "name" => $variationParent->name,
-                                "value" => $variationParent->value
-                            ];
-                        }
-                    }
-                }
-                else{
-                    $cart["image"]  = $productItem->product->image?->url;
-                }
-                $cart["variation"] = $variation;
                 $carts[] = (object)$cart;
-
-                $totalPrice +=  $productItem->price * $request->quantity;
+                $totalPrice += $productItem->price * $request->quantity;
             }
             session()->put("carts", $carts);
             $data = [
@@ -95,9 +67,9 @@ class CartApiController extends Controller
         
         $cart = auth()->user()->carts()->where("product_item_id", $productItem->id)->first();
         if($cart){
-            if($cart->quantity + $request->quantity >= $productItem->quantity){
+            if($cart->quantity + $request->quantity >= $productItem->available){
                 $message = "Sản phẩm đã đạt tối đa";
-                $cart->quantity = $productItem->quantity;
+                $cart->quantity = $productItem->available;
             }
             else{
                 $cart->quantity += $request->quantity;
@@ -134,21 +106,20 @@ class CartApiController extends Controller
             $data = [
                 "total_product" => sizeof($carts)
             ];
-
             if($sizeCart){
                 foreach ($carts as $key => $cart){
+                    $productItem = ProductItem::find($cart->product_item_id);
                     if($id == $cart->id){
                         $flag = true;
-                        $productItem = ProductItem::find($cart->product_item_id);
 
-                        if($request->quantity >= $productItem->quantity) $carts[$key]->quantity = $productItem->quantity;
+                        if($request->quantity >= $productItem->available) $carts[$key]->quantity = $productItem->available;
                         else $carts[$key]->quantity = $request->quantity;
 
                         $carts[$key]->price = $productItem->price;
                         $data["quantity"] = $carts[$key]->quantity;
-                        $data["price"] = $carts[$key]->quantity * $carts[$key]->price;
+                        $data["price"] = $carts[$key]->quantity * $productItem->price;
                     }
-                    $totalPrice += $carts[$key]->quantity * $carts[$key]->price;
+                    $totalPrice += $carts[$key]->quantity * $productItem->price;
                 }
             }
             if(!$flag){
@@ -168,7 +139,7 @@ class CartApiController extends Controller
         }
         $productItem = ProductItem::find($cart->product_item_id);
 
-        if($request->quantity >= $productItem->quantity) $cart->quantity = $productItem->quantity;
+        if($request->quantity >= $productItem->available) $cart->quantity = $productItem->available;
         else $cart->quantity = $request->quantity;
 
         $cart->update();
@@ -214,6 +185,7 @@ class CartApiController extends Controller
             $message = "Sản phẩm đã được xóa khỏi giỏ hàng";
             return $this->SuccessResponse($data, $message);
         }
+        
         $user = auth()->user();
         $cart = $user->carts()->find($id);
         if(!$cart){

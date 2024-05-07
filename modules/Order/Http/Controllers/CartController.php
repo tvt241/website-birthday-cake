@@ -25,57 +25,50 @@ class CartController extends Controller
                     "carts" => $carts
                 ]);
             }
-            $cartIds = collect($carts)->pluck("product_item_id");
-            $cartIdsString = implode(',',array_fill(0, count($cartIds), '?'));
-            $productItems = ProductItem::whereIn("id", $cartIds)->with(["image", "product"])->orderByRaw("field(id,{$cartIdsString})", $cartIds)->get();   
-            foreach($productItems as $key => $item){
-                if($item->quantity < $carts[$key]->quantity){
-                    $carts[$key]->quantity = $item->quantity;
+            $cartTemp = [];
+            foreach($carts as  $key => $cart){
+                $productItem = ProductItem::find($cart->product_item_id);
+                if($productItem->available < $carts[$key]->quantity){
+                    $carts[$key]->quantity = $productItem->available;
                 }
-                $carts[$key]->price = $item->price;
-                $carts[$key]->max_quantity = $item->quantity;
+                $product = $productItem->product;
+                $cartTemp[$key] = $cart;
+                $cartTemp[$key]->name = $product->name;
+                $cartTemp[$key]->slug = $product->slug;
+                $cartTemp[$key]->info = $productItem->variation_full_string;
+                $cartTemp[$key]->image = $cartTemp[$key]->info ? $productItem->image?->url : $product->image?->url;
+                $cartTemp[$key]->price = $productItem->price;
+                $cartTemp[$key]->max_quantity = $productItem->available;
             }
             session()->put("carts", $carts);
+            return view("order::pages.carts.details",[
+                "carts" => $cartTemp
+            ]);
         }
-        else{
-            $carts = auth()->user()->carts;
-            if(!$carts->count()){
-                return view("order::pages.carts.details",[
-                    "carts" => $carts
-                ]);
-            }
-            $cartIds = $carts->pluck("product_item_id");
-            $cartIdsString = implode(',',array_fill(0, count($cartIds), '?'));
-            $productItems = ProductItem::whereIn("id", $cartIds)->with(["image", "product"])->orderByRaw("field(id,{$cartIdsString})", $cartIds)->get();
-            foreach($productItems as $key => $item){
-                if($item->quantity < $carts[$key]->quantity){
-                    $carts[$key]->quantity = $item->quantity;
-                }
-                $carts[$key]->price = $item->price;
-                $carts[$key]->name = $item->product->name;
-                $carts[$key]->slug = $item->product->slug;
-                $carts[$key]->image = $item->image?->url;
 
-                $variationInfo = $item->variationsCollect();
-                $variation = [];
-                if($variationInfo->name != "default"){
-                    $variation[] = (object)[
-                        "name" => $variationInfo->name,
-                        "value" => $variationInfo->value
-                    ];
-                    if($variationInfo->ancestors->count()){
-                        foreach($variationInfo->ancestors as $variationParent){
-                            $variation[] = (object)[
-                                "name" => $variationParent->name,
-                                "value" => $variationParent->value
-                            ];
-                        }
-                    }
-                }
-                $carts[$key]->variation = $variation;
-            }
-
+        $carts = auth()->user()->carts;
+        if(!$carts->count()){
+            return view("order::pages.carts.details",[
+                "carts" => $carts
+            ]);
         }
+        $cartTemp = [];
+        foreach($carts as $key => $cart){
+            $productItem = ProductItem::find($cart->product_item_id);
+            if($productItem->available < $carts[$key]->quantity){
+                $carts[$key]->quantity = $productItem->available;
+                $cart->save();
+            }
+            $product = $productItem->product;
+            $cartTemp[$key] = $cart;
+            $cartTemp[$key]->name = $product->name;
+            $cartTemp[$key]->slug = $product->slug;
+            $cartTemp[$key]->info = $productItem->variation_full_string;
+            $cartTemp[$key]->image = $cartTemp[$key]->info ? $productItem->image?->url : $product->image?->url;
+            $cartTemp[$key]->price = $productItem->price;
+            $cartTemp[$key]->max_quantity = $productItem->available;
+        }
+        
         return view("order::pages.carts.details",[
             "carts" => $carts
         ]);

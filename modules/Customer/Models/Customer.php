@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\DB;
 use Modules\Core\Models\Image;
+use Modules\Customer\Enums\CustomerStatusEnum;
 use Modules\Order\Models\Cart;
 use Modules\Order\Models\Order;
 
@@ -18,13 +19,12 @@ class Customer extends Authenticatable
 
     protected $fillable = [
         "username",
-        "first_name",
-        "last_name",
+        "name",
         "password",
+        "birthday",
         "gender",
         "phone",
         "email",
-        "last_name",
         "social",
         "is_active"
     ];
@@ -62,6 +62,33 @@ class Customer extends Authenticatable
         ->get();
         return $carts;
     }
+
+    protected function birthdayHuman(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->birthday?->format("d-m-Y"),
+        );
+    }
+
+    protected function activeName(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => CustomerStatusEnum::getKey($this->is_active),
+        );
+    }
+
+    protected function age(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => now()->diffInYears($this->birthday),
+        );
+    }
+
+
+
+    protected $casts = [
+        'birthday' => 'datetime',
+    ];
     
     // protected static function newFactory()
     // {

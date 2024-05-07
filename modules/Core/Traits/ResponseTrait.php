@@ -12,11 +12,12 @@ trait ResponseTrait
         ], $status_code);
     }
 
-    public function ErrorResponse($message = "error", $status_code = 400, $data = []){
+    public function ErrorResponse($message = "error", $status_code = 400, $data = [], $is_reload = false){
         return response([
             "status_code" => $status_code,
             "data" => $data,
-            "message" => __($message)
+            "message" => __($message),
+            "is_reload" => $is_reload
         ], $status_code);
     }
 }

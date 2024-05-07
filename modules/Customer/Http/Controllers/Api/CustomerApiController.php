@@ -5,16 +5,13 @@ namespace Modules\Customer\Http\Controllers\Api;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 use Modules\Core\Traits\ResponseTrait;
-use Modules\Customer\Enums\CustomerKeyLoginEnum;
-use Modules\Customer\Http\Requests\LoginCustomerRequest;
 use Modules\Customer\Models\Customer;
 use Modules\Customer\Resources\CustomerResource;
 use Illuminate\Validation\ValidationException;
 use Modules\Core\Services\Image\ImageService;
+use Modules\Customer\Http\Requests\CustomerActiveRequest;
 use Modules\Customer\Http\Requests\StoreCustomerRequest;
 use Modules\Order\Enums\OrderStatusEnum;
 
@@ -92,6 +89,15 @@ class CustomerApiController extends Controller
         }
     }
 
+    public function changeActive(CustomerActiveRequest $request, $id)
+    {
+        $post = Customer::find($id);
+        if (!$post) {
+            return $this->ErrorResponse(message: __("No Results Found."), status_code: 422);
+        }
+        $post->update(["is_active" => $request->is_active]);
+        return $this->SuccessResponse();
+    }
     /**
      * Remove the specified resource from storage.
      * @param int $id

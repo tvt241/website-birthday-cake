@@ -18,7 +18,8 @@ class CustomerResource extends JsonResource
         return [
             "id" => $this->id,
             "username" => $this->username,
-            "full_name" => "$this->first $this->last_name",
+            "full_name" => $this->name,
+            "email" => $this->email,
             "phone" => $this->phone,
             "birthday" => $this->birthday?->format("d-m-Y"),
             "social" => CustomerSocialEnum::getKey($this->social),

@@ -5,15 +5,21 @@ namespace Modules\Order\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Customer\Enums\CustomerStatusEnum;
 use Modules\Order\Enums\PaymentStatusEnum;
 use Modules\Order\Models\Order;
 use Modules\Order\Models\Payment;
 use Modules\Order\Services\PaymentService\VnPayService;
+use Modules\Product\Models\ProductItem;
 use PDO;
 
 class PaymentController extends Controller
 {
     public function payment(Request $request){
+        $data = [];
+        $data["payment_status"] = PaymentStatusEnum::DONE;
+        $message = "Thanh toán đơn hàng thành công. Cảm ơn bạn đã sử dụng website của chúng tôi";
+
         switch ($request->name) {
             case 'VNPAY':
                 $payment = [
@@ -31,22 +37,27 @@ class PaymentController extends Controller
                     $message = "Không tìm thấy đơn hàng. Vui lòng liên hệ nhà cung cấp";
                     return redirect()->route("orders.index", ["code" => $request->vnp_OrderInfo])->with("error", $message);
                 }
-                $data = [];
-                if($order->amount == $request->vnp_Amount / 100){ 
-                    $data["payment_status"] = PaymentStatusEnum::DONE;
-                    $message = "Thanh toán đơn hàng thành công. Cảm ơn bạn đã sử dụng website của chúng tôi";
-                }
-                else{          
+                if($order->amount != $request->vnp_Amount / 100){ 
                     $data["payment_status"] = PaymentStatusEnum::LACK;
                     $message = "Ồ có vẻ như bạn đã thanh toán thiếu! Bạn nên thanh toán nốt phần tiền còn thiếu";
+                    $order->update($data);
+                    return redirect()->route("orders.index", ["code" => $request->vnp_OrderInfo])->with("message", $message);
                 }
-                $order->update($data);
-                return redirect()->route("orders.index", ["code" => $request->vnp_OrderInfo])->with("message", $message);
                 break;
             default:
                 # code...
                 break;
         }
-        return; 
+        $orderDetails = $order->orderDetails;
+        $isLogin = auth()->check();
+        if(!$isLogin || $isLogin && auth()->user()->is_active != CustomerStatusEnum::VERIFIED->value){
+            foreach($orderDetails as $orderDetail){
+                $productItem = ProductItem::find($orderDetail->product_item_id);
+                $productItem->available -= $orderDetail->quantity;
+                $productItem->save();
+            }
+        }
+        $order->update($data);
+        return redirect()->route("orders.index", ["code" => $request->vnp_OrderInfo])->with("message", $message);
     }
 }

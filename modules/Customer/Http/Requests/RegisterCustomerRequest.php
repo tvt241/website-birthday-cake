@@ -16,7 +16,7 @@ class RegisterCustomerRequest extends FormRequest
     {
         return [
             "username" => "required|unique:customers,username",
-            "password" => "required",
+            "password" => "required|min:6",
             "re-password" => "required|same:password",
         ];
     }

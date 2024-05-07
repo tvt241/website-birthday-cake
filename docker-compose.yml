@@ -6,8 +6,10 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
       - MYSQL_DATABASE=${DB_DATABASE}
+    ports:
+      - "3307:3306"
     volumes:
-      - ./:/app
+      - ./mysql:/var/lib/mysql
     networks:
       - shop-networks
   php:

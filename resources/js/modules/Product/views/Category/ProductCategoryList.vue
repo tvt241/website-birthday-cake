@@ -25,7 +25,8 @@
                             </thead>
                             <tbody>
                                 <ProductCategoryChildComponent :categories="categoriesPaginate.data"
-                                    @show-confirm="onShowConfirm" @show-edit="getCategory"
+                                    @show-confirm="onShowConfirm" 
+                                    @show-edit="getCategory"
                                     @handle-toggle-child="handleToggleChild" 
                                     @change-active="onUpdateActive"
                                 />
@@ -77,8 +78,17 @@
                             <input type="" class="form-control" v-model="form.slug" id="category-slug">
                         </div>
                         <div class="form-group">
+                            <label for="category-desc">
+                                Hiển thị
+                            </label>
+                            <select class="form-control" v-model="form.is_active" id="category-desc">
+                                <option value="1">Hiển thị</option>
+                                <option value="0">Ẩn</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <div class="text-center">
-                                <img width="105" class="rounded-10 border" id="viewer" :src="states.image" alt="image">
+                                <img width="105" class="rounded-10 border" id="viewer" :on-error="IMG_DEFAULT" :src="states.image" alt="image">
                             </div>
                             <label>Ảnh</label>
                             <div class="custom-file">
@@ -94,18 +104,13 @@
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" @click="resetData" class="btn btn-warning btn-reset">
-                        Đặt lại
-                    </button>
-                    <div class="gap-2 d-flex">
+                <div class="modal-footer gap-2">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">
                             Đóng
                         </button>
                         <button type="button" class="btn btn-primary" @click="handleModelAction">
                             {{  modelContent[states.action].button }}
                         </button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -115,7 +120,6 @@
 <script setup>
 import PageHeaderTitleComponent from "~/Core/components/PageHeaderTitleComponent.vue";
 import ProductCategoryChildComponent from './components/ProductCategoryChildComponent.vue';
-import ProductCategoryFilterComponent from './components/ProductCategoryFilterComponent.vue';
 import ProductCategoryOptionComponent from './components/ProductCategoryOptionComponent.vue';
 import { Bootstrap4Pagination } from 'laravel-vue-pagination';
 import alertHelper from "~/Core/helpers/alertHelper";
@@ -123,7 +127,6 @@ import alertHelper from "~/Core/helpers/alertHelper";
 import { ref, reactive, onMounted } from "vue";
 import imageHelper, { IMG_DEFAULT } from "~/Core/helpers/imageHelper";
 import categoryApi from "../../apis/productCategoryApi";
-import toastHelper from "~/Core/helpers/toastHelper";
 import inputHelper from "~/Core/helpers/inputHelper";
 
 // config
@@ -177,18 +180,13 @@ async function getCategory(id) {
     states.action = "edit";
     try {
         const response = await categoryApi.getCategory(id);
-        if (response.data.image.url) {
-            states.image = response.data.image.url;
-        }
-        else{
-            states.image = IMG_DEFAULT;
-        }
+        states.image = response.data.image;
         const data = response.data;
         form.name = data.name;
         form.slug = data.slug;
         form.category_id = data.category_id ? data.category_id : "";
         form.description = data.description;
-
+        form.image = {};
     } catch (error) {
     }
 }
@@ -199,6 +197,7 @@ const form = reactive({
     slug: "",
     image: {},
     description: "",
+    is_active: "1"
 });
 
 async function handleModelAction() {

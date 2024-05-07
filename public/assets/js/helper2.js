@@ -79,14 +79,16 @@ function alertError(text = "Thất bại"){
     });
 }
 
-function alertConfirm(text, text_delete = "Có", ){
-    return swalBs.fire({
-        title:"Bạn có muốn",
-        text: text,
+function alertConfirm(title = "Bạn có chắc không", text = "Bạn sẽ không thể hoàn tác") {
+    return Swal.fire({
+        title,
+        text,
         icon: "warning",
         showCancelButton: true,
-        confirmButtonText: text_delete,
-        cancelButtonText: text_delete,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Đồng ý",
+        cancelButtonText: "Hủy"
     })
 }
 

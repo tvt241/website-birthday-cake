@@ -23,7 +23,7 @@ export default {
     },
 };
 
-export const IMG_DEFAULT = "/assets/img/img-default.jpg";
+export const IMG_DEFAULT = '/assets/img/img-default.jpg';
 
 export const IMG_FOLDER = "/assets/img/";
 

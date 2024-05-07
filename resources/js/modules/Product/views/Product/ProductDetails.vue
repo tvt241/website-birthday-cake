@@ -66,9 +66,9 @@
                     <tr v-for="(item) in items">
                         <template v-if="product.is_variation">
                             <td>
-                                <img width="50" :src="item.image" alt="">
+                                <img width="50" :on-error="IMG_DEFAULT" :src="item.image" alt="">
                             </td>
-                            <td   class="text-center align-middle" v-for="key in item.key">
+                            <td class="text-center align-middle" v-for="key in item.key">
                                 {{ key }}
                             </td>
                         </template>
@@ -146,7 +146,7 @@ import { IMG_DEFAULT } from "~/Core/helpers/imageHelper";
 import productApi from "../../apis/productApi";
 import { useRoute } from "vue-router";
 import { formatCurrency } from "~/Core/helpers/currencyHelper";
-import BarCodeImage from "~/Core/components/BarcodeImage.vue";
+import BarCodeImage from "~/Product/components/BarcodeImage.vue";
 import printJS from "print-js";
 
 const route = useRoute();

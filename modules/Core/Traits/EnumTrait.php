@@ -28,9 +28,8 @@ trait EnumTrait
     public static function getValues(){
         $cases = self::cases();
         $enums = [];
-        foreach($cases as $key => $case){
-            $enums[$key]["name"] = __($case->name);
-            $enums[$key]["value"] = $case->value;
+        foreach($cases as $case){
+            $enums[$case->value] = __($case->name);
         }
         return $enums;
     }

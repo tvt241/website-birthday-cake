@@ -734,5 +734,8 @@
     "error": "Thất bại",
     "ACTIVATE": "Kích hoạt",
     "DEACTIVATE": "Không kích hoạt",
-    "AFTER": "Sau"
+    "AFTER": "Sau",
+    "NOTVERIFIED": "Chưa xác thực",
+    "VERIFIED": "Đã xác thực",
+    "BLOCK": "Bị khóa"
 }

@@ -64,7 +64,7 @@
                                     <td>
                                         <div>
                                             <label class="switcher">
-                                                <input class="switcher_input" type="checkbox" :checked="post.is_active">
+                                                <input class="switcher_input" @click="changeActive(post.id)" type="checkbox" :checked="post.is_active">
                                                 <span class="switcher_control"></span>
                                             </label>
                                         </div>
@@ -87,11 +87,8 @@
                                 </tr>
                             </tbody>
                         </table>
-                    </div>
-
-                    <div class="table-responsive mt-4 px-3">
-                        <div class="d-flex justify-content-lg-end">
-                        </div>
+                        <Bootstrap4Pagination :data="posts" @pagination-change-page="getPostsPaginate">
+                        </Bootstrap4Pagination>
                     </div>
                 </div>
             </div>
@@ -103,6 +100,7 @@
 <script setup>
 import { ref, reactive, onMounted } from "vue";
 import PageHeaderTitleComponent from "~/Core/components/PageHeaderTitleComponent.vue";
+import { Bootstrap4Pagination } from 'laravel-vue-pagination';
 import { IMG_DEFAULT } from "~/Core/helpers/imageHelper";
 import alertHelper from "~/Core/helpers/alertHelper";
 import postApi from "~/Post/apis/postApi";
@@ -138,6 +136,15 @@ async function deletePost(id){
         getPostsPaginate();
     } catch (error) {
 
+    }
+}
+
+
+async function changeActive(id) {
+    try {
+        const response = await postApi.changeActivePost(id);
+        getCategoriesPaginate();
+    } catch (error) {
     }
 }
 

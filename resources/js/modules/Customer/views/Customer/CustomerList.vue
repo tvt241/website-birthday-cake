@@ -17,8 +17,8 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th>#</th>
-                                    <th>Tên</th>
                                     <th>Tên đăng nhập</th>
+                                    <th>Tên</th>
                                     <th>Email</th>
                                     <th>Số điện thoại</th>
                                     <th>Mạng xã hội</th>
@@ -49,7 +49,7 @@
                                     <td>{{ customer.phone }}</td>
                                     <td>{{ customer.social }}</td>
                                     <td>
-                                        <select class="form-control">
+                                        <select class="form-control" v-model="customer.is_active" @change="confirmChange(customer.id, $event)">
                                             <option value="1">Kích hoạt</option>
                                             <option value="0">Chưa kích hoạt</option>
                                             <option value="2">Khóa</option>
@@ -124,9 +124,28 @@ function onShowConfirm(id) {
         })
 }
 
+function confirmChange(id, event){
+    alertHelper.confirmDelete()
+        .then((result) => {
+            if (result.isConfirmed) {
+                const is_active = event.target.value
+                changeActiveCustomer(id, is_active);
+            }
+        })
+}
+
 async function deleteUser(id){
     try {
         await customerApi.deleteUser(id);
+        getUsersPaginate();
+    } catch (error) {
+
+    }
+}
+
+async function changeActiveCustomer(id, is_active){
+    try {
+        await customerApi.changeActiveCustomer(id, is_active);
         getUsersPaginate();
     } catch (error) {
 

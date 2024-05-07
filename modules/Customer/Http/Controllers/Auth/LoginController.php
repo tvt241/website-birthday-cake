@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Modules\Customer\Enums\CustomerKeyLoginEnum;
+use Modules\Customer\Enums\CustomerStatusEnum;
 use Modules\Customer\Http\Requests\LoginCustomerRequest;
 use Modules\Customer\Models\Customer;
 
@@ -27,17 +28,27 @@ class LoginController extends Controller
         else if(filter_var($request->username, FILTER_VALIDATE_EMAIL)){
             $key = "email";
         }
-        $customer = Auth::guard("customer_web")->attempt([
-            $key => $request->username,
-            "password" => $request->password,
-            "social" => null,
-            "is_active" => 1,
-        ]);
+        $customer = Customer::where([
+            [$key, $request->username],
+            ["social", null],
+        ])->first();
         if(!$customer){
             $error = CustomerKeyLoginEnum::getValue($key) . " hoặc mật khẩu không chính xác";
-            $error = "Thông tin không chính xác hoặc tài khoản đã bị khóa";
             return back()->withInput()->with("error", $error);
         }
+        if(!Hash::check($request->password, $customer->password)){
+            $error = CustomerKeyLoginEnum::getValue($key) . " hoặc mật khẩu không chính xác";
+            return back()->withInput()->with("error", $error);
+        }
+        if($customer->is_active == CustomerStatusEnum::BLOCK->value){
+            $error = "Tài khoản của bạn đã bị khóa vui lòng liên hệ nhà cung cấp!";
+            return back()->withInput()->with("error", $error);
+        }
+        if($customer->is_active == CustomerStatusEnum::DELETE->value){
+            $customer->is_active = CustomerStatusEnum::NOTVERIFIED->value;
+            $customer->save();
+        }
+        Auth::loginUsingId($customer->id);
         return redirect()->route("home");
     }
 }

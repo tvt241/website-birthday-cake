@@ -87,18 +87,13 @@
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" @click="resetData" class="btn btn-warning btn-reset">
-                        Đặt lại
-                    </button>
-                    <div class="gap-2 d-flex">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                <div class="modal-footer gap-2">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
                             Đóng
                         </button>
                         <button type="button" class="btn btn-primary" @click="handleModelAction">
                             {{ modelContent[states.action].button }}
                         </button>
-                    </div>
                 </div>
             </div>
         </div>

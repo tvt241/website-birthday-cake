@@ -63,11 +63,8 @@
                                 </tr>
                             </tbody>
                         </table>
-                    </div>
-
-                    <div class="table-responsive mt-4 px-3">
-                        <div class="d-flex justify-content-lg-end">
-                        </div>
+                        <Bootstrap4Pagination :data="banners" @pagination-change-page="getBannersPaginate">
+                        </Bootstrap4Pagination>
                     </div>
                 </div>
             </div>
@@ -79,6 +76,7 @@
 <script setup>
 import { ref, reactive, onMounted } from "vue";
 import PageHeaderTitleComponent from "~/Core/components/PageHeaderTitleComponent.vue";
+import { Bootstrap4Pagination } from 'laravel-vue-pagination';
 import { IMG_DEFAULT } from "~/Core/helpers/imageHelper";
 import alertHelper from "~/Core/helpers/alertHelper";
 import bannerApi from "~/Banner/apis/bannerApi";

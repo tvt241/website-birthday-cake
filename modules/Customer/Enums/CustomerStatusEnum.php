@@ -6,7 +6,8 @@ use Modules\Core\Traits\EnumTrait;
 enum CustomerStatusEnum : int
 {
     use EnumTrait;
-    case DEACTIVATE = 0;
-    case ACTIVATE = 1;
+    case NOTVERIFIED = 0;
+    case VERIFIED = 1;
     case BLOCK = 2;
+    case DELETE = 3;
 }

@@ -14,9 +14,9 @@ class UpdatePostRequest extends FormRequest
     public function rules()
     {
         return [
-            "name" => "required|max:100",
-            "slug" => "|regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/|unique:post,slug, $this->post|max:100",
-            "category_id" => "nullable|exists:post_categories,id",
+            "name" => "required",
+            "slug" => "|regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/|unique:posts,slug, $this->post",
+            "category_id" => "required|exists:post_categories,id",
             "desc_sort" => "nullable",
             "desc" => "nullable",
             "is_active" => "nullable|boolean",

@@ -15,6 +15,7 @@ class OrderDetail extends Model
         "image",
         "info",
         "price",
+        "price_import",
         "quantity",
         "product_item_id",
         "order_id"

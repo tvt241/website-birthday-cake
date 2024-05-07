@@ -59,7 +59,7 @@ class Product extends Model
                 "images.url as image",
                 "product_items.id as product_item_id",
                 "product_items.price",
-                "product_items.quantity",
+                "product_items.available",
             ]);
         return $variations->toTree();
     }

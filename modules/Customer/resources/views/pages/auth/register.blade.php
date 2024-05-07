@@ -36,7 +36,7 @@
                         Tên đăng nhập
                         <span class="text-danger">*</span>
                     </label>
-                    <input type="text" id="username" name="username" class="form-control @error('username') is-invalid @enderror" value="" placeholder="vd: banhngot">
+                    <input type="text" id="username" name="username" class="form-control @error('username') is-invalid @enderror" value="{{ old("username") }}" placeholder="vd: banhngot">
                     @error('username')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror

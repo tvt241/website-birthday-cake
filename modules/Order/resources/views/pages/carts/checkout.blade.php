@@ -9,13 +9,14 @@
                 @csrf
                 <div class="row">
                     <div class="col-lg-6 col-md-6">
+                        @php $user = auth()->user() @endphp
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="checkout__input">
                                     <label>Tên người nhận<span class="text-danger">*</span></label>
                                     <input type="text" 
                                         class="form-control @error('name') is-invalid @enderror"
-                                        value="{{ old("name") }}"
+                                        value="{{ old("name", $user?->name) }}"
                                         name="name"
                                     >
                                     @error('name')
@@ -27,7 +28,7 @@
                                     <label>Số điện thoại<span class="text-danger">*</span></label>
                                     <input type="text" 
                                         class="form-control @error('phone') is-invalid @enderror" 
-                                        value="{{ old("phone") }}"
+                                        value="{{ old("phone", $user?->phone) }}"
                                         name="phone"
                                     >
                                     @error('phone')
@@ -39,7 +40,7 @@
                                     <label>Email</label>
                                     <input type="text" 
                                         class="form-control @error('email') is-invalid @enderror" 
-                                        value="{{ old("email") }}"
+                                        value="{{ old("email", $user?->email) }}"
                                         name="email"
                                     >
                                     @error('email')
@@ -101,8 +102,10 @@
                                     <li>
                                         <div class="row align-items-end">
                                             <div class="col-9">
-                                                {{ $cart->name }}
-                                                {{ renderVariationValue($cart->variation) }}
+                                                {{ $cart->name }} <b>x {{ $cart->quantity }}</b>
+                                                @if($cart->info)
+                                                    ( {{ $cart->info }} )
+                                                @endif
                                             </div>
                                             <div class="col-3 text-right">
                                                 <span>{{ formatCurrency($cart->quantity * $cart->price) }}</span>
@@ -126,14 +129,21 @@
                             <div class="checkout__order__total">Tổng tiền <span>{{ $carts_price }}</span></div>
                             
                             <div class="checkout__input__checkbox">
-                                <input type="radio" value="VNPAY" checked name="method_payment" id="">
-                                <label for="payment">
+                                <input type="radio" value="VNPAY" checked name="method_payment" id="VNPAY">
+                                <label for="VNPAY">
                                     Thanh toán online (VNPAY)
                                 </label>
                             </div>
+
+                            {{-- <div class="checkout__input__checkbox">
+                                <input type="radio" value="PAYOS" name="method_payment" id="PAYOS">
+                                <label for="PAYOS">
+                                    Thanh toán online (PAYOS)
+                                </label>
+                            </div> --}}
                             <div class="checkout__input__checkbox" >
-                                <input type="radio" value="COD" name="method_payment">
-                                <label for="paypal">
+                                <input type="radio" value="COD" name="method_payment" id="COD">
+                                <label for="COD">
                                     Ship Cod
                                 </label>
                             </div>

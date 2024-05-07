@@ -30,7 +30,7 @@
                     <input type="hidden" name="recaptcha_token">
                     <div class="text-right">
                         <button class="btn btn-secondary btn-cancel p-2">Huỷ</button>
-                        <button style="background-color: #f26957; border: none" class="btn btn-success p-2 btn-search-user">Tìm kiếm</button>
+                        <button class="btn btn-success p-2 btn-search-user">Tìm kiếm</button>
                     </div>
                 </div>
             </div>
@@ -41,6 +41,17 @@
 
 @push("css")
     <link rel="stylesheet" href="{{ asset("assets/css/auth.css") }}">
+    <style>
+        .btn-search-user{
+            background-color: #f26957; 
+            border: none
+        }
+
+        .btn-search-user:hover{
+            background-color: #f7361c; 
+            border: none
+        }
+    </style>
 @endpush
 
 

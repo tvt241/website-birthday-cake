@@ -40,10 +40,7 @@
                                         </div>
                                     </td>
                                     <td class="shoping__cart__info">
-                                        @for ($i = sizeof($cart->variation) - 1; $i >= 0; $i--)
-                                            <span>{{ $cart->variation[$i]->name }}: {{ $cart->variation[$i]->value }}</span>
-                                            <br>
-                                        @endfor
+                                        {{ $cart->info }}
                                     </td>
                                     <td class="shoping__cart__price">
                                         {{ formatCurrency($cart->price) }}

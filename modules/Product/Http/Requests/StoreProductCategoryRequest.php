@@ -14,10 +14,11 @@ class StoreProductCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            "name" => "required|max:50",
-            "slug" => "required|regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/|unique:product_categories,slug|max:50",
+            "name" => "required",
+            "slug" => "required|regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/|unique:product_categories,slug",
             "category_id" => "nullable|exists:product_categories,id",
             "description" => "nullable",
+            "is_active" => "nullable",
             "image" => "nullable|file|image"
         ];
     }

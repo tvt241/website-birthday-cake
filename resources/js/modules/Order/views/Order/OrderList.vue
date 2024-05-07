@@ -21,8 +21,8 @@
                                     <th>Loại đơn hàng</th>
                                     <th>Kênh bán</th>
                                     <th>Người mua hàng</th>
-                                    <th>Hình thức thanh toán</th>
-                                    <th>Tình trạng thanh toán</th>
+                                    <th>Thanh toán</th>
+                                    <th>Tình trạng</th>
                                     <th class="text-center">Khác</th>
                                 </tr>
                             </thead>
@@ -34,8 +34,8 @@
                                     <td>{{ order.order_type }} </td>
                                     <td>{{ order.order_channel }}</td>
                                     <td>{{ order.customer_name }}</td>
-                                    <td>{{ order.payment_method }}</td>
-                                    <td>{{ order.payment_status }}</td>
+                                    <td>{{ order.payment_method + " - " + order.payment_status }}</td>
+                                    <td>{{ order.status }}</td>
                                     <td>
                                         <div class="d-flex justify-content-center gap-2">
                                             <router-link 

@@ -1,5 +1,6 @@
 <template>
     <img :src="barcodeImage" :alt="props.value">
+    <p class="barcode-value">{{ props.value }}</p>
 </template>
 
 <script setup>
@@ -27,7 +28,7 @@ const barcodeImage = ref(null);
 function generateBarcode() {
     JsBarcode("#barcode", props.value, {
         format: props.format,
-        displayValue: true,
+        displayValue: false,
         width: 1,
         height: 40,
         fontSize: 10
@@ -39,3 +40,9 @@ onMounted(() => {
     generateBarcode()
 })
 </script>
+
+<style>
+    .barcode-value{
+        font-size: 12px;
+    }
+</style>

@@ -25,7 +25,7 @@
                         <div class="header__top__right__auth">
                             @auth
                                 <a href="{{ route("profile.index") }}" title="Thông tin người dùng">
-                                    {{ auth()->user()->username }}
+                                    {{ auth()->user()->name }}
                                 </a>
                                 <a href="{{ route("logout") }}" title="Đăng xuất">
                                     <i class="fa fa-sign-out"></i>
@@ -109,13 +109,20 @@
                     </div>
                     <ul style="max-height: 500px; overflow-y: auto">
                         @forelse ($categories as $category)
-                            <li>
-                                <a href="{{ route("products", ["category" => $category->slug]) }}">
-                                    {{ $category->name }}
-                                    @if($category)
-                                    @endif
-                                </a>
-                            </li>
+                            @if($category->children->count())
+                                <li class="menu-item">
+                                    @include("core::layouts.__categoriy_sub", [
+                                        "category" => $category, 
+                                        "level" => 0
+                                    ])
+                                </li>
+                            @else
+                                <li class="">
+                                    <a href="{{ route("products", ["category" => $category->slug]) }}">
+                                        {{ $category->name }}
+                                    </a>
+                                </li>
+                            @endif
                         @empty
                             <li>
                                 <a href="#">Danh mục</a>
@@ -146,3 +153,11 @@
         </div>
     </div>
 </section>
+
+@push("css")
+    <style>
+        .menu-item-sub:hover{
+
+        }
+    </style>
+@endpush

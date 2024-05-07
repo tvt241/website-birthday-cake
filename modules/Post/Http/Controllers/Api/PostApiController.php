@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Modules\Core\Services\Image\IImageService;
 use Modules\Core\Traits\ResponseTrait;
 use Modules\Post\Http\Requests\StorePostRequest;
+use Modules\Post\Http\Requests\UpdatePostRequest;
 use Modules\Post\Models\Post;
 use Modules\Post\Resources\PostResource;
 
@@ -29,7 +30,7 @@ class PostApiController extends Controller
         if($request->is_active){
 
         }
-        $posts = $query->paginate();
+        $posts = $query->latest()->paginate();
         $newItems = $posts->getCollection()->map(function ($product) {
             return new PostResource($product);
         });
@@ -62,7 +63,7 @@ class PostApiController extends Controller
         return $this->SuccessResponse(new PostResource($post));
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdatePostRequest $request, $id)
     {
         $post = Post::find($id);
         if (!$post) {

@@ -4,6 +4,7 @@ namespace Modules\Order\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Order\Enums\OrderChannelEnum;
+use Modules\Order\Enums\OrderStatusEnum;
 use Modules\Order\Enums\OrderTypeEnum;
 use Modules\Order\Enums\PaymentMethodEnum;
 use Modules\Order\Enums\PaymentStatusEnum;
@@ -26,6 +27,7 @@ class OrderResource extends JsonResource
             "order_channel" => OrderChannelEnum::getKey($this->order_channel),
             "payment_method" => PaymentMethodEnum::getKey($this->payment_method),
             "payment_status" => PaymentStatusEnum::getKey($this->payment_status),
+            "status" => OrderStatusEnum::getKey($this->status),
         ];
     }
 }

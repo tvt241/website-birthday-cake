@@ -75,24 +75,11 @@
                                     Tên khách hàng
                                 </label>
                                 <input type="text" class="form-control"
-                                    :class="{ 'is-invalid': errors.first_name }"
-                                    v-model="form.first_name" 
+                                    :class="{ 'is-invalid': errors.name }"
+                                    v-model="form.name" 
                                 >
-                                <span v-if="errors.first_name" class="invalid-feedback">
-                                    {{ errors.first_name[0] }}
-                                </span>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="input-label" for="exampleFormControlSelect1">
-                                    Họ khách hàng
-                                </label>
-                                <input type="text" class="form-control"
-                                    :class="{ 'is-invalid': errors.last_name }"
-                                    v-model="form.last_name" 
-                                >
-                                <span v-if="errors.last_name" class="invalid-feedback">
-                                    {{ errors.last_name[0] }}
+                                <span v-if="errors.name" class="invalid-feedback">
+                                    {{ errors.name[0] }}
                                 </span>
                             </div>
                         </div>
@@ -138,7 +125,7 @@
                                             :class="{ 'is-invalid': errors.image }"
                                         >
                                         <div class="upload-file__img_drag upload-file__img">
-                                            <img width="215" :src="states.image" alt="">
+                                            <img width="125" :src="states.image" alt="">
                                         </div>
                                     </div>
                                 </div>
@@ -192,6 +179,7 @@ const form = reactive({
     email: "",
     username: "",
     password: "",
+    name: "",
     gender: "",
     birthday: "",
     image: {},

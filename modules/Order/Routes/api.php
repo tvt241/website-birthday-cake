@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use Modules\Notification\Jobs\SendMailVerifyJob;
 use Modules\Order\Events\Order\OrderCreatedEvent;
 use Modules\Order\Http\Controllers\Api\OrderApiController;
+use Modules\Order\Http\Controllers\Api\ReportApiController;
 use Pusher\Pusher;
 
 /*
@@ -22,10 +23,8 @@ use Pusher\Pusher;
 */
 Route::get('/orders/keys', [OrderApiController::class, 'keys']);
 Route::apiResource('/orders', OrderApiController::class);
-
-Route::get('/test', function(){
-    SendMailVerifyJob::dispatch(2);
-});
+Route::get("reports/month-in-year", [ReportApiController::class, "reportYear"]);
+Route::get("reports/top-user", [ReportApiController::class, "reportUser"]);
 
 Route::get('/connect', function(Request $request){
     $connection = config('broadcasting.connections.pusher');
