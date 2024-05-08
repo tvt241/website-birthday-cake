@@ -36,7 +36,7 @@
                                     {{ product.name }}
                                 </div>
                                 <div class="">
-                                    {{ renderVariation(product.variation) }}
+                                    {{ product.variation }}
                                 </div>
                                 <div class="pos-product-item_price">
                                     {{ formatCurrency(product.price) }}
@@ -87,33 +87,31 @@ async function getCategories() {
     }
 }
 
-function renderVariation(variations = []){
-    let html = "";
-    const max = variations.length - 2;
-    variations.forEach((variation, index) => {
-        html += variation.value;
-        if(index == max){
-            html += ", ";
-        }
-    })
-    return html;
-}
-
 function onProductSelected(product){
     const productFormat = product;
-    productFormat.max_quantity = productFormat.quantity;
     productFormat.quantity = 1;
     emits("productSelected", productFormat);
 }
 
 function searchProductItem(e){
     if(e.key == "Enter"){
-
+        if(e.target.value.length < 12){
+            e.target.select();
+            return;
+        }
+        e.target.select();
+        getProductByBarcode(e.target.value);
+        return;
     }
 }
 
-function getProductByBarcode(barcode){
-    
+async function getProductByBarcode(barcode){
+    try {
+        const response = await productApi.getProductItemsByBarcode(barcode);
+        onProductSelected(response.data);
+    } catch (error) {
+        
+    }
 }
 
 onMounted(() => { 

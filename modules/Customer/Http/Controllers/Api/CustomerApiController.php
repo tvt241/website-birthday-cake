@@ -20,7 +20,7 @@ class CustomerApiController extends Controller
     use ResponseTrait;
     public function index(Request $request)
     {
-        $customers = Customer::query()->with(["image"])->paginate();
+        $customers = Customer::query()->with(["image"])->latest()->paginate();
         $newItems = $customers->getCollection()->map(function ($user) {
             return new CustomerResource($user);
         });
@@ -50,6 +50,9 @@ class CustomerApiController extends Controller
         $customer = $request->validated();
         if(!$request->password){
             $customer["password"] = "12345678";
+        }
+        if(!$request->username){
+            $customer["username"] = uniqid();
         }
 
         $customer = Customer::create($customer);

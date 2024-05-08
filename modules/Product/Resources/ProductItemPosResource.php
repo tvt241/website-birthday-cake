@@ -16,17 +16,14 @@ class ProductItemPosResource extends JsonResource
      */
     public function toArray($request)
     {
-        $product = $this->product;
-        $variation = $this->variationsCollect();
-
         return [
             "id" => $this->id,
-            "name" => $product->name,
-            "slug" => $product->slug,
+            "name" => $this->name,
+            "slug" => $this->slug,
             "price" => $this->price,
             "available" => $this->available,
-            "image" => $this->image?->url,
-            "variation" => ""
+            "image_url" => $this->product_item_image ? $this->product_item_image : $this->product_image,
+            "variation" => $this->variation_string
         ];
     }
 }

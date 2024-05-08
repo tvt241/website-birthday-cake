@@ -715,6 +715,7 @@
     "CANCELLED": "Đã hủy",
     "CANCELLED_SELLER": "Người bán hủy",
     "PENDING": "Chờ sử lý",
+    "UNPAID": "Chưa thanh toán",
     "PROCESSING": "Chuẩn bị hàng",
     "SHIPPED": "Đã gửi hàng",
     "IN_TRANSIT": "Đang vận chuyển",

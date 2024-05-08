@@ -256,7 +256,6 @@ const revenueData = [];
 const expenseData = [];
 const incomeData = [];
 
-
 function chartArea(data, id, group, background){
   return {
     chart: { 
@@ -311,7 +310,6 @@ function chartArea(data, id, group, background){
   }
 }
 
-
 const series = [
   {
     name: "Thu nhập",
@@ -346,8 +344,6 @@ const categories = [
 ]
 
 const colors = ["#9e6de0", "#faafca", "#f2e052"];
-
-// income-and-expenses
 
 function chartBar(series, id, categories, colors){
  return {
@@ -469,6 +465,7 @@ onMounted(async () => {
     const incomeChart = chartArea(incomeData, "#income-chart", "reports", "#6696fe");
     new ApexCharts(document.querySelector('#income-chart'), incomeChart).render();
     
+    document.querySelector('#income-and-expenses').innerHTML = "";
     const incomeAndExpensesChart = chartBar(series, '#income-and-expenses', categories, colors);
     new ApexCharts(document.querySelector('#income-and-expenses'), incomeAndExpensesChart).render();
 });

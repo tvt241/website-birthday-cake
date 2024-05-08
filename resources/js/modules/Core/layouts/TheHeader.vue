@@ -8,15 +8,15 @@
             <div class="navbar-right">
                 <!-- search form -->
                 <div class="search-form">
-                    <form action="index.html" method="get">
+                    <!-- <form action="index.html" method="get">
                         <div class="input-group input-group-sm" id="input-group-search">
                             <input type="text" autocomplete="off" name="query" id="search-input" class="form-control"
-                                placeholder="Search..." />
+                                placeholder="Tìm kiếm" />
                             <div class="input-group-append">
                                 <button class="btn" type="button">/</button>
                             </div>
                         </div>
-                    </form>
+                    </form> -->
                     <ul class="dropdown-menu dropdown-menu-search">
                         <li class="nav-item">
                             <a class="nav-link" href="index.html">Morbi leo risus</a>
@@ -44,7 +44,7 @@
                     <li class="custom-dropdown">
                         <button class="notify-toggler custom-dropdown-toggler">
                             <i class="mdi mdi-bell-outline icon"></i>
-                            <span class="badge badge-xs rounded-circle">21</span>
+                            <!-- <span class="badge badge-xs rounded-circle">21</span> -->
                         </button>
                         <div class="dropdown-notify">
                             <header>

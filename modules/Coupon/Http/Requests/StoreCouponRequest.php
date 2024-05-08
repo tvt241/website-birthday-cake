@@ -22,7 +22,7 @@ class StoreCouponRequest extends FormRequest
     {
         return [
             "name" => "required",
-            "code" => "required",
+            "code" => "required|unique:coupons,code",
             "discount_type" => "required",
             "discount_value" => "required",
             "discount_max" => "required_if:discount_type,{CouponDiscountTypeEnum::PERCENT}|numeric|min:1000",

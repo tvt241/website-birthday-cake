@@ -1,6 +1,6 @@
 <template>
     <PageHeaderTitleComponent header-title="Thêm mã giảm giá">
-        <router-link :to="{ name: 'posts' }" class="btn btn-primary text-nowrap">
+        <router-link :to="{ name: 'coupons' }" class="btn btn-primary text-nowrap">
             Danh sách mã giảm giá
         </router-link>
     </PageHeaderTitleComponent>

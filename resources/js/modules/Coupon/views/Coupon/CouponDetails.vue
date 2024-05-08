@@ -1,98 +1,42 @@
 <template>
-    <PageHeaderTitleComponent header-title="Chi tiết đơn hàng">
-        <router-link :to="{ name: 'orders' }" class="btn btn-primary text-nowrap">
-            Danh sách đơn hàng
-        </router-link>
+    <PageHeaderTitleComponent header-title="Chi tiết mã giảm giá">
+        <div>
+            <router-link :to="{ name: 'coupons.edit', params: { id: route.params.id } }" class="btn btn-primary text-nowrap mr-2">
+                Cập nhật
+            </router-link>
+
+            <router-link :to="{ name: 'coupons' }" class="btn btn-primary text-nowrap">
+                Danh sách mã giảm giá
+            </router-link>
+        </div>
+        
     </PageHeaderTitleComponent>
     <div class="col-12">
         <div class="row">
             <div class="col-lg-12">
                 <div class="card mt-3">
-                    <div class="card card-body">
-                        <div class="row align-items-end">
-                            <div class="col-lg-3 col-md-4">
-                                <div class="form-group">
-                                    <label for="">Tình trạng đơn hàng</label>
-                                    <select name="" id="" class="form-control">
-                                        <option value="0">Chờ duyệt</option>
-                                        <option value="1">Chuẩn bị hàng</option>
-                                        <option value="2">Đã bàn giao đơn vị vận chuyển</option>
-                                        <option value="3">Đang vận chuyển</option>
-                                        <option value="4">Đang giao đến bạn</option>
-                                        <option value="5">Đã giao</option>
-                                        <option value="6">Chờ khách hàng xác nhận</option>
-                                        <option value="7">Hoàn thành</option>
-                                        <option disabled value="8">Hoàn thành tự động</option>
-                                        <option disabled value="11">Giao thất bại</option>
-                                        <option class="text-danger" value="10"></option>
-                                    </select>
-                                </div>
+                    <div class="card-header">
+                        <h4 class="mb-0 d-flex gap-2 align-items-center">
+                            Thông tin mã giảm giá
+                        </h4>
+                    </div>
+                    <div class="card card-body h-100">
+                        <div class="row coupon-info">
+                            <div class="col-md-6">
+                                <p>Tên: <span>{{ coupon.name }}</span></p>
+                                <p>Mã: <span>{{ coupon.code }}</span></p>
+                                <p>Ngày tạo: <span>{{ coupon.created_at }}</span></p>
+                                <p>Ngày bắt đầu: <span>{{ coupon.date_start }}</span></p>
+                                <p>Ngày kết thúc: <span>{{ coupon.date_end }}</span></p>
                             </div>
-                            <div class="col-lg-3 col-md-4">
-                                <div class="form-group">
-                                    <label for="">Kiểu thanh toán</label>
-                                    <select name="" id="" class="form-control">
-                                        <option value="0">COD</option>
-                                        <option value="1">VNPAY</option>
-                                    </select>
-                                </div>
+
+                            <div class="col-md-6">
+                                <p>Tình trạng: <span>{{ coupon.active_name }}</span></p>
+                                <p>Số lượng: <span>{{ coupon.available }} / {{ coupon.quantity }}</span></p>
+                                <p>Ngân sách: <span>{{ formatCurrency(coupon.budget_available) }} / {{ formatCurrency(coupon.budget) }}</span></p>
+                                <p>Mô tả: <span>{{ coupon.desc }}</span></p>
                             </div>
-                            <div class="col-lg-3 col-md-4">
-                                <div class="form-group">
-                                    <label for="">Trạng thái thanh toán</label>
-                                    <select name="" id="" class="form-control">
-                                        <option value="0">Chờ thanh toán</option>
-                                        <option value="1">Thanh toán thiếu</option>
-                                        <option value="2">Đã thanh toán</option>
-                                    </select>
-                                </div>
-                            </div>                
-                            <div class="col-lg-3 col-md-4 justify-content-end">
-                                <div class="form-group d-flex gap-2 justify-content-center">
-                                    <button class="btn btn-primary">Cập nhật</button>
-                                    <button class="btn btn-primary">In hóa đơn</button>
-                                </div>
-                            </div>                            
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="card mt-3">
-                    <div class="card-header">
-                        <h4 class="mb-0 d-flex gap-2 align-items-center">
-                            Thông tin đơn hàng
-                        </h4>
-                    </div>
-                    <div class="card card-body h-100">
-                        <p>Mã đơn hàng: {{ order.order_code }}</p>
-                        <p>Kênh bán: {{ order.order_type }}</p>
-                        <p>Kiểu thanh toán: {{ order.payment_method }}</p>
-                        <p>Tình trạng thanh toán: {{ order.payment_status }}</p>
-                        <p>Ngày tạo: {{ order.created_at }}</p>
-                        <p>Ngày nhận: {{ order.order_date }}</p>
-                        <p>Tiền hàng: {{ order.total }}</p>
-                        <p>Giảm giá: {{ order.coupon_value }}</p>
-                        <p>Phí ship: {{ order.order_date }}</p>
-                        <p>Tổng tiền: {{ order.amount }}</p>
-                        <p>Ghi chú: {{ order.note }}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="card mt-3">
-                    <div class="card-header">
-                        <h4 class="mb-0 d-flex gap-2 align-items-center">
-                            Thông tin khách hàng
-                        </h4>
-                    </div>
-                    <div class="card card-body h-100">
-                        <p>Tên khách hàng: {{ order.customer_name }}</p>
-                        <p>Tên người nhận: {{ order.name }}</p>
-                        <p>Số điện thoại người nhận: {{ order.phone }}</p>
-                        <p>Địa chỉ: {{ order.address }}</p>
-                        <p>Chi tiết: {{ order.address2 }}</p>
-                        <p>Số đơn hàng đã mua: {{ order.address2 }}</p>
                     </div>
                 </div>
             </div>
@@ -101,33 +45,32 @@
                     <div class="card card-body h-100">
                         <div class="row">
                             <div class="card-header">
-                                <h4>Chi tiết đơn hàng</h4>
+                                <h4>Đơn hàng đã sử dụng</h4>
                             </div>
                             <div class="col-lg-12">
                                 <table class="table">
                                     <thead>
                                         <th>#</th>
-                                        <th>Tên</th>
-                                        <th>Chi tiết</th>
-                                        <th>Giá</th>
-                                        <th>Số lượng</th>
+                                        <th>Mã đơn hàng</th>
+                                        <th>Khách hàng</th>
+                                        <th>Tông tiền</th>
+                                        <th>Giảm giá</th>
+                                        <th>Thanh toán</th>
                                     </thead>
                                     <tbody>
-                                        <tr v-if="orderDetails.length" v-for="(details, index) in orderDetails">
+                                        <tr v-if="coupon.orders" v-for="(order, index) in coupon.orders">
                                             <td>{{ index + 1 }}</td>
                                             <td>
-                                                <div class="media align-items-center gap-3">
-                                                    <div class="avatar">
-                                                        <img :src="details.image ? details.image : IMG_DEFAULT" class="rounded img-fit">
-                                                    </div>
-                                                    <div class="media-body">
-                                                        <a class="text-dark" href="#">{{ details.name }}</a>
-                                                    </div>
-                                                </div>
+                                                <router-link :to="{ name: 'orders.details', params: { id: order.id }}">
+                                                    {{ order.order_code }}
+                                                </router-link>
                                             </td>
-                                            <td>{{ details.info }}</td>
-                                            <td class="text-right">{{ formatCurrency(details.price) }}</td>
-                                            <td class="text-right">{{ details.quantity }}</td>
+                                            <td>
+                                                <a class="text-dark" href="#">{{ order.name }}</a>
+                                            </td>
+                                            <td>{{ formatCurrency(order.total)   }}</td>
+                                            <td>{{ formatCurrency(order.coupon_value) }}</td>
+                                            <td>{{ formatCurrency(order.amount) }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -145,26 +88,34 @@ import PageHeaderTitleComponent from "~/Core/components/PageHeaderTitleComponent
 import { ref, reactive, onMounted } from "vue";
 import imageHelper, { IMG_DEFAULT } from "~/Core/helpers/imageHelper";
 import { formatCurrency } from "~/Core/helpers/currencyHelper";
-import orderApi from "~/Order/apis/orderApi";
 import { useRoute } from "vue-router";
+import couponApi from "~/Coupon/apis/couponApi";
 
 const route = useRoute();
 
-const order = ref({});
-const orderDetails = ref([]);
+const coupon = ref({});
 
-
-async function getOrder() {
+async function getCoupon() {
     try {
-        const response = await orderApi.getOrder(route.params.id);
+        const response = await couponApi.getCoupon(route.params.id);
         const data = response.data;
-        order.value = data.order;
-        orderDetails.value = data.details;
+        coupon.value = data;
     } catch (error) {
     }
 }
 
 onMounted(async () => { 
-    await getOrder();
+    await getCoupon();
 });
 </script>
+
+<style scoped>
+    .coupon-info p{
+        color: black;
+        padding-bottom: 10px;
+    }
+
+    .coupon-info span{
+        float: right;
+    }
+</style>

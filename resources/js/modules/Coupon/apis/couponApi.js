@@ -21,6 +21,10 @@ export default {
         const url = `coupons/${id}`;
         return apiHelper.delete(url);
     },
+    checkCoupon: function (paramSearch = {}){
+        const url = "coupons/check";
+        return apiHelper.post(url, paramSearch);
+    },
     // changeActiveOrder: function(id){
     //     const url = `orders/${id}`;
     //     return apiHelper.put(url);

@@ -87,13 +87,13 @@ function getFee(districtId, wardId){
         "district_code": districtId,
         "ward_code": wardId,
     };
-    $.ajax({
-        method: "GET",
-        url: url,
-        data,
-        success: function(response){
-            const data = response.data;
-            $(".checkout__order__shipping span").html(formatCurrency(data.total));
-        },
-    }); 
+    // $.ajax({
+    //     method: "GET",
+    //     url: url,
+    //     data,
+    //     success: function(response){
+    //         const data = response.data;
+    //         $(".checkout__order__shipping span").html(formatCurrency(data.total));
+    //     },
+    // }); 
 }

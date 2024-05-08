@@ -32,7 +32,7 @@
                                     <td class="vertical-middle">{{ index + 1 }}</td>
                                     <td>{{ coupon.code }} </td>
                                     <td>{{ coupon.name }}</td>
-                                    <td>{{ coupon.quantity + "/ " + coupon.available  }}</td>
+                                    <td>{{ coupon.available + "/ " + coupon.quantity }}</td>
                                     <td>{{ coupon.active_name }}</td>
                                     <td>{{ coupon.date_start }}</td>
                                     <td>{{ coupon.date_end }}</td>

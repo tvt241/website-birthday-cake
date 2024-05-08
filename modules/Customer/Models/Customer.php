@@ -84,8 +84,6 @@ class Customer extends Authenticatable
         );
     }
 
-
-
     protected $casts = [
         'birthday' => 'datetime',
     ];

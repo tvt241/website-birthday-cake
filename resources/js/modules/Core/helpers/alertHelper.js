@@ -9,6 +9,14 @@ export default {
             timer: 1500
         });
     },
+    info: function (title) {
+        Swal.fire({
+            icon: "info",
+            title,
+            showConfirmButton: false,
+            timer: 1500
+        });
+    },
     error: function (title, text = "") {
         Swal.fire({
             icon: "error",

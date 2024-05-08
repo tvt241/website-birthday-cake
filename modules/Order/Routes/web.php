@@ -10,6 +10,7 @@ use Modules\Order\Http\Controllers\CheckOutController;
 use Modules\Order\Http\Controllers\OrderController;
 use Modules\Order\Http\Controllers\PaymentController;
 use Modules\Order\Models\Cart;
+use Modules\Order\Models\Order;
 
 Route::get('/checkout', [CheckOutController::class, "index"])->name("checkout.index");
 Route::post("checkout", [CheckOutController::class, "store"])->name("checkout.store");
@@ -28,19 +29,7 @@ Route::get("shippings/fee", [ShippingApiController::class, "fee"])->name("shippi
 Route::get('/order-details', [OrderController::class, 'index'])->name("orders.index");
 Route::post('/order-details/{order}', [OrderController::class, 'show'])->name("orders.details");
 
+
 Route::get("test", function(){
-    $subQuery = DB::table('product_items')
-        ->select('id', 'price', "quantity", "product_variation_id");
-
-    $carts = Cart::query()->where("user_id", auth()->id())
-    ->select(DB::raw("pItemSub.price * carts.quantity as total_price"))
-    ->joinSub($subQuery, 'pItemSub', function ($join) {
-        $join->on('pItemSub.id', '=', 'carts.product_item_id');
-    })
-    ->get();
-    dump($carts->sum("total_price"));
-    dd($carts->count());
-
-    // dd($carts);
-
+    
 });

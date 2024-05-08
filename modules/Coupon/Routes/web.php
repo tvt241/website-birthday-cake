@@ -1,16 +1,5 @@
 <?php
+use Illuminate\Support\Facades\Route;
+use Modules\Coupon\Http\Controllers\CouponController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-Route::prefix('coupon')->group(function() {
-    Route::get('/', 'CouponController@index');
-});
+Route::post("coupons/check", [CouponController::class, "check"])->name("coupons.check");

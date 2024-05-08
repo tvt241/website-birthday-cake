@@ -44,7 +44,7 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td>{{ customer.full_name }}</td>
+                                    <td>{{ customer.name }}</td>
                                     <td>{{ customer.email }}</td>
                                     <td>{{ customer.phone }}</td>
                                     <td>{{ customer.social }}</td>

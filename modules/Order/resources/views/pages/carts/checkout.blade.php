@@ -119,14 +119,16 @@
                                 <span>0</span>
                                 <div class="checkout__input mt-2 mb-0 d-flex">
                                     <input type="text" name="coupon_code" class="col-8 form-control @error('coupon_code') is-invalid @enderror" placeholder="Mã giảm giá">
-                                    <button class="site-btn col-4 btn__coupons">Dùng</button>
+                                    <button class="site-btn col-4 btn__coupons" type="button">Dùng</button>
                                     @error('coupon_code')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
                             <div class="checkout__order__shipping" style="display: none">Phí ship <span>0</span></div>
-                            <div class="checkout__order__total">Tổng tiền <span>{{ $carts_price }}</span></div>
+                            <div class="checkout__order__shipping">Tổng tiền <span>{{ $carts_price }}</span></div>
+                            
+                            <div class="checkout__order__total">Thanh toán <span>{{ $carts_price }}</span></div>
                             
                             <div class="checkout__input__checkbox">
                                 <input type="radio" value="VNPAY" checked name="method_payment" id="VNPAY">
@@ -161,6 +163,8 @@
 <input type="hidden" id="districts_url" value="{{ route("api.locations.districts", ["province" => ":province"]) }}">
 <input type="hidden" id="wards_url" value="{{ route("api.locations.wards", ["district" => ":district"]) }}">
 <input type="hidden" id="fee_url" value="{{ route("shippings.fee") }}">
+<input type="hidden" id="coupon_check_url" value="{{ route('coupons.check') }}">
+<input type="hidden" id="amount" value="{{ $carts_price  }}">
 
 @endsection
 
@@ -179,5 +183,35 @@
 
 @push("js")
     <script src="{{ asset("assets/js/carts/checkout.js") }}"></script>
+    <script>
+        $(".btn__coupons").on("click", function(){
+            const code = $("input[name='coupon_code']").val();
+            const amount = $("#amount").val().replaceAll(",", "");
+            if(!code){
+                alertError("Mã giảm giá không được để trống");
+                return;
+            }
+            const data = {
+                code,
+                amount
+            }
+            let url = $("#coupon_check_url").val();
+            $.ajax({
+                method: "POST",
+                url: url,
+                data,
+                success: function(response){
+                    const value = response.data.value;
+                    let payment = amount - Number(value);
+                    $(".checkout__order__subtotal > span").html(formatCurrency(value));
+                    $(".checkout__order__total > span").html(formatCurrency(payment));
+                    console.log(response);
+                },
+                error: function(response){
+                    console.log(response);
+                }
+            }); 
+        });
+    </script>
 @endpush
 

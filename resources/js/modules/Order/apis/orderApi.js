@@ -7,7 +7,7 @@ export default {
     },
     addOrder: function(form){
         const url = "orders";
-        return apiHelper.postRaw(url, form);
+        return apiHelper.post(url, form);
     },
     getOrder: function(id){
         const url = `orders/${id}`;
@@ -16,6 +16,10 @@ export default {
     updateOrder: function(id, form){
         const url = `orders/${id}`;
         return apiHelper.putRaw(url, form);
+    },
+    changeStatusOrder: function(id, form){
+        const url = `orders/${id}/update-status`;
+        return apiHelper.put(url, form);
     },
     deleteOrder: function(id){
         const url = `orders/${id}`;

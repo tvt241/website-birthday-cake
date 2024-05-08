@@ -33,7 +33,7 @@ class SendMailVerifyJob implements ShouldQueue
     {
         $otp = rand(100000, 999999);
         $token = Hash::make($otp);
-        $url = route("confirm_otp", ["email" => $this->customer->email, "token" => $token]);
+        $url = route("reset_password", ["email" => $this->customer->email, "token" => $token]);
         $data = [
             "email" => $this->customer->email,
             "otp" => $otp,

@@ -16,3 +16,4 @@ use Modules\Coupon\Http\Controllers\Api\CouponApiController;
 */
 
 Route::apiResource("coupons", CouponApiController::class);
+Route::post("coupons/check", [CouponApiController::class, "check"])->name("coupons.check");

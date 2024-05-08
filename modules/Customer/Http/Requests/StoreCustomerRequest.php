@@ -14,7 +14,7 @@ class StoreCustomerRequest extends FormRequest
     public function rules()
     {
         return [
-            "username" => "required|unique:customers,username",
+            "username" => "nullable|unique:customers,username",
             "email" => "nullable",
             "phone" => "nullable",
             "name" => "nullable",

@@ -30,13 +30,12 @@ class CheckOutController extends Controller
             if(!sizeof($carts)){
                 return redirect()->route("home");
             }
-            return view('order::pages.carts.checkout', [
-                "carts" => $carts
-            ]);
         }
-        $carts = auth()->user()->carts;
-        if(!$carts->count()){
-            return redirect()->route("home");
+        else{
+            $carts = auth()->user()->carts;
+            if(!$carts->count()){
+                return redirect()->route("home");
+            }
         }
         $cartTemp = [];
         foreach($carts as $key => $cart){
@@ -81,25 +80,9 @@ class CheckOutController extends Controller
             $order["order_code"] = renderOrderCode();
             $order["order_type"] = OrderTypeEnum::BOOKING;
             $order["order_channel"] = OrderChannelEnum::WEB;
-
-            if($request->coupon_code){
-                $coupon = Coupon::where("code")->first();
-                if($coupon){
-                    $order["coupon_value"] = 0;
-                    $order["coupon_id"] = $coupon;
-                }
-            }
-            else{
-                $order["coupon_value"] = 0;
-            }
-    
-            $order["shipping_price"] = 0;
-            $order["payment_method"] = PaymentMethodEnum::getValue($request->method_payment);
-
+            $order["coupon_value"] = 0;
             $order["total"] = 0;
-            $order["amount"] = 0;
 
-            $orderNew = Order::create($order);
             $orderDetails = [];
             foreach($carts as $key => $cart){
                 $productItem = ProductItem::find($cart->product_item_id);
@@ -107,6 +90,8 @@ class CheckOutController extends Controller
                     DB::rollBack();
                     return redirect()->route("carts.index")->with("error", "Một vài sản phẩm đã hết hàng");
                 }
+                $order["total"] += $productItem->price * $cart->quantity;
+
                 $product = $productItem->product;
                 $orderDetails[$key]["name"] = $product->name;
                 $orderDetails[$key]["slug"] = $product->slug;
@@ -116,8 +101,7 @@ class CheckOutController extends Controller
                 $orderDetails[$key]["quantity"] = $cart->quantity;
                 $orderDetails[$key]["product_item_id"] = $cart->product_item_id;
                 $orderDetails[$key]["info"] = $productItem->variation_string;
-                $orderDetails[$key]["order_id"] = $orderNew->id;
-                $order["total"] += $productItem->price * $cart->quantity;
+                // $orderDetails[$key]["order_id"] = $orderNew->id;
                 if($isLogin){
                     if(auth()->user()->is_active == CustomerStatusEnum::VERIFIED->value){
                         $productItem->available -= $cart->quantity;
@@ -125,10 +109,35 @@ class CheckOutController extends Controller
                     }
                 }
             }
+            if($request->coupon_code){
+                $coupon = Coupon::where("code", $request->coupon_code)->first();
+                if(!$coupon){
+                    return back()->withInput()->with('error', "Mã giảm giá không hợp lệ hoặc đã hết hạn");
+                }
+                $valueDiscount = $coupon->checkCouponInvalid($order["total"]);
+                if(!is_array($valueDiscount)){
+                    return back()->withInput()->with("error", $valueDiscount);
+                }
+                $order["coupon_value"] = $valueDiscount["value"];
+                $order["coupon_id"] = $coupon->id;
+
+                $coupon->available -= 1;
+                $coupon->budget_available -= $valueDiscount["value"];
+                $coupon->save();
+            }
+    
+            $order["shipping_price"] = 0;
+            $order["payment_method"] = PaymentMethodEnum::getValue($request->method_payment);
+            $order["amount"] = $order["total"] + $order["shipping_price"] - $order["coupon_value"];
+            if($order["amount"] < 0){
+                $order["amount"] = 0;
+            }
+
+            $orderNew = Order::create($order);
+            foreach($orderDetails as $key => $orderDetail){
+                $orderDetails[$key]["order_id"] = $orderNew->id;
+            }
             OrderDetail::insert($orderDetails);
-            $orderNew->total = $order["total"];
-            $orderNew->amount = $order["total"] + $order["shipping_price"] + $order["coupon_value"];
-            $orderNew->save();
             DB::commit();
             if(!$isLogin){
                 session()->put("carts", []);
@@ -143,6 +152,7 @@ class CheckOutController extends Controller
             return redirect()->route("orders.index", ["code" => $orderNew->order_code]);
         } catch (\Exception $e) {
             DB::rollBack();
+            dd($e->getMessage());
             return back()->withInput()->with("error", "Vui lòng thử lại sau");
         }
         
