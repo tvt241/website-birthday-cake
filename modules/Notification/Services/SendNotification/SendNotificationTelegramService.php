@@ -21,5 +21,4 @@ class SendNotificationTelegramService implements ISendNotificationService {
         ];
         $this->http->get($url, $data);
     }
-
 }

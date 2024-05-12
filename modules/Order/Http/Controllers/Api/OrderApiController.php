@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Redis;
 use Illuminate\Validation\ValidationException;
 use Modules\Core\Traits\ResponseTrait;
 use Modules\Coupon\Models\Coupon;
+use Modules\Customer\Enums\CustomerStatusEnum;
 use Modules\Customer\Models\Customer;
 use Modules\Order\Enums\OrderChannelEnum;
 use Modules\Order\Enums\OrderStatusEnum;
@@ -16,6 +17,7 @@ use Modules\Order\Enums\OrderTypeEnum;
 use Modules\Order\Enums\PaymentMethodEnum;
 use Modules\Order\Enums\PaymentStatusEnum;
 use Modules\Order\Http\Requests\CheckOut\StoreOrderRequest;
+use Modules\Order\Http\Requests\UpdateOrderRequest;
 use Modules\Order\Models\Order;
 use Modules\Order\Models\OrderDetail;
 use Modules\Order\Resources\OrderDetailsResource;
@@ -41,6 +43,7 @@ class OrderApiController extends Controller
         DB::beginTransaction();
         try {
             $order = $request->validated();
+            $order["payment_status"] = PaymentStatusEnum::DONE;
             $order["address"] = "--";
             if($request->order_type == OrderTypeEnum::SALES->value){
                 $order["order_code"] = renderOrderCode("DBH");
@@ -51,6 +54,9 @@ class OrderApiController extends Controller
             else{ // đơn đặt hàng
                 $order["order_code"] = renderOrderCode("DDH");
                 $order["status"] = OrderStatusEnum::PROCESSING;
+                if($request->payment_method == PaymentMethodEnum::COD->value){
+                    $order["payment_status"] = PaymentStatusEnum::UNPAID;
+                }
             }
             if($request->user_id){
                 $customer = Customer::find($request->user_id);
@@ -126,7 +132,6 @@ class OrderApiController extends Controller
             return $this->SuccessResponse($data);
         } catch (\Exception $e) {
             DB::rollBack();
-            dd($e->getMessage());
             return back()->withInput()->with("error", "Vui lòng thử lại sau");
         }
     }
@@ -139,12 +144,12 @@ class OrderApiController extends Controller
         return $this->SuccessResponse(new OrderDetailsResource($order));
     }
 
-    public function update(Request $request, $id){
+    public function update(UpdateOrderRequest $request, $id){
         $order = Order::find($id);
         if(!$order){
             return $this->ErrorResponse(message: __("No Results Found."), status_code: 422);
         }
-        $order->update([]);
+        $order->update($request->validated());
         return $this->SuccessResponse();
     }
 
@@ -182,18 +187,133 @@ class OrderApiController extends Controller
     public function updateStatus(Request $request, $id){
         $order = Order::find($id);
         if(!$order){
-            return $this->ErrorResponse("Sản phẩm không tồn tại");
+            return $this->ErrorResponse("Đơn hàng không tồn tại");
         }
         if($order->status >= OrderStatusEnum::START_ORDER_COMPLETE && $order->status <= OrderStatusEnum::END_ORDER_COMPLETE){
             return $this->ErrorResponse("Đơn hàng đã hoàn thành");
         }
+
+        if($order->status >= OrderStatusEnum::START_ORDER_ERROR && $order->status <= OrderStatusEnum::END_ORDER_ERROR){
+            return $this->ErrorResponse("Đơn hàng đã hoàn thành");
+        }
+
+        if($order->status != OrderStatusEnum::PENDING->value && $request->value == OrderStatusEnum::PENDING->value){
+            return $this->ErrorResponse("Đơn hàng đã được duyệt");
+        }
+
+        if($order->status == OrderStatusEnum::PENDING->value && $request->value < OrderStatusEnum::START_ORDER_ERROR){
+            DB::beginTransaction();
+            try {
+                if($order->user_id){
+                    $customer = Customer::find($order->user_id);
+                    if(!$customer){
+                        return $this->ErrorResponse("Người dùng không tồn tại trên hệ thống");
+                    }
+                    if($customer->is_active == CustomerStatusEnum::VERIFIED->value){
+                        $order->status = $request->value;
+                        $order->save();
+                        return $this->SuccessResponse();
+                    }
+                }
+                $orderDetails = $order->orderDetails;
+                foreach($orderDetails as $orderDetail){
+                    $productItem = ProductItem::find($orderDetail->product_item_id);
+                    if(!$productItem){
+                        DB::rollBack();
+                        return $this->ErrorResponse("Sản phẩm $orderDetail->name - $orderDetail->info không tồn tại trên hệ thống");
+                    }
+                    $productItem->available -= $orderDetail->quantity;
+                    $productItem->save();
+                }
+                DB::commit();
+                $order->status = $request->value;
+                $order->save();
+                return $this->SuccessResponse();
+            } catch (\Exception $e) {
+                DB::rollBack();
+                return $this->ErrorResponse($e->getMessage());
+            }
+        }
+
+        if($order->status == OrderStatusEnum::PENDING->value && $request->value >= OrderStatusEnum::START_ORDER_ERROR){
+            DB::beginTransaction();
+            try {
+                if($order->user_id){
+                    $customer = Customer::find($order->user_id);
+                    if(!$customer){
+                        return $this->ErrorResponse("Người dùng không tồn tại trên hệ thống");
+                    }
+                    if($customer->is_active == CustomerStatusEnum::VERIFIED->value){
+                        $orderDetails = $order->orderDetails;
+                        foreach($orderDetails as $orderDetail){
+                            $productItem = ProductItem::find($orderDetail->product_item_id);
+                            if(!$productItem){
+                                DB::rollBack();
+                                return $this->ErrorResponse("Sản phẩm $orderDetail->name - $orderDetail->info không tồn tại trên hệ thống");
+                            }
+                            $productItem->available += $orderDetail->quantity;
+                            $productItem->save();
+                        }
+                        DB::commit();
+                    }
+                }
+                $order->status = $request->value;
+                $order->save();
+                return $this->SuccessResponse();
+            } catch (\Exception $e) {
+                DB::rollBack();
+                return $this->ErrorResponse($e->getMessage());
+            }
+        }
+
+        if($order->status > OrderStatusEnum::START_ORDER_PENDING && $order->status < OrderStatusEnum::END_ORDER_PENDING && $request->value >= OrderStatusEnum::START_ORDER_ERROR){
+            DB::beginTransaction();
+            try {
+                $orderDetails = $order->orderDetails;
+                foreach($orderDetails as $orderDetail){
+                    $productItem = ProductItem::find($orderDetail->product_item_id);
+                    if(!$productItem){
+                        DB::rollBack();
+                        return $this->ErrorResponse("Sản phẩm $orderDetail->name - $orderDetail->info không tồn tại trên hệ thống");
+                    }
+                    $productItem->available += $orderDetail->quantity;
+                    $productItem->save();
+                }
+                DB::commit();
+                $order->status = $request->value;
+                $order->save();
+                return $this->SuccessResponse();
+            } catch (\Exception $e) {
+                DB::rollBack();
+                return $this->ErrorResponse($e->getMessage());
+            }
+        }
+        
+        $order->status = $request->value;
+        $order->save();
+        return $this->SuccessResponse();
+    }
+
+    public function updateStates(Request $request, $id){
+        $order = Order::find($id);
+        if(!$order){
+            return $this->ErrorResponse("Đơn hàng không tồn tại");
+        }
+        if($order->status >= OrderStatusEnum::START_ORDER_COMPLETE && $order->status <= OrderStatusEnum::END_ORDER_COMPLETE){
+            return $this->ErrorResponse("Đơn hàng đã hoàn thành");
+        }
+
+        if($order->status >= OrderStatusEnum::START_ORDER_ERROR && $order->status <= OrderStatusEnum::END_ORDER_ERROR){
+            return $this->ErrorResponse("Đơn hàng đã hoàn thành");
+        }
+
         $key = $request->key;
         if(!isset($order->$key)){
             return $this->ErrorResponse("Dữ liệu truyền lên không hợp lệ");
         }
-
         $order->$key = $request->value;
         $order->save();
         return $this->SuccessResponse();
+
     }
 }

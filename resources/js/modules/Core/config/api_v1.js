@@ -3,7 +3,7 @@ import { getItem, removeItem } from "../helpers/localStorageHelper";
 import ENV from "./env";
 import i18n from "../i18n";
 import alertHelper from "../helpers/alertHelper";
-import { useLoadingStore } from "../stores/loadingStore";
+import { useGlobalStore } from "../stores/globalStore";
 
 
 const instance = axios.create({
@@ -18,7 +18,7 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use((config) => {
-    const store = useLoadingStore();
+    const store = useGlobalStore();
     store.showLoading();
     config.headers.Authorization =  "Bearer " + getItem("token");
     return config;
@@ -26,7 +26,7 @@ instance.interceptors.request.use((config) => {
 
 instance.interceptors.response.use(
     (response) => {
-        const store = useLoadingStore();
+        const store = useGlobalStore();
         store.hideLoading();
         if (response.status === 200) {
             const headers = response.config.headers;
@@ -42,17 +42,25 @@ instance.interceptors.response.use(
         return Promise.reject(response);
     },
     (error) => {
-        const store = useLoadingStore();
+        const store = useGlobalStore();
         store.hideLoading();
         if (error) {
-            if (error.response && error.response.status === 401) {
-                removeItem("token");
-                window.location.reload();
-                msg = error.response.data.msg;
-                return;
+            const headers = error.config.headers;
+            if (error.response) {
+                if(error.response.status === 401 && headers["X-Action"] != "login"){
+                    removeItem("token");
+                    window.location.reload();
+                    msg = error.response.data.msg;
+                    return;
+                }
+                else if(error.response.status === 404){
+                    store.setStatus(404);
+                }
+                else if(error.response.status === 403){
+                    store.setStatus(403);
+                }
             }
             const message = error.response.data.message;
-            const headers = error.config.headers;
             if(headers["X-Action"] == "create"){
                 alertHelper.error("Thêm thất bại", message);
             }

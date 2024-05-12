@@ -21,7 +21,15 @@ class InfoUserResource extends JsonResource
                 "email" => $this->email,
                 "image" => $this->image?->url
             ],
-            "menus" => $this->menus
+            "menus" => $this->menus,
+            "roles" => UserRoleResource::collection($this->role_names)
         ];
     }
+
+    // "id" => $this->id,
+    // "name" => $this->name,
+    // "email" => $this->email,
+    // "image" => $this->image?->url,
+    // "menus" => $this->menus,
+    // "role_names" => $this->roleNames
 }

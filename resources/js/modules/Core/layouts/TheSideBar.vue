@@ -24,7 +24,7 @@
                                 <ul class="collapse-custom" style="display: none;" :id="menu.name"
                                     data-parent="#sidebar-menu">
                                     <template v-for="sub_menu in menu.children">
-                                        <li v-if="sub_menu.label">
+                                        <li>
                                             <router-link class="sidenav-item-link" active-class="active"
                                                 :to="{ name: sub_menu.name }">
                                                 <span class="nav-text">{{ sub_menu.label }}</span>
@@ -34,13 +34,11 @@
                                 </ul>
                             </li>
                             <li v-else-if="menu.children?.length" v-for="sub_menu in menu.children">
-                                <template v-if="sub_menu.label">
-                                    <router-link :to="{ name: sub_menu.name }"
-                                        active-class="active" class="sidenav-item-link">
-                                        <i :class="sub_menu.icon"></i>
-                                        <span class="nav-text">{{ sub_menu.label }}</span>
-                                    </router-link>
-                                </template>
+                                <router-link :to="{ name: sub_menu.name }"
+                                    active-class="active" class="sidenav-item-link">
+                                    <i :class="sub_menu.icon"></i>
+                                    <span class="nav-text">{{ sub_menu.label }}</span>
+                                </router-link>
                             </li>
                             <li v-else>
                                 <router-link :to="{ name: menu.name }"

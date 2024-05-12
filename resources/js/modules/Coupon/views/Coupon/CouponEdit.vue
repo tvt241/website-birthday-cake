@@ -222,7 +222,7 @@
 
 <script setup>
 import PageHeaderTitleComponent from "~/Core/components/PageHeaderTitleComponent.vue";
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted, onBeforeMount } from "vue";
 import imageHelper, { IMG_DEFAULT } from "~/Core/helpers/imageHelper";
 import inputHelper from "~/Core/helpers/inputHelper";
 import couponApi from "~/Coupon/apis/couponApi";
@@ -286,9 +286,10 @@ async function getCoupon() {
     }
 }
 
-
-onMounted(async () => {
+onBeforeMount(async () => {
     await getCoupon();
 })
+
+// onMounted()
 
 </script>

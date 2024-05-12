@@ -15,8 +15,25 @@ class ProductController extends Controller
                 $query->where("slug", $request->category);
             }
         };
-        $query = Product::with("image")->whereRelation("category", $queryCategories);
-        $products = $query->paginate(12);
+        $query = Product::with("image")->whereRelation("category", $queryCategories)
+            ->join("product_items", "products.id", "=", "product_items.product_id")
+            ->groupBy("products.id");
+        if($request->search){
+            $query->where("products.name", "like", "%$request->search%");
+        }
+        if(isset($request->min) && $request->min <= 0){
+            $query->where("product_items.price", ">=", $request->min);
+            $query->where("product_items.price", "<=", $request->max);
+        }
+        $arraySort = ["price-asc", "price-desc", "name-asc", "name-desc"];
+        if($request->sort && in_array($request->sort, $arraySort)){
+            $sorts = explode("-", $request->sort);
+            if($sorts[0] == "price"){
+                $sorts[0] = "max_price";
+            }
+            $query->orderBy($sorts[0], $sorts[1]);
+        }
+        $products = $query->select("products.*")->paginate(12);
         return view("product::pages.products.index", [
             "products" => $products,
         ]);

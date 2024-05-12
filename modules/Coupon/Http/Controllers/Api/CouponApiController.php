@@ -53,7 +53,7 @@ class CouponApiController extends Controller
     {
         $coupon = Coupon::find($id);
         if(!$coupon){
-            return $this->ErrorResponse("Mã giảm giá không tồn tại");
+            return $this->ErrorResponse("Mã giảm giá không tồn tại", 404);
         }
         $order = Order::where("coupon_id", $coupon->id)->latest()->get();
         $coupon->orders = $order;
@@ -80,7 +80,7 @@ class CouponApiController extends Controller
     {
         $coupon = Coupon::find($id);
         if(!$coupon){
-            return $this->ErrorResponse("Mã giảm giá không tồn tại", 404);
+            return $this->ErrorResponse("Mã giảm giá không tồn tại");
         }
         $coupon->delete();
         return $this->SuccessResponse();

@@ -16,6 +16,9 @@ $(document).ready(function(){
                 $(".shoping__checkout span").html(formatCurrency(response.data.total_price));
                 itemContainer.remove();
             },
+            error: function(res){
+                console.log(res);
+            }
         });
     });
 
@@ -95,6 +98,9 @@ function handleUpdateQuantity(itemContainer, quantity){
             
             $(".header__cart__price span").html(formatCurrency(response.data.total_price));
             $(".shoping__checkout span").html(formatCurrency(response.data.total_price));
+        },
+        error: function(res){
+            console.log(res);
         }
     });
 

@@ -4,7 +4,7 @@ import { getItem } from "~/Core/helpers/localStorageHelper";
 export default {
     login: function (form){
         const url = "auth/login";
-        return apiHelper.post(url, form, "");
+        return apiHelper.post(url, form, "login");
     },
     refresh: function(){
         const url = "auth/refresh";
@@ -15,7 +15,7 @@ export default {
     },
     getInfo: function(){
         const url = "auth/info";
-        return apiHelper.get(url);
+        return apiHelper.get(url, {}, "login");
     },
     updateInfo: function(form){
         const url = `auth/update`;

@@ -1,7 +1,21 @@
 <?php
 
+use Modules\Setting\Models\BusinessSetting;
+
 function cacheSimple($key, $value, $time){
     
+}
+
+function getCompanyInfo(){
+    $company = cache("company");
+    if(!$company){
+        $companySetup = BusinessSetting::where("group", "company")->get();
+        foreach($companySetup as $setup){
+            $company[$setup->key] = $setup->value;
+        }
+        cache(["company" => $company], now()->addYear());
+    }
+    return $company;
 }
 
 function totalPriceCart($carry, $cart){ 

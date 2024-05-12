@@ -16,16 +16,20 @@ class ProductDetailResource extends JsonResource
      */
     public function toArray($request)
     {
+        $category = $this->category;
+        $productItems = $this->productItems;
         return [
             "id" => $this->id,
             "name" => $this->name,
             "slug" => $this->slug,
             "active_name" => ProductStatusEnum::getKey($this->is_active),
+            "is_active" => $this->is_active,
             "min_price" => $this->min_price,
             "max_price" => $this->max_price,
-            "category_name" => $this->category->name,
-            "quantity" => $this->productItems?->sum("quantity"),
-            "available" => $this->productItems?->sum("available"),
+            "category_id" => $category->id,
+            "category_name" => $category->name,
+            "quantity" => $productItems->sum("quantity"),
+            "available" => $productItems->sum("available"),
             "image" => $this->image?->url,
             "desc_sort" => $this->desc_sort,
             "desc" => $this->desc,

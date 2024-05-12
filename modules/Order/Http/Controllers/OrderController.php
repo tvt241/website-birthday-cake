@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Core\Traits\ResponseTrait;
 use Modules\Order\Models\Order;
+use Modules\Order\Resources\OrderInfoFullResource;
 use Modules\Order\Resources\OrderInfoResource;
 
 class OrderController extends Controller
@@ -21,6 +22,10 @@ class OrderController extends Controller
         if(!$order){
             $message = "Mã đơn hàng không đúng";
             return $this->ErrorResponse($message);
+        }
+        $user = auth()->user();
+        if($user && $order->user_id){
+            return $this->SuccessResponse(new OrderInfoFullResource($order));
         }
         // if(!auth()->check() && $order->user_id){
         //     $message = "Bạn phải đăng nhập để xem đơn hàng này";

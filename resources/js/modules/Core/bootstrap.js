@@ -3,7 +3,7 @@ import Pusher from 'pusher-js';
 import { getItem } from './helpers/localStorageHelper';
 
 window.Pusher = Pusher;
-// Pusher.logToConsole = true;
+// Pusher.logToConsole = true; 
 
 window.Echo = new Echo({
     broadcaster: 'pusher',
@@ -14,7 +14,7 @@ window.Echo = new Echo({
     wssPort: import.meta.env.VITE_PUSHER_PORT ?? 443,
     forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? 'https') === 'https',
     enabledTransports: ['ws', 'wss'],
-    authEndpoint: '/broadcasting/auth',
+    // authEndpoint: '/broadcasting/auth',
     auth: {
         headers: {
             Authorization: "Bearer " + getItem("token"),

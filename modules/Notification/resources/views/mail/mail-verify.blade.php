@@ -1,5 +1,6 @@
+@php $company= getCompanyInfo(); @endphp
 <div style="width: 500px; margin: 0 auto; color: black">
-    <img width="100px" src="https://tvt.id.vn/assets/img/logo_login.jpg" alt="">
+    <img width="100px" src="{{ $company["logo"] }}" alt="">
     <hr>
     <p>Xin chào {{ $name }}!</p>
     <p>Chúng tôi nhận được yêu cầu khôi phục mật khẩu của bạn.</p>

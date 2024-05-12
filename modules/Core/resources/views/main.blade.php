@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
     <meta name="author" content="{{ $company["name"] }}">
     <meta name="keywords" content="bánh ngọt, bánh kem, bánh sinh nhật, sinh nhật, quà tặng, tiệm bánh, {{ $company["name"] }}">
     <meta property="og:locale" content="vi_VN" />
@@ -29,6 +30,7 @@
 
 <body>
     <input type="hidden" id="image_url_default" value="{{ asset("assets/img/img-default.jpg") }}">
+    <input type="hidden" id="image_url_order" value="{{ asset("storage/categories/phu-kien.jpg") }}">
 
     <div id="preloder">
         <div class="loader"></div>

@@ -1,10 +1,14 @@
 import api_v1 from "../config/api_v1";
 
 export default {
-    get: function (url, params) {
-        return api_v1.get(url, {
+    get: function (url, params, action) {
+        const config = {
             params,
-        });
+            headers: {
+                "X-Action" : action
+            }
+        };
+        return api_v1.get(url, config);
     },
     post: function (url, body, action = "create") {
         const data = JSON.stringify(body);

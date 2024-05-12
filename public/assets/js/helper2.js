@@ -17,10 +17,11 @@ const Toast = Swal.mixin({
     timer: 1500,
     timerProgressBar: true,
 });
+const urlImageDefault = $("#image_url_order").val();
 
 function toastOrder(text = "098765xxx1 đã mua hàng", title = "Cảm ơn"){
     Toast.fire({
-        iconHtml: '<img height="70px" width="70px" style="max-width: unset; margin-left: 20px;" src="http://localhost:8000/storage/categories/phu-kien.jpg">',
+        iconHtml: `<img height="70px" width="70px" style="max-width: unset; margin-left: 20px;" src="${ urlImageDefault }">`,
         icon: "success",
         position: 'bottom-start',
         timer: 5000,
@@ -70,10 +71,11 @@ function alertSuccess(text = "Thành công"){
     });
 }
 
-function alertError(text = "Thất bại"){
+function alertError(title = "Thất bại", text= ''){
     swalBs.fire({
         icon: "error",
-        title: text,
+        title: title,
+        text,
         showConfirmButton: false,
         timer: 1500
     });

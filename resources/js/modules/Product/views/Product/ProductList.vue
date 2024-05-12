@@ -88,7 +88,7 @@
                                         {{ handleViewPrice(product.min_price, product.max_price) }}
                                     </td>
                                     <td>
-                                        {{ product.quantity }}
+                                        {{ product.available }} / {{ product.quantity }}
                                     </td>
                                     <td>
                                         <div>

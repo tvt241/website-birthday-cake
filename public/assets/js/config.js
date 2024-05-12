@@ -41,23 +41,4 @@ Echo.channel(`notifications`)
     .listen('.notifications', (e) => {
         toastOrder(e.message);
     });
-
-// Echo.channel(`private-notifications`)
-//     .listen('.notifications', (e) => {
-//         console.log("private");
-//         console.log(e);
-// });
-
-// Echo.join(`chats`)
-//     .here((users) => {
-//         console.log(users);
-//     })
-//     .joining((user) => {
-//         console.log(user);
-//     })
-//     .leaving((user) => {
-//         console.log(user);
-//     })
-//     .error((error) => {
-//         console.error(error);
-//     });
+    

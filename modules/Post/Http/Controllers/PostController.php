@@ -20,9 +20,19 @@ class PostController extends Controller
         View::share("post_news", $postNews);
         
     }
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::with("image", "category")->invalidByCategory()->where("is_active", 1)->paginate(9);
+        $query = Post::with("image", "category")->where("is_active", 1);
+        $query->whereRelation("category", function($q) use ($request){
+            $q->where("is_active", 1);
+            if($request->category){
+                $q->where("slug", $request->category);
+            }
+        });
+        if($request->search){
+            $query->where("name", "like", "%$request->search%");
+        }
+        $posts = $query->paginate(12);
         return view('post::pages.blogs.index', [
             "posts" => $posts,
         ]);

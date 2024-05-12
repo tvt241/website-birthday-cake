@@ -202,7 +202,7 @@ const formDataDefault = {
 
 const form = reactive(formDataDefault);
 
-function updateVariations(items, variations) {
+function updateVariations(items, variations, isChange) {
     form.items = items;
     form.variations = variations;
 }

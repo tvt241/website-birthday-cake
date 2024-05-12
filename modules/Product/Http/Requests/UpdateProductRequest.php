@@ -25,7 +25,8 @@ class UpdateProductRequest extends FormRequest
             "items.*.price_import" => "required",
             "items.*.price" => "required",
             "items.*.quantity" => "required|numeric|min:1",
-            "variations" => "nullable"
+            "variations" => "nullable",
+            "is_change" => "required"
         ];
     }
 

@@ -26,6 +26,7 @@
                             </li>
                         </template>
                     </draggable>
+
                     <div class="my-3">
                         <table class="table border text-center table-responsive-lg">
                             <thead>
@@ -126,7 +127,7 @@ const props = defineProps({
     }
 });
 
-const items = reactive([]);
+const items = reactive(props.items);
 
 const variation_name = ref("");
 
@@ -140,9 +141,14 @@ function addVariation() {
     variation_name.value = "";
 }
 
+const states = reactive({
+    isChange: 0,   
+});
+
 function removeVariation(index) {
     variations.splice(index);
     items.splice(0, items.length);
+    states.isChange = 1;
     updateVariations();
 }
 
@@ -150,6 +156,7 @@ const handleUpdateOption = (event, index) => {
     const options = event.target.value.split(",");
     variations[index].options = options;
     items.splice(0, items.length);
+    states.isChange = 1;
     updateVariations();
 }
 
@@ -181,7 +188,7 @@ const emitVariationChange = debounce(() => {
         delete temp.key;
         return temp;
     })
-    emit("variationsChange", simpleData, variations);
+    emit("variationsChange", simpleData, variations, states.isChange);
 }, 1000);
 
 async function previewImage(event, index) {
@@ -196,15 +203,7 @@ async function previewImage(event, index) {
 }
 
 onMounted(() => {
-    if(props.variations.length){
-        updateVariations();
-        props.items.forEach((item, index) => {
-            items[index].price_import = item.price_import;
-            items[index].price = item.price;
-            items[index].quantity = item.quantity;
-        });
-        emitVariationChange();
-    }
+    emit("variationsChange", items, variations, states.isChange);
 })
 </script>
 

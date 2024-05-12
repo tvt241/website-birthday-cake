@@ -1,6 +1,21 @@
 import { useToast } from "vue-toastification";
 
 export default {
+    showNotification: function(message, config = {}) {
+        if (!("Notification" in window)) {
+            error("Trình duyệt của bạn không hỗ trợ thông báo");
+        } 
+        else if (Notification.permission === "granted") {
+            new Notification(message, config);
+        } 
+        else if (Notification.permission !== "denied") {
+            Notification.requestPermission().then((permission) => {
+                if (permission === "granted") {
+                    new Notification(message, config);
+                }
+            });
+        }
+    },
     default: function (message = "Default", position = "top-right") {
         const toast = useToast();
         toast(message, {

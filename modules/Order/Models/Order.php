@@ -62,7 +62,7 @@ class Order extends Model
     protected function orderStatusName(): Attribute
     {
         return Attribute::make(
-            get: fn () => OrderStatusEnum::getKey($this->payment_method),
+            get: fn () => OrderStatusEnum::getKey($this->status),
         );
     }
 

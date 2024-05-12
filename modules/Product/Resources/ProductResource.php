@@ -14,6 +14,7 @@ class ProductResource extends JsonResource
      */
     public function toArray($request)
     {
+        $productItem = $this->productItems;
         return [
             "id" => $this->id,
             "name" => $this->name,
@@ -22,7 +23,8 @@ class ProductResource extends JsonResource
             "min_price" => $this->min_price,
             "max_price" => $this->max_price,
             "category_name" => $this->category->name,
-            "quantity" => $this->productItems?->sum("quantity"),
+            "quantity" => $productItem->sum("quantity"),
+            "available" => $productItem->sum("available"),
             "image" => $this->image?->url,
         ];
     }

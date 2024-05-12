@@ -73,10 +73,9 @@ $(document).on("click", ".btn__cart_add", function(){
             alertSuccess(response.message);
             $(".header__cart__count span").html(response.data.total_product);
             $(".header__cart__price span").html(formatCurrency(response.data.total_price));
-
         },
-        errors: function(res){
-            alertError("Thêm sản phẩm vào giỏ hàng thất bại")
+        error: function(res){
+            alertError("Thêm sản phẩm vào giỏ hàng thất bại", res.responseJSON.message);
         }
     });
 });

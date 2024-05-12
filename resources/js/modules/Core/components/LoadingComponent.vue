@@ -1,8 +1,8 @@
 <script setup>
 import VueElementLoading from "vue-element-loading";
-import { useLoadingStore } from "~/Core/stores/loadingStore";
+import { useGlobalStore } from "~/Core/stores/globalStore";
 
-const store = useLoadingStore();
+const store = useGlobalStore();
 </script>
 
 <template>

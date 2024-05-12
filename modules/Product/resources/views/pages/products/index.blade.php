@@ -5,52 +5,45 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-3 col-md-5">
-                <div class="sidebar">
-                    <div class="sidebar__item ">
-                        <h4>Danh mục</h4>
-                        <ul class="sidebar__custom">
-                            @forelse ($categories as $category)
-                            <li>
-                                <a href="{{ route("products", ["category" => $category->slug]) }}">{{ $category->name }}</a>
-                            </li>
-                        @empty
-                            <li>
-                                <a href="#">Danh mục</a>
-                            </li>
-                        @endforelse
-                        </ul>
-                    </div>
-                    <div class="sidebar__item">
-                        <h4>Giá</h4>
-                        <div class="price-range-wrap">
-                            <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
-                                data-min="0" data-max="2000000">
-                                <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
-                                <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
-                                <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
-                            </div>
-                            <div class="range-slider">
-                                <div class="price-input">
-                                    <input type="text" id="minamount">
-                                    <input type="text" id="maxamount">
-                                </div>
+                <form action="">
+                    <div class="sidebar">
+                        <div class="sidebar__item ">
+                            <h4>Danh mục</h4>
+                            <ul class="sidebar__custom">
+                                @forelse ($categories as $category)
+                                <li>
+                                    <a href="{{ route("products", ["category" => $category->slug]) }}">{{ $category->name }}</a>
+                                </li>
+                            @empty
+                                <li>
+                                    <a href="#">Danh mục</a>
+                                </li>
+                            @endforelse
+                            </ul>
+                        </div>
+                        <div class="sidebar__item">
+                            <h4>Giá</h4>
+                            <div class="d-flex gap-2 align-items-center justify-content-between ">
+                                <input value="{{ request("min", 0) }}" type="text" class="input-range form-control" name="min" id="minamount">
+                                -
+                                <input value="{{ request("max", 2000000) }}"class="input-range form-control" type="text" name="max" id="maxamount">
                             </div>
                         </div>
+                        <div class="sidebar__item">
+                            <h4>Sắp xếp</h4>
+                            <select name="sort" id="" class="form-control">
+                                <option @if(request("sort") == "price-asc") selected @endif value="price-asc">Giá tăng dần</option>
+                                <option @if(request("sort") == "price-desc") selected @endif value="price-desc">Giá giảm dần</option>
+                                <option @if(request("sort") == "name-asc") selected @endif value="name-asc">Tên A - Z</option>
+                                <option @if(request("sort")  == "name-desc") selected @endif value="name-desc">Tên Z - A</option>
+                            </select>
+                        </div>
+                        <div class="sidebar__item">
+                            <button class="site-btn">Lọc</button>
+                        </div>
                     </div>
-                    <div class="sidebar__item">
-                        <h4>Sắp xếp</h4>
-                        <select name="" id="" class="form-control">
-                            <option value="">Giá giảm dần</option>
-                            <option value="">Giá tăng dần</option>
-                            <option value="">Tên A - Z</option>
-                            <option value="">Tên Z - A</option>
-                        </select>
-                    </div>
-
-                    <div class="sidebar__item">
-                        <button class="site-btn">Lọc</button>
-                    </div>
-                </div>
+                </form>
+                
             </div>
             <div class="col-lg-9 col-md-7">
                 <div class="row align-items-stretch">
@@ -80,7 +73,7 @@
                     @endforeach
                 </div>
                 <div class="product__pagination">
-                    {{ $products->links() }}
+                    {{ $products->withQueryString()->links() }}
                 </div>
             </div>
         </div>
@@ -94,11 +87,9 @@
             max-height: 500px;
             overflow-y: auto
         }
-        .nice-select{
-            width: 100%;
-        }
-        .nice-select .list{
-            width: 100%;
+
+        .input-range{
+            width: 120px;
         }
     </style>
 @endpush

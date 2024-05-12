@@ -46,16 +46,7 @@ class CoreMiddleware
 
         View::share("categories", $categories);
 
-
-        $company = cache("company");
-        if(!$company){
-            $companySetup = BusinessSetting::where("group", "company")->get();
-            foreach($companySetup as $setup){
-                $company[$setup->key] = $setup->value;
-            }
-            cache(["company" => $company], now()->addYear());
-        }
-
+        $company = getCompanyInfo();
         View::share("company", $company);
 
         $social = cache("social_media");

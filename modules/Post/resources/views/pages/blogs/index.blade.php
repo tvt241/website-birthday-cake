@@ -46,7 +46,7 @@
                 
                     <div class="col-lg-12">
                         <div class="product__pagination blog__pagination">
-                            {{ $posts->links() }}
+                            {{ $posts->withQueryString()->links() }}
                         </div>
                     </div>
                 </div>

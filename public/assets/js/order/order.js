@@ -46,9 +46,10 @@ $(document).ready(function(){
                 <div class="col-lg-4">
                     <h4 class="mb-1">Thông tin khách hàng</h4>
                     <p>Tên: <i>${ data.name }</i></p>
-                    <p>Địa chỉ: <i>${ data.address }</i></p>
                     <p>Số điện thoại: <i>${ data.phone }</i></p>
                     <p>Email: <i>${ data.email }</i></p>
+                    <p>Địa chỉ: <i>${ data.address }</i></p>
+                    <p>Cụ thể: <i>${ data.address2 }</i></p>
                 </div>`;
         $(".order-info").html(html);
     }

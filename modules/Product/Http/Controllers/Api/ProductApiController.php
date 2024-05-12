@@ -5,9 +5,15 @@ namespace Modules\Product\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 use Modules\Core\Services\Image\IImageService;
 use Modules\Core\Traits\ResponseTrait;
+use Modules\Order\Enums\OrderStatusEnum;
+use Modules\Order\Models\Cart;
+use Modules\Order\Models\Order;
+use Modules\Order\Models\OrderDetail;
 use Modules\Product\Http\Requests\StoreProductRequest;
+use Modules\Product\Http\Requests\UpdateProductRequest;
 use Modules\Product\Models\ProductCategory;
 use Modules\Product\Models\Product;
 use Modules\Product\Models\ProductItem;
@@ -15,6 +21,7 @@ use Modules\Product\Models\ProductVariation;
 use Modules\Product\Resources\ProductCategoryResource;
 use Modules\Product\Resources\ProductDetailResource;
 use Modules\Product\Resources\ProductResource;
+use PDO;
 
 class ProductApiController extends Controller
 {
@@ -28,10 +35,8 @@ class ProductApiController extends Controller
     }
     public function index(Request $request)
     {
-        $query = Product::query()->with(["image:model_id,url", "category:id,name", "productItems:id,product_id,quantity"]);
-        // if($request->is_active){
+        $query = Product::query()->with(["image:model_id,url", "category:id,name", "productItems:id,product_id,quantity,available"]);
 
-        // }
         $products = $query->latest()->paginate(10);
         $newItems = $products->getCollection()->map(function ($product) {
             return new ProductResource($product);
@@ -126,33 +131,90 @@ class ProductApiController extends Controller
         return $this->SuccessResponse(new ProductDetailResource($product));
     }
 
-
-    public function update(Request $request, $id)
+    public function update(UpdateProductRequest $request, $id)
     {
-        $productCategory = ProductCategory::find($id);
-        if (!$productCategory) {
-            return $this->ErrorResponse(message: __("No Results Found."), status_code: 422);
+        $product = Product::find($id);
+        if (!$product) {
+            return $this->ErrorResponse(message: __("No Results Found."), status_code: 404);
         }
-        if ($productCategory->category_id != $request->category_id) {
-            $totalChildren = ProductCategory::where("category_id", $productCategory->id)->count();
-            if ($totalChildren) {
-                return $this->ErrorResponse(message: __("You do not select this parent. because the paren already to add it for the children."), status_code: 422);
-            }
-        }
-        $imageService = app(IImageService::class);
+        DB::beginTransaction();
+        try {
+            $data = $request->except(["items", "is_change", "variations"]);
+            if(!$request->is_change){
+                $items = $request->items;
+                if(sizeof($items) == 1) $min = 0;
+                else $min = $items[0]["price"];
+                $max = $items[0]["price"];
+                foreach($request->items as $key => $item){
+                    $productItem = ProductItem::find($item["id"]);
+                    if(!$productItem){
+                        DB::rollBack();
+                        return $this->ErrorResponse("Sản phẩm đã thay đổi vui lòng thử lại sau");
+                    }
+                    if($productItem->quantity - $productItem->available > $item["quantity"]){
+                        DB::rollBack();
+                        throw ValidationException::withMessages(["items.[$key].quantity" => "Số lượng sản phẩm đã bán vượt qua số lượng hiện tại"]);
+                    }
+                    Cart::where("product_item_id", $productItem->id)
+                        ->where("quantity", ">", $item["quantity"])
+                        ->update(["quantity" => $item["quantity"]]);
+                    if($item["price"] < $min){
+                        $min = $item["price"];
+                    }
+                    if($item["price"] > $max){
+                        $max = $item["price"];
+                    }
+                    $item["available"] = $item["quantity"] - $productItem->quantity + $productItem->available;
+                    $productItem->update($item);
+                    if(isset($item["image"])){
+                        $this->iImageService->update($item["image"], $productItem, "product_items");
+                    }
+                }
+                $data["min_price"] = $min;
+                $data["max_price"] = $max;
 
-        if ($request->hasFile("image")) {
-            $imageService->update($request->image, $productCategory, "categories");
+                if ($request->hasFile("image")) {
+                    $this->iImageService->update($request->image, $product, "products");
+                }
+                DB::commit();
+                $product->update($data);
+                return $this->SuccessResponse();
+            }
+            $productItems = $product->productItems;
+            $productItemIds = $productItems->pluck("id");
+
+            $orderPendingCount = DB::table("order_details")
+                ->join("orders", "orders.id", "=", "order_details.order_id")
+                ->whereIn("order_details.product_item_id", $productItemIds)
+                ->where("orders.status", ">=", OrderStatusEnum::START_ORDER_PENDING)
+                ->where("orders.status", "<", OrderStatusEnum::END_ORDER_PENDING)
+                ->count("*");
+            if($orderPendingCount){
+                return $this->ErrorResponse("Vui lòng hoàn thành những đơn hàng liên quan trước khi cập nhật sản phẩm");
+            }
+            foreach($productItems as $productItem){
+                $this->iImageService->destroy($productItem);
+                Cart::where("product_item_id", $productItem->id)->delete();
+            }
+            $this->handleStoreVariation($request->variations, $product->id, $request->items);
+
+            if ($request->hasFile("image")) {
+                $this->iImageService->update($request->image, $product, "products");
+            }
+            $product->update($data);
+            DB::commit();
+            return $this->SuccessResponse();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->ErrorResponse($e->getMessage());
         }
-        $productCategory->update = $request->validated();
-        return $this->SuccessResponse();
     }
 
     public function destroy($id)
     {
         $product = Product::find($id);
         if (!$product) {
-            return $this->ErrorResponse(message: __("No Results Found."), status_code: 422);
+            return $this->ErrorResponse(message: __("No Results Found."), status_code: 404);
         }
         $product->items()->delete();
         $product->variations()->delete();

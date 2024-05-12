@@ -5,8 +5,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
-use Modules\Notification\Jobs\SendMailVerifyJob;
-use Modules\Order\Events\Order\OrderCreatedEvent;
 use Modules\Order\Http\Controllers\Api\OrderApiController;
 use Modules\Order\Http\Controllers\Api\PrintApiController;
 use Modules\Order\Http\Controllers\Api\ReportApiController;
@@ -37,12 +35,14 @@ Route::get('/connect', function(Request $request){
         $connection['app_id'],
         $connection['options'] ?? []
     );
-    $url = "/channels/presence-chats";
+    $url = "/channels/presence-notifications";
     $data = [
         "info" => "user_count"
     ];
     // $data = []; 
     $users = $pusher->get($url, $data);
-
-    dd($users);
+    if(!$users->user_count){
+        dd(1);
+    }
+    dd(0);
 });

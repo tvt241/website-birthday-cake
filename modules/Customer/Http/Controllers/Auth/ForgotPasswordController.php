@@ -97,9 +97,7 @@ class ForgotPasswordController extends Controller
         if(filter_var($request->username, FILTER_VALIDATE_EMAIL)){
             $key = "email";
         }
-        $otp = OtpSms::where([
-            $key => $request->username,
-        ])->first();
+        $otp = OtpSms::where($key, $request->username)->first();
 
         if(!$otp){
             $message = CustomerKeyLoginEnum::getValue($key) . " không hợp lệ";
@@ -122,7 +120,7 @@ class ForgotPasswordController extends Controller
                 $message = "Mã xác thực đã hết hạn! Vui lòng nhấn nhấn gửi lại mã xác nhận";
                 return back()->withInput()->with("error", $message);
             }
-            if($request->code != $otp->code){
+            if($request->code != $otp->otp){
                 $message = "Mã xác nhận không đúng";
                 return back()->withInput()->with("error", $message);
             }

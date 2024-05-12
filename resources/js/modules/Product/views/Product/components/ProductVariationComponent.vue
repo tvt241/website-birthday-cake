@@ -92,15 +92,10 @@ const variations = [{
 }];
 
 const onUpdateVariation = debounce(() => {
-    emits("variationsChange", items, variations);
+    emits("variationsChange", items, variations, 0);
 }, 1000);
 
-// onMounted(() => {
-//     console.log(props.items);
-//     props.items.forEach((item, index) => {
-//         items[index].price_import = item.price_import;
-//         items[index].price = item.price;
-//         items[index].quantity = item.quantity;
-//     });
-// })
+onMounted(() => {
+    emits("variationsChange", items, variations, 0);
+});
 </script>

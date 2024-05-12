@@ -1,5 +1,5 @@
 <template>
-    <PageHeaderTitleComponent header-title="Thêm sản phẩm">
+    <PageHeaderTitleComponent header-title="Cập nhật sản phẩm">
         <router-link :to="{ name: 'products' }" class="btn btn-primary text-nowrap">
             Danh sách sản phẩm
         </router-link>
@@ -67,7 +67,7 @@
                                     Phân loại
                                     <span class="text-danger">*</span>
                                 </label>
-                                <select v-model="form.is_variation" class="form-control">
+                                <select v-model="form.is_variation" @change="onChangeStateChangeVariation" class="form-control">
                                     <option value="0">Không phân loại</option>
                                     <option value="1">Phân loại</option>
                                 </select>
@@ -117,7 +117,6 @@
             <ProductVariationComponent 
                 v-if="form.is_variation == 0" 
                 @variations-change="updateVariations"
-                :variations="variations"
                 :items="items"
                 :errors="errors"
             />
@@ -152,8 +151,9 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-end gap-3 mt-4">
-                <button type="button" class="btn btn-primary" @click="submitForm">Lưu</button>
+            <div class="d-flex justify-content-end gap-2 mt-4">
+                <button type="button" class="btn btn-warning" @click="resetPage">Làm mới</button>
+                <button type="button" class="btn btn-primary" @click="submitForm">Cập nhật</button>
             </div>
         </form>
     </div>
@@ -169,14 +169,22 @@ import ProductCategoryOptionComponent from '~/Product/views/Category/components/
 import { ref, reactive, onMounted } from "vue";
 import imageHelper, { IMG_DEFAULT } from "~/Core/helpers/imageHelper";
 import inputHelper from "~/Core/helpers/inputHelper";
-import categoryApi from "../../apis/productCategoryApi";
-import productApi from "../../apis/productApi";
-import { useRoute } from "vue-router";
+import categoryApi from "~/Product/apis/productCategoryApi";
+import productApi from "~/Product/apis/productApi";
+import { useRoute, useRouter } from "vue-router";
+import { formatInt } from "~/Core/helpers/currencyHelper";
 
 const route = useRoute();
 
+const router = useRouter();
+
+function resetPage(){
+    router.go();
+}
+
 const states = reactive({
     image: IMG_DEFAULT,
+    is_variation_old: 0,
 });
 
 const errors = ref({});
@@ -191,12 +199,19 @@ const form = reactive({
     variations: [],
     items: [],
     desc_sort: "",
-    desc: ""
+    desc: "",
+    is_change: 0
 });
 
-function updateVariations(items, variations) {
+let flag = false;
+
+function updateVariations(items, variations, isChange) {
     form.items = items;
     form.variations = variations;
+    if(!flag){
+        flag = true;
+        form.is_change = isChange;
+    }
 }
 
 async function previewImage(event) {
@@ -212,6 +227,7 @@ async function previewImage(event) {
 function renderSlug(event) {
     form.slug = inputHelper.renderSlug(event);
 }
+
 
 const categories = ref([]);
 
@@ -231,55 +247,105 @@ async function getProduct(id){
     try {
         const response = await productApi.getProduct(id);
         const data = response.data;
-        data.variations.forEach((variation) => {
-            renderVariation(variation);
-        });
         form.name = data.name;
         form.slug = data.slug;
         form.desc_sort = data.desc_sort;
         form.category_id = data.category_id;
         form.is_active = data.is_active;
-        form.desc = data.desc;
-        states.image = data.image ? data.image.url : IMG_DEFAULT;
-        if(data.variations[0].children.length) form.is_variation = 1;
-        else form.is_variation = 0;
+        form.desc = data.desc  ?? "";
+        states.image = data.image ? data.image : IMG_DEFAULT;
+        const productItems = data.product_items;
+        if(productItems[0].variation.name != "default") {
+            form.is_variation = 1;
+            states.is_variation_old = 1;
+            renderVariation(productItems);
+        }
+        else {
+            form.is_variation = 0;
+            states.is_variation_old = 0;
+            const productItem = productItems[0];
+            items.push({
+                id: productItem.id,
+                image: {},
+                image_src: productItem.image ?? IMG_DEFAULT,
+                price_import: formatInt(productItem.price_import),
+                price: formatInt(productItem.price),
+                quantity: productItem.quantity,
+            });
+        };
     } catch (error) {
     }
 }
 
-function renderVariation(variation, currentIndex = 0){
-    if(!variations[currentIndex]){
-        variations.push({
-            name: "default",
+function renderVariation(productItems){
+    try {
+        variations.splice(0, variations.length);
+        const variation = productItems[0].variation;
+        const variationsTemp = [];
+        variationsTemp.push({
+            name: variation.name,
             options: []
         });
-    }
-    variations[currentIndex].name = variation.name;
-    if(!variations[currentIndex].options.includes(variation.value)){
-        variations[currentIndex].options.push(variation.value);
-    }
-    if(variation.children.length){
-        variation.children.forEach((element) => {
-            renderVariation(element, currentIndex + 1);
+        variation.ancestors.forEach((variation_parent) => {
+            variationsTemp.push({
+                name: variation_parent.name,
+                options: []
+            });
         });
-        return;
+        const itemsTemp = [];
+        productItems.forEach((productItem) => {
+            const keys = [];
+            const variation = productItem.variation;
+
+            keys.push(variation.value);
+
+            if(!variationsTemp[0].options.includes(variation.value)){
+                variationsTemp[0].options.push(variation.value);
+            }
+
+            variation.ancestors.forEach((variation_parent, index) => {
+                if(!variationsTemp[index + 1].options.includes(variation_parent.value)){
+                    variationsTemp[index + 1].options.push(variation_parent.value);
+                }
+                keys.unshift(variation_parent.value);
+            });
+            
+            itemsTemp.push({
+                key: keys,
+                id: productItem.id,
+                image: {},
+                image_src: productItem.image ?? IMG_DEFAULT,
+                price_import: formatInt(productItem.price_import),
+                price: formatInt(productItem.price),
+                quantity: productItem.quantity,
+            });
+        });
+        items.push(...itemsTemp);
+        variations.push(...variationsTemp.reverse());
+    } catch (error) {
+        console.log(error);
     }
-    items.push({
-        price_import: Number(variation.price_import),
-        price: Number(variation.price),
-        quantity: variation.quantity,
-    });
+}
+
+function onChangeStateChangeVariation(){
+
 }
 
 async function submitForm(){
     try {
+        if(states.is_variation_old != form.is_variation){
+            form.is_change = 1;
+        }
         const response = await productApi.updateProduct(route.params.id, form);
         errors.value = {};
     } catch (error) {
         const data = error.response.data;
-        errors.value = data.errors;
+        if(error.response.status == 422){
+            errors.value = data.errors;
+        }
     }
 }
+
 onMounted(async () => { 
     await getCategories();
     await getProduct(route.params.id);

@@ -47,7 +47,7 @@ class BannerApiController extends Controller
     {
         $banner = Banner::find($id);
         if (!$banner) {
-            return $this->ErrorResponse(message: __("No Results Found."), status_code: 422);
+            return $this->ErrorResponse(message: __("No Results Found."), status_code: 404);
         }
         return $this->SuccessResponse(new BannerResource($banner));
     }
@@ -56,7 +56,7 @@ class BannerApiController extends Controller
     {
         $banner = Banner::find($id);
         if (!$banner) {
-            return $this->ErrorResponse(message: __("No Results Found."), status_code: 422);
+            return $this->ErrorResponse(message: __("No Results Found."));
         }
         $banner->update($request->validated());
         if($request->image){
@@ -69,7 +69,7 @@ class BannerApiController extends Controller
     {
         $banner = Banner::find($id);
         if (!$banner) {
-            return $this->ErrorResponse(message: __("No Results Found."), status_code: 422);
+            return $this->ErrorResponse(message: __("No Results Found."));
         }
         $imageService->destroy($banner);
         $banner->delete();

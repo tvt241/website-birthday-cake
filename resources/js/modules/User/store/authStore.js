@@ -7,6 +7,7 @@ export const useAuthStore = defineStore("authInfo", () => {
     const isLogin = ref(false);
     const authInfo = ref({});
     const menus = ref([]);
+    const roles = ref([]);
 
     async function setToken(data){
         setItem("token", data.access_token);
@@ -28,6 +29,7 @@ export const useAuthStore = defineStore("authInfo", () => {
             const data = response.data;
             authInfo.value = data.user;
             menus.value = data.menus;
+            roles.value = data.roles;
             isLogin.value = true;
             return authInfo.value;
         } catch (error) {
@@ -49,7 +51,11 @@ export const useAuthStore = defineStore("authInfo", () => {
         return menus.value;
     }
 
-    return { isLogin, getInfo, setInfo, getMenus, setToken, refreshToken };
+    function getRoles(){
+        return roles.value;
+    }
+
+    return { isLogin, getInfo, setInfo, getMenus, getRoles, setToken, refreshToken };
 });
 
 

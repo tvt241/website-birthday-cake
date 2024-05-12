@@ -20,17 +20,20 @@
         border-bottom: 1px dashed;
     }
 </style>
-
+@php  
+    $company= getCompanyInfo();
+    $url = route("orders.details", ["order" => $order->order_code]); 
+@endphp
 <div style="width: 315px"> 
     <h2 style="text-align: center">
-        Tiệm bánh kemn hương vị việt
+        {{ $company["name"] }}
     </h2>   
     <p style="text-align: center">
-        Số 49, Ngõ 93, Vương Thừa Vũ, Khương Trung, Thanh Xuân, Hà Nội
+        {{ $company["address"] }}
     </p>
     <hr>
     <div style="float: right">
-        {!! QrCode::size(80)->generate(route("orders.details", ["order" => $order->order_code])); !!}
+        {!! QrCode::size(80)->generate($url); !!}
     </div>
     <h2>Hóa đơn bán hàng</h2>
     <div class="order-info">

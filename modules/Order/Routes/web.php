@@ -31,5 +31,7 @@ Route::post('/order-details/{order}', [OrderController::class, 'show'])->name("o
 
 
 Route::get("test", function(){
-    
+    $order = Order::find(1);
+    $html = view("order::mail.mail-order-created", ["order" => $order])->render();
+    echo $html;
 });

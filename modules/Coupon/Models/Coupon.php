@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Coupon\Enums\CouponDiscountTypeEnum;
 use Modules\Coupon\Enums\CouponStatusEnum;
+use Modules\Order\Enums\OrderStatusEnum;
 use Modules\Order\Models\Order;
 
 class Coupon extends Model
@@ -53,7 +54,10 @@ class Coupon extends Model
             if(!$user){ 
                 return "Mã giảm giá chỉ dành cho thành viên"; 
             }
-            $oderUsedCoupon = Order::where("coupon_id", $this->id)->where("user_id", $user->id)->count();
+            $oderUsedCoupon = Order::where("coupon_id", $this->id)
+                                    ->where("user_id", $user->id)
+                                    ->where("status", "<", OrderStatusEnum::START_ORDER_ERROR)
+                                    ->count();
             if($oderUsedCoupon && $oderUsedCoupon > $this->limit_per_user){ 
                 return "Số lần sử dụng mã giảm giá này của bạn đã đạt tối đa";
             }

@@ -46,7 +46,6 @@ class CustomerApiController extends Controller
                 throw ValidationException::withMessages(["phone" => "Số điện thoại đã được sử dụng"]);
             }
         }
-
         $customer = $request->validated();
         if(!$request->password){
             $customer["password"] = "12345678";
@@ -67,7 +66,7 @@ class CustomerApiController extends Controller
     {
         $customer = Customer::find($id);
         if (!$customer) {
-            return $this->ErrorResponse(message: __("No Results Found."), status_code: 422);
+            return $this->ErrorResponse(message: __("No Results Found."), status_code: 404);
         }
         return $this->SuccessResponse(new CustomerResource($customer));
     }
@@ -76,7 +75,7 @@ class CustomerApiController extends Controller
     {
         $customer = Customer::find($id);
         if (!$customer) {
-            return $this->ErrorResponse(message: __("No Results Found."), status_code: 422);
+            return $this->ErrorResponse(message: __("No Results Found."));
         }
         DB::beginTransaction();
         try {
@@ -96,7 +95,7 @@ class CustomerApiController extends Controller
     {
         $post = Customer::find($id);
         if (!$post) {
-            return $this->ErrorResponse(message: __("No Results Found."), status_code: 422);
+            return $this->ErrorResponse(message: __("No Results Found."));
         }
         $post->update(["is_active" => $request->is_active]);
         return $this->SuccessResponse();
@@ -110,7 +109,7 @@ class CustomerApiController extends Controller
     {
         $customer = Customer::find($id);
         if (!$customer) {
-            return $this->ErrorResponse(message: __("No Results Found."), status_code: 422);
+            return $this->ErrorResponse(message: __("No Results Found."));
         }
         $order = $customer->order()->where("status", "<>", OrderStatusEnum::COMPLETED)->count();
         if($order){

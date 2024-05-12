@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useAuthStore } from "~/User/store/authStore";
-import { getItem } from "~/Core/helpers/localStorageHelper";
+import { useGlobalStore } from "~/Core/stores/globalStore";
 import i18n from "~/Core/i18n";
 import dashboardRouter from "~/Core/routes/dashboardRouter";
 import orderRouter from "~/Order/router";
@@ -33,52 +33,51 @@ const router = createRouter({
     routes,
 });
 
-router.beforeEach(async (to, from) => {
-    const store = useAuthStore();
-    const token = getItem("token");
-    if(!token && to.name != "auth.login"){
+router.beforeEach((to, from) => {
+    const authStore = useAuthStore();
+    const globalStore = useGlobalStore();
+    globalStore.setStatus(200);
+
+    if(to.name != "auth.login" && !authStore.isLogin){
+      globalStore.setPreRoute(to.fullPath);
       return { name: "auth.login" };
     }
-    if(token){
-      await store.setInfo();
-    }
-    if(token && to.name == 'auth.login'){
+
+    if(authStore.isLogin && to.name == 'auth.login'){
       return { name: "pos" };
     }
-    let currentMenu = null;
-    const menus = store.getMenus();
-    const path = to.path.slice(1);
-    // for (const key in menus) {
-    //   if (Object.hasOwnProperty.call(menus, key)) {
-    //     for (let indexMdl = 0; indexMdl < menus[key].length; indexMdl++) {
-    //       const mdl = menus[key][indexMdl];
-    //       if(mdl.url === path){
-    //         console.log(currentMenu);
-    //         currentMenu = mdl;
-    //         break;
-    //       }
-    //       if(mdl.children?.length){
-    //         for (let indexSub = 0; indexSub < mdl.children.length; indexSub++) {
-    //           const sub_menu = mdl.children[indexSub];
-    //           if(sub_menu.url === path){
-    //             console.log(currentMenu);
-    //             currentMenu = sub_menu;
-    //             break;
-    //           }
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
-    // if(!currentMenu){
-    //   return {
-    //     name: "pos"
-    //   }
-    // }
-    // const store = useAuthStore();
-    // await store.getInfo();
+    if(to.name != "NotFound"){
+      let currentMenu = null;
+      const roles = authStore.getRoles();
+      for (let index = 0; index < roles.length; index++) {
+        if(roles[index].name === to.name){
+          currentMenu = roles[index];
+          break;
+        }
+      }
+      if(!currentMenu){
+        if(from.name === "auth.login"){
+          globalStore.setPreRoute("/pos");
+        }
+        else{
+          globalStore.setPreRoute(from.fullPath);
+        }
+        globalStore.setStatus(403);
+      }
+      else{
+        document.title = currentMenu.title;
+      }
+    }
+    else{
+      if(from.name){
+        globalStore.setPreRoute(from.fullPath);
+      }
+      else{
+        globalStore.setPreRoute("/pos");
+      }
+      globalStore.setStatus(404);
+    }
 
-    // document.title = currentMenu.title;
 }); 
 
 export default router;

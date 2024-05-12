@@ -57,6 +57,7 @@ class LoginApiController extends Controller
         $permissions = $user->roles()
             ->join("role_has_permissions", "roles.id", "=", "role_has_permissions.role_id")
             ->join("permissions", "role_has_permissions.permission_id", "=", "permissions.id")
+            ->where("label", "<>", null)
             ->get([
                 "permissions.id", 
                 "permissions.title", 
@@ -67,7 +68,6 @@ class LoginApiController extends Controller
                 "permissions.is_sub",
                 "permissions.menu_parent",
             ])->toArray();
-
         $menusParent = [];
         foreach($permissions as $key => $menu){
             if(!$menu["menu_parent"]){
@@ -87,6 +87,53 @@ class LoginApiController extends Controller
             $menus[$key][] = $menu;
         }
         $user->menus = $menus;
+
+        $permissions = $user->roles()
+            ->join("role_has_permissions", "roles.id", "=", "role_has_permissions.role_id")
+            ->join("permissions", "role_has_permissions.permission_id", "=", "permissions.id")
+            ->get([
+                "permissions.name",
+                "permissions.title",
+            ]);
+        $user->role_names = $permissions;
+
         return $this->SuccessResponse(new InfoUserResource($user));
     }
+
+    // public function abc(){
+    //     $permissions = $user->roles()
+    //         ->join("role_has_permissions", "roles.id", "=", "role_has_permissions.role_id")
+    //         ->join("permissions", "role_has_permissions.permission_id", "=", "permissions.id")
+    //         ->get([
+    //             "permissions.id", 
+    //             "permissions.title", 
+    //             "permissions.name",
+    //             "permissions.module",
+    //             "permissions.label",
+    //             "permissions.icon",
+    //             "permissions.is_sub",
+    //             "permissions.menu_parent",
+    //         ])->toArray();
+
+    //     $menusParent = [];
+    //     foreach($permissions as $key => $menu){
+    //         if(!$menu["menu_parent"]){
+    //             $menusParent[] = array_slice($menu, 0, 9) ;
+    //         }
+    //     }
+    //     foreach($menusParent as $key => $menuParent){
+    //         foreach($permissions as $menu){
+    //             if($menu["menu_parent"] == $menuParent["id"]){
+    //                 $menusParent[$key]["children"][] = array_slice($menu, 0, 9) ;
+    //             }
+    //         }
+    //     }
+    //     $menus = [];
+    //     foreach($menusParent as $menu){
+    //         $key = $menu["module"];
+    //         $menus[$key][] = $menu;
+    //     }
+
+    //     $user->menus = $menus;
+    // }
 }

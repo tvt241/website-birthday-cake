@@ -14,13 +14,8 @@ use Illuminate\Support\Facades\Broadcast;
 */
 
 Broadcast::channel('notifications', function ($user) {
-    return true;
-}, ["guards" => ["api", "customer_web"]]);
-
-
-Broadcast::channel('chats', function ($user) {
     return [
         "id" => $user->id,
-        
+        "name" => $user->name
     ];
-}, ["guards" => ["api", "customer_web"]]);
+}, ["guards" => ["api"]]);

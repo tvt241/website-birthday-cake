@@ -95,7 +95,7 @@
                             <li>
                                 <i class="fa fa-chevron-right"></i>
                                 <strong>Địa chỉ chính:</strong>
-                                <span>Ngõ 123 Xuân phương, Phương Canh, Nam Từ Niêm, Hà Nội</span>
+                                <span>{{ $company["address"] }}</span>
                             </li>
                         </ul>
                         <div class="d-flex gap-2 justify-content-between">
@@ -169,7 +169,7 @@
                             <tr>
                                 <td>{{ $key + 1 }}</td>
                                 <td>
-                                    <a href="{{ route("orders.details", ["order" => $order->order_code]) }}" title="Xem chi tiết đơn hàng">
+                                    <a href="{{ route("orders.index", ["code" => $order->order_code]) }}" title="Xem chi tiết đơn hàng">
                                         {{ $order->order_code }}
                                     </a>
                                 </td>

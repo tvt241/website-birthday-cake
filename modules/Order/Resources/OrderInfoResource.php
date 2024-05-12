@@ -27,6 +27,7 @@ class OrderInfoResource extends JsonResource
             "customer_name" => $this->customer ? $this->customer->name : "Khách lẻ",
             "name" => $this->name,
             "address" => $this->address,
+            "address2" => "",
             "phone" => $phone,
             "email" => $email,
             "coupon_value" => $this->coupon_value,
