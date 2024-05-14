@@ -20,5 +20,9 @@ export default {
     updateInfo: function(form){
         const url = `auth/update`;
         return apiHelper.put(url, form);
+    },
+    logout: function(){
+        const url = `auth/logout`;
+        return apiHelper.post(url);
     }
 }

@@ -13,7 +13,7 @@
                             <div class="col-xl-3 col-md-4">
                                 <div class="form-group">
                                     <label for="">Tình trạng đơn hàng</label>
-                                    <select @change="confirmUpdateOrder($event, 'status')" v-model="order.status_id" class="form-control">
+                                    <select @change="confirmUpdateStatusOrder($event, 'status')" v-model="order.status_id" class="form-control">
                                         <option class="text-danger" disabled>Chờ sử lý</option>
                                         <option value="0">Chờ duyệt</option>
                                         <option value="1">Chuẩn bị hàng</option>
@@ -24,6 +24,7 @@
                                         <!-- <option disabled value="11">Hoàn thành tự động</option> -->
                                         <option class="text-danger" disabled>Thất bại</option>
                                         <option value="23">Giao thất bại</option>
+                                        <option value="26">Hết hàng</option>
                                         <option value="23">Tạm dừng</option>
                                         <option value="21">Người bán hủy</option>
                                         <option value="20">Khách hàng hủy</option>
@@ -38,7 +39,7 @@
                             <div class="col-xl-3 col-md-4">
                                 <div class="form-group">
                                     <label>Kiểu thanh toán</label>
-                                    <select @change="confirmUpdateOrder($event, 'payment_method')"  v-model="order.payment_method_id" name="" id="" class="form-control">
+                                    <select @change="confirmUpdateStatesOrder($event, 'payment_method')"  v-model="order.payment_method_id" name="" id="" class="form-control">
                                         <option value="0">COD</option>
                                         <option value="1">VNPAY</option>
                                     </select>
@@ -47,7 +48,7 @@
                             <div class="col-xl-3 col-md-4">
                                 <div class="form-group">
                                     <label for="">Trạng thái thanh toán</label>
-                                    <select @change="confirmUpdateOrder($event, 'payment_status')"  v-model="order.payment_status_id" name="" id="" class="form-control">
+                                    <select @change="confirmUpdateStatesOrder($event, 'payment_status')"  v-model="order.payment_status_id" name="" id="" class="form-control">
                                         <option value="0">Chờ thanh toán</option>
                                         <option value="1">Đã thanh toán</option>
                                         <option value="2">Thanh toán thiếu</option>
@@ -196,7 +197,7 @@ async function getOrder() {
     }
 }
 
-function confirmUpdateOrder(e, column){
+function confirmUpdateStatusOrder(e, column){
     alertHelper.confirmDelete()
         .then((result) => {
             if (result.isConfirmed) {
@@ -204,20 +205,45 @@ function confirmUpdateOrder(e, column){
                     key: column,
                     value: e.target.value
                 }
-                updateOrder(data);
+                updateStatusOrder(data);
+            }
+            else{
+                getOrder();
             }
         })
 }
-async function updateOrder(form) {
+async function updateStatusOrder(form) {
     try {
         const response = await orderApi.changeStatusOrder(route.params.id, form);
-        console.log(data);
-        const data = response.data;
-        order.value = data;
     } catch (error) {
-        console.log(error);
+        getOrder();
     }
 }
+
+function confirmUpdateStatesOrder(e, column){
+    alertHelper.confirmDelete()
+        .then((result) => {
+            if (result.isConfirmed) {
+                const data = {
+                    key: column,
+                    value: e.target.value
+                }
+                updateStatesOrder(data);
+            }
+            else{
+                getOrder();
+            }
+        })
+}
+async function updateStatesOrder(form) {
+    try {
+        const response = await orderApi.changeStatesOrder(route.params.id, form);
+    } catch (error) {
+        getOrder();
+    }
+}
+
+
 
 async function printOrder(){
     try {

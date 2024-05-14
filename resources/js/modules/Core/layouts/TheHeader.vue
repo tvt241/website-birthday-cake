@@ -312,27 +312,27 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right">
                             <li>
-                                <a class="dropdown-link-item" href="user-profile.html">
+                                <a class="dropdown-link-item" href="#">
                                     <i class="mdi mdi-account-outline"></i>
                                     <span class="nav-text">Thông tin của tôi</span>
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-link-item" href="email-inbox.html">
+                                <a class="dropdown-link-item" href="#">
                                     <i class="mdi mdi-email-outline"></i>
                                     <span class="nav-text">Tin nhắn</span>
                                     <span class="badge badge-pill badge-primary">24</span>
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-link-item" href="user-account-settings.html">
+                                <a class="dropdown-link-item" href="#">
                                     <i class="mdi mdi-settings"></i>
                                     <span class="nav-text">Cài đặt tài khoản</span>
                                 </a>
                             </li>
 
                             <li class="dropdown-footer">
-                                <a class="dropdown-link-item" href="sign-in.html">
+                                <a @click="confirmLogout" class="dropdown-link-item" href="javascript:void(0)">
                                     <i class="mdi mdi-logout"></i> Đăng xuất
                                 </a>
                             </li>
@@ -347,8 +347,34 @@
 <script setup>
 import { useAuthStore } from '~/User/store/authStore';
 import { IMG_DEFAULT } from '../helpers/imageHelper';
+import alertHelper from '../helpers/alertHelper';
+import authApi from '~/User/apis/authApi';
+import { removeItem } from '../helpers/localStorageHelper';
+import { useRouter } from 'vue-router';
 
 const authStore = useAuthStore();
 
+const router = useRouter();
+
 const info = authStore.getInfo();
+
+function confirmLogout(){
+    alertHelper.confirmDelete("Bạn muốn đăng xuất ?")
+        .then(async (result) => {
+            if (result.isConfirmed) {
+                await logout();
+            }
+        })
+}
+
+async function logout(){
+    try {
+        const response = authApi.logout();
+        authStore.isLogin = false;
+        removeItem("token");
+        router.go();
+    } catch (error) {
+        console.log(error);
+    }
+}
 </script>

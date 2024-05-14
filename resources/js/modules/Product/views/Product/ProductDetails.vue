@@ -229,7 +229,7 @@ function renderProductItem(productItems){
 
 
 function showBarcode(item){
-    const barcode = item.barcode
+    const barcode = item.barcode;
     JsBarcode("#barcode", barcode, {
         format: "CODE128",
         displayValue: true,

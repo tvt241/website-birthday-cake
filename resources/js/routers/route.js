@@ -46,36 +46,33 @@ router.beforeEach((to, from) => {
     if(authStore.isLogin && to.name == 'auth.login'){
       return { name: "pos" };
     }
-    if(to.name != "NotFound"){
-      let currentMenu = null;
-      const roles = authStore.getRoles();
-      for (let index = 0; index < roles.length; index++) {
-        if(roles[index].name === to.name){
-          currentMenu = roles[index];
-          break;
+    if(to.name != "auth.login"){
+      if(to.name != "NotFound"){
+        let currentMenu = null;
+        const roles = authStore.getRoles();
+        for (let index = 0; index < roles.length; index++) {
+          if(roles[index].name === to.name){
+            currentMenu = roles[index];
+            break;
+          }
         }
-      }
-      if(!currentMenu){
-        if(from.name === "auth.login"){
-          globalStore.setPreRoute("/pos");
+        if(!currentMenu){
+          globalStore.setPreRoute(from.fullPath);
+          globalStore.setStatus(403);
         }
         else{
+          document.title = currentMenu.title;
+        }
+      }
+      else{
+        if(from.name){
           globalStore.setPreRoute(from.fullPath);
         }
-        globalStore.setStatus(403);
+        else{
+          globalStore.setPreRoute("pos");
+        }
+        globalStore.setStatus(404);
       }
-      else{
-        document.title = currentMenu.title;
-      }
-    }
-    else{
-      if(from.name){
-        globalStore.setPreRoute(from.fullPath);
-      }
-      else{
-        globalStore.setPreRoute("/pos");
-      }
-      globalStore.setStatus(404);
     }
 
 }); 

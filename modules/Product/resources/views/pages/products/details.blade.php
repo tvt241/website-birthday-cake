@@ -90,7 +90,6 @@
                             </div>
                         </div>
                         <a href="javascript:void(0)" class="primary-btn btn__cart_add">Thêm vào giỏ hàng</a>
-                        <a href="javascript:void(0)" class="heart-icon btn__heart__cart"><span class="icon_heart_alt"></span></a>
                         
                     </div>
                 </div>

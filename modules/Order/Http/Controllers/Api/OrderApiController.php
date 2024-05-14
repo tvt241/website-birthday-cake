@@ -189,18 +189,23 @@ class OrderApiController extends Controller
         if(!$order){
             return $this->ErrorResponse("Đơn hàng không tồn tại");
         }
+        // Khách hàng chưa thanh toán
+        if($request->value >= OrderStatusEnum::START_ORDER_COMPLETE &&  $request->value <= OrderStatusEnum::END_ORDER_COMPLETE && $order->payment_status != PaymentStatusEnum::DONE->value ){
+                return $this->ErrorResponse("Khách hàng chưa thanh toán ?");
+        }
+        // Đơn hàng đã hoàn thành
         if($order->status >= OrderStatusEnum::START_ORDER_COMPLETE && $order->status <= OrderStatusEnum::END_ORDER_COMPLETE){
             return $this->ErrorResponse("Đơn hàng đã hoàn thành");
         }
-
+        // Đơn hàng đã hoàn thành
         if($order->status >= OrderStatusEnum::START_ORDER_ERROR && $order->status <= OrderStatusEnum::END_ORDER_ERROR){
             return $this->ErrorResponse("Đơn hàng đã hoàn thành");
         }
-
+        // Đơn hàng đã được duyệt
         if($order->status != OrderStatusEnum::PENDING->value && $request->value == OrderStatusEnum::PENDING->value){
             return $this->ErrorResponse("Đơn hàng đã được duyệt");
         }
-
+        // Chuyển trang thái đơn hàng - Không phải thất bại
         if($order->status == OrderStatusEnum::PENDING->value && $request->value < OrderStatusEnum::START_ORDER_ERROR){
             DB::beginTransaction();
             try {
@@ -222,6 +227,10 @@ class OrderApiController extends Controller
                         DB::rollBack();
                         return $this->ErrorResponse("Sản phẩm $orderDetail->name - $orderDetail->info không tồn tại trên hệ thống");
                     }
+                    if($productItem->available < $orderDetail->quantity){
+                        DB::rollBack();
+                        return $this->ErrorResponse("Sản phẩm $orderDetail->name - $orderDetail->info đã hết hàng");
+                    }
                     $productItem->available -= $orderDetail->quantity;
                     $productItem->save();
                 }
@@ -234,8 +243,8 @@ class OrderApiController extends Controller
                 return $this->ErrorResponse($e->getMessage());
             }
         }
-
-        if($order->status == OrderStatusEnum::PENDING->value && $request->value >= OrderStatusEnum::START_ORDER_ERROR){
+        // Chuyển trạng thái đơn hàng - Thất bại
+        if($order->status < OrderStatusEnum::START_ORDER_COMPLETE && $request->value >= OrderStatusEnum::START_ORDER_ERROR){
             DB::beginTransaction();
             try {
                 if($order->user_id){
@@ -254,11 +263,11 @@ class OrderApiController extends Controller
                             $productItem->available += $orderDetail->quantity;
                             $productItem->save();
                         }
-                        DB::commit();
                     }
                 }
                 $order->status = $request->value;
                 $order->save();
+                DB::commit();
                 return $this->SuccessResponse();
             } catch (\Exception $e) {
                 DB::rollBack();
@@ -266,29 +275,6 @@ class OrderApiController extends Controller
             }
         }
 
-        if($order->status > OrderStatusEnum::START_ORDER_PENDING && $order->status < OrderStatusEnum::END_ORDER_PENDING && $request->value >= OrderStatusEnum::START_ORDER_ERROR){
-            DB::beginTransaction();
-            try {
-                $orderDetails = $order->orderDetails;
-                foreach($orderDetails as $orderDetail){
-                    $productItem = ProductItem::find($orderDetail->product_item_id);
-                    if(!$productItem){
-                        DB::rollBack();
-                        return $this->ErrorResponse("Sản phẩm $orderDetail->name - $orderDetail->info không tồn tại trên hệ thống");
-                    }
-                    $productItem->available += $orderDetail->quantity;
-                    $productItem->save();
-                }
-                DB::commit();
-                $order->status = $request->value;
-                $order->save();
-                return $this->SuccessResponse();
-            } catch (\Exception $e) {
-                DB::rollBack();
-                return $this->ErrorResponse($e->getMessage());
-            }
-        }
-        
         $order->status = $request->value;
         $order->save();
         return $this->SuccessResponse();

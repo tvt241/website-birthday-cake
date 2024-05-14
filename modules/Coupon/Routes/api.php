@@ -15,5 +15,8 @@ use Modules\Coupon\Http\Controllers\Api\CouponApiController;
 |
 */
 
-Route::apiResource("coupons", CouponApiController::class);
-Route::post("coupons/check", [CouponApiController::class, "check"])->name("coupons.check");
+
+Route::group(["middleware" => "auth:api"], function(){
+    Route::apiResource("coupons", CouponApiController::class);
+    Route::post("coupons/check", [CouponApiController::class, "check"])->name("coupons.check");
+});

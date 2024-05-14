@@ -20,12 +20,17 @@ use Pusher\Pusher;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::get('/orders/keys', [OrderApiController::class, 'keys']);
-Route::put('/orders/{order}/update-status', [OrderApiController::class, 'updateStatus']);
-Route::apiResource('/orders', OrderApiController::class);
-Route::get("reports/month-in-year", [ReportApiController::class, "reportYear"]);
-Route::get("reports/top-user", [ReportApiController::class, "reportUser"]);
-Route::get("/print/invoice", [PrintApiController::class, "invoice"]);
+
+Route::group(["middleware" => "auth:api"], function(){
+    Route::get('/orders/keys', [OrderApiController::class, 'keys']);
+    Route::put('/orders/{order}/update-status', [OrderApiController::class, 'updateStatus']);
+    Route::put('/orders/{order}/update-states', [OrderApiController::class, 'updateStates']);
+    Route::apiResource('/orders', OrderApiController::class);
+    Route::get("reports/month-in-year", [ReportApiController::class, "reportYear"]);
+    Route::get("reports/top-user", [ReportApiController::class, "reportUser"]);
+    Route::get("/print/invoice", [PrintApiController::class, "invoice"]);
+});
+
 
 Route::get('/connect', function(Request $request){
     $connection = config('broadcasting.connections.pusher');

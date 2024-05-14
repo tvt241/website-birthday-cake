@@ -13,6 +13,8 @@ use Illuminate\Validation\ValidationException;
 use Modules\Core\Services\Image\ImageService;
 use Modules\Customer\Http\Requests\CustomerActiveRequest;
 use Modules\Customer\Http\Requests\StoreCustomerRequest;
+use Modules\Customer\Http\Requests\Api\UpdateCustomerRequest;
+use Modules\Customer\Resources\CustomerDetailsResource;
 use Modules\Order\Enums\OrderStatusEnum;
 
 class CustomerApiController extends Controller
@@ -68,10 +70,10 @@ class CustomerApiController extends Controller
         if (!$customer) {
             return $this->ErrorResponse(message: __("No Results Found."), status_code: 404);
         }
-        return $this->SuccessResponse(new CustomerResource($customer));
+        return $this->SuccessResponse(new CustomerDetailsResource($customer));
     }
 
-    public function update(Request $request, $id, ImageService $imageService)
+    public function update(UpdateCustomerRequest $request, $id, ImageService $imageService)
     {
         $customer = Customer::find($id);
         if (!$customer) {

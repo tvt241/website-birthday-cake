@@ -714,6 +714,7 @@
     "POS": "Tại quầy",
     "CANCELLED": "Đã hủy",
     "CANCELLED_SELLER": "Người bán hủy",
+    "OUTOFSTOCK": "Hết hàng",
     "PENDING": "Chờ sử lý",
     "UNPAID": "Chưa thanh toán",
     "PROCESSING": "Chuẩn bị hàng",

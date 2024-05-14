@@ -31,4 +31,5 @@ enum OrderStatusEnum : int
     case DELIVERED_FAILED = 23;
     case REFUNDED = 24;
     case RETURNED = 25;
+    case OUTOFSTOCK = 26;
 }

@@ -13,7 +13,8 @@ use Modules\Setting\Http\Controllers\Api\BusinessApiSettingController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::post("/get-config", [BusinessApiSettingController::class, "getConfig"]);
-
-Route::post("/get-service", [BusinessApiSettingController::class, "getService"]);
+Route::group(["middleware" => "auth:api"], function(){
+    Route::post("/get-config", [BusinessApiSettingController::class, "getConfig"]);
+    Route::post("/update-config/company", [BusinessApiSettingController::class, "updateCompanyConfig"]);
+    Route::post("/get-service", [BusinessApiSettingController::class, "getService"]);
+});

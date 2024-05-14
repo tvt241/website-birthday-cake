@@ -21,6 +21,10 @@ export default {
         const url = `orders/${id}/update-status`;
         return apiHelper.put(url, form);
     },
+    changeStatesOrder: function(id, form){
+        const url = `orders/${id}/update-states`;
+        return apiHelper.put(url, form);
+    },
     deleteOrder: function(id){
         const url = `orders/${id}`;
         return apiHelper.delete(url);

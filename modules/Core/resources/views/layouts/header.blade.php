@@ -45,7 +45,7 @@
             <div class="col-lg-3">
                 <div class="header__logo">
                     <a href ="{{ route("home") }}">
-                        <img width="120px" height="50px" src="{{ $company["logo"] }}" alt="">
+                        <img style="widows: 100%" height="50px" src="{{ $company["logo"] }}" alt="">
                     </a>
                 </div>
             </div>

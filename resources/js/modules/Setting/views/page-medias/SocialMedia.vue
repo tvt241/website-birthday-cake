@@ -32,32 +32,32 @@
     <div class="card mt-2">
         <table class="table text-center">
             <thead>
-                <th>#</th>
+                <th style="width: 50px;">#</th>
                 <th>Tên</th>
                 <th style="width: 40%;">Link</th>
-                <th>Trạng thái</th>
-                <th>Hành động</th>
+                <!-- <th>Trạng thái</th> -->
+                <!-- <th>Hành động</th> -->
             </thead>
             <tbody>
                 <tr v-for="(social, index) in socials">
                     <td>{{ index + 1 }}</td>
                     <td>{{ social.key }}</td>
                     <td class="text-left">{{ social.value }}</td>
-                    <td>
+                    <!-- <td>
                         <div class="d-flex justify-content-center">
                             <label class="switcher">
                             <input type="checkbox" @click="changeActive(social.key)" class="switcher_input" checked>
                             <span class="switcher_control"></span>
                         </label>
                         </div>
-                    </td>
-                    <td>
+                    </td> -->
+                    <!-- <td>
                         <div class="d-flex justify-content-center align-items-center gap-2">
                             <button class="btn btn-sm btn-outline-danger square-btn" @click="onShowConfirm(social.key)">
                                 <i class="mdi mdi-trash-can"></i>
                             </button>
                         </div>
-                    </td>
+                    </td> -->
                 </tr>
             </tbody>
         </table>

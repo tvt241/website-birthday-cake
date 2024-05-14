@@ -14,5 +14,4 @@ export default {
         const url = "reports/top-user";
         return apiHelper.get(url, paramSearch);
     },
-    
 }

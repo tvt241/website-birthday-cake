@@ -14,5 +14,7 @@ use Modules\Banner\Http\Controllers\Api\BannerApiController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::get("banners/order", [BannerApiController::class, "order"]);
-Route::apiResource("banners", BannerApiController::class);
+Route::group(["middleware" => "auth:api"], function(){
+    Route::get("banners/order", [BannerApiController::class, "order"]);
+    Route::apiResource("banners", BannerApiController::class);
+});

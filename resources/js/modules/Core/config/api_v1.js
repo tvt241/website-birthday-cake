@@ -37,6 +37,9 @@ instance.interceptors.response.use(
             else if(headers["X-Action"] == "edit"){
                 alertHelper.success("Cập nhật thành công");
             }
+            else if(headers["X-Action"] == "delete"){
+                alertHelper.success("Xóa thành công");
+            }
             return response.data;
         }
         return Promise.reject(response);
@@ -49,6 +52,8 @@ instance.interceptors.response.use(
             if (error.response) {
                 if(error.response.status === 401 && headers["X-Action"] != "login"){
                     removeItem("token");
+                    console.log("vaof aday ?");
+                    debugger;
                     window.location.reload();
                     msg = error.response.data.msg;
                     return;
@@ -66,6 +71,9 @@ instance.interceptors.response.use(
             }
             else if(headers["X-Action"] == "edit"){
                 alertHelper.error("Cập nhật thất bại", message);
+            }
+            else if(headers["X-Action"] == "delete"){
+                alertHelper.error("Xóa thất bại", message);
             }
         }
         return Promise.reject(error);

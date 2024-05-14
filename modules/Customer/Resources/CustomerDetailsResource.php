@@ -5,7 +5,7 @@ namespace Modules\Customer\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Customer\Enums\CustomerSocialEnum;
 
-class CustomerResource extends JsonResource
+class CustomerDetailsResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -21,6 +21,8 @@ class CustomerResource extends JsonResource
             "name" => $this->name,
             "email" => $this->email,
             "phone" => $this->phone,
+            "birthday" => $this->birthday?->format("Y-m-d"),
+            "gender" => $this->gender,
             "social" => CustomerSocialEnum::getKey($this->social),
             "is_active" => $this->is_active,
             "image" => $this->image?->url

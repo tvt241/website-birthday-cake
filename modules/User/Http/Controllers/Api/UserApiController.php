@@ -53,7 +53,10 @@ class UserApiController extends Controller
     {
         $user = User::find($id);
         if (!$user) {
-            return $this->ErrorResponse(message: __("No Results Found."), status_code: 422);
+            return $this->ErrorResponse(message: __("No Results Found."));
+        }
+        if($id == 1){
+            return $this->ErrorResponse("Hiện tại không thể cập nhật nhân viên này");
         }
         DB::beginTransaction();
         try {
@@ -73,39 +76,12 @@ class UserApiController extends Controller
 
     public function destroy($id)
     {
-        $role = Role::find($id);
-        if (!$role) {
+        $user = User::find($id);
+        if (!$user) {
             return $this->ErrorResponse(message: __("No Results Found."), status_code: 422);
         }
-        return $this->SuccessResponse();
-    }
-
-    public function permissionByRole($id){
-        $role = Role::find($id);
-        if (!$role) {
-            return $this->ErrorResponse(message: __("No Results Found."), status_code: 422);
-        }
-        $permissions = Permission::tree()->get(["id", "title", "name", "depth", "menu_parent"]);
-        $rolePermission = $role->permissions->pluck("id")->toArray();
-        foreach($permissions as $permission){
-            if(in_array($permission->id, $rolePermission)){
-                $permission->asset = true;
-                continue;
-            }
-            $permission->asset = false;
-        }
-        return $this->SuccessResponse($permissions->toTree());
-    }
-
-    public function updatePermissionByRole(Request $request, $id){
-        $role = Role::find($id);
-        if (!$role) {
-            return $this->ErrorResponse(message: __("No Results Found."), status_code: 422);
-        }
-        try {
-            $role->syncPermissions($request->permissions);
-        } catch (\Throwable $th) {
-            return $this->ErrorResponse(message: $th->getMessage());
+        if($id == 1){
+            return $this->ErrorResponse("Hiện tại không thể xóa nhân viên này");
         }
         return $this->SuccessResponse();
     }

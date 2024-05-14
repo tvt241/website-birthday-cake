@@ -15,10 +15,10 @@ class UpdateOrderRequest extends FormRequest
     public function rules()
     {
         return [
-            "user_id" => "nullable|exists:customers,id",
-            "status" => "required",
-            "payment_method" => "required",
-            "payment_status" => "required",
+            // "user_id" => "nullable|exists:customers,id",
+            // "status" => "required",
+            // "payment_method" => "required",
+            // "payment_status" => "required",
             
             "name" => "required",
             "phone" => "required",

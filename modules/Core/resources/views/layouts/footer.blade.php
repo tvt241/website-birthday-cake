@@ -5,7 +5,7 @@
                 <div class="footer__about">
                     <div class="footer__about__logo">
                         <a href="{{ route("home") }}">
-                            <img width="120px" height="50px" style="object-fit: cover" src="{{ $company["logo"] }}" alt="">
+                            <img style="width: 100%" height="50px" style="object-fit: cover" src="{{ $company["logo"] }}" alt="">
                         </a>
                     </div>
                     <ul>

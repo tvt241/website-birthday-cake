@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Modules\Core\Traits\ResponseTrait;
 use Modules\User\Models\Permission;
+use Modules\User\Models\User;
 use Modules\User\Resources\PermissionResource;
 use Modules\User\Resources\RolesResource;
 use Spatie\Permission\Models\Role;
@@ -18,7 +19,16 @@ class RoleApiController extends Controller
 
     public function index()
     {
-        $roles = Role::query()->withCount("users")->get(["id", "name", "users_count"]);
+        $roles = DB::table("roles")
+            ->leftJoin("model_has_roles", function($join){
+                $join->on("model_has_roles.role_id", "=", "roles.id")
+                    ->where("model_type", User::class);
+            })
+            ->select(["roles.id", "roles.name"])
+            ->addSelect(DB::raw("count(model_has_roles.role_id) as user_count"))
+            ->groupBy("roles.id", "roles.name")
+            ->orderBy("roles.id")
+            ->get();
         return $this->SuccessResponse(RolesResource::collection($roles));
     }
 

@@ -2,10 +2,12 @@
 
 namespace Modules\Setting\Http\Controllers\Api;
 
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 use Modules\Core\Traits\ResponseTrait;
+use Modules\Setting\Http\Requests\UpdateCompanyRequest;
 use Modules\Setting\Models\BusinessSetting;
 use Modules\Setting\Resources\ConfigResource;
 use Modules\Setting\Resources\ServiceResource;
@@ -23,7 +25,6 @@ class BusinessApiSettingController extends Controller
         $configs = $query->get();
         return $this->SuccessResponse(ConfigResource::collection($configs));
     }
-
 
     public function getService(Request $request)
     {
@@ -43,7 +44,24 @@ class BusinessApiSettingController extends Controller
         return $this->SuccessResponse(new ServiceResource($config));
     }
 
-    public function updateConfig(Request $request){
-        
+    public function updateCompanyConfig(UpdateCompanyRequest $request){
+        $hostPath = "/storage/";
+        $configs = $request->validated();
+        if($request->logo){
+            $url = Storage::disk("public")->putFile("setup", $request->logo);
+            $configs["logo"] = $hostPath . $url;
+        }
+
+        if($request->fav_icon){
+            $url = Storage::disk("public")->putFile("setup", $request->fav_icon);
+            $configs["fav_icon"] = $hostPath . $url;
+        }
+        foreach($configs as $key => $config){
+            $configCurrent = BusinessSetting::where("group", "company")->where("key", $key)->first();
+            $configCurrent->value = $config;
+            $configCurrent->save();
+        }
+        Cache::forget("company");
+        return $this->SuccessResponse([]);
     }
 }

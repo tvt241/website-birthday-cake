@@ -44,7 +44,6 @@ import { useAuthStore } from '~/User/store/authStore';
 import { useSettingStore } from '~/Setting/store/settingStore';
 import { useGlobalStore } from './stores/globalStore';
 
-
 const store = useAuthStore();
 const settingStore = useSettingStore();
 const globalStore = useGlobalStore();
@@ -83,10 +82,6 @@ onMounted(async () => {
         toastHelper.showNotification(event.title, data);
       }
     });
-    
-  if(!settingStore.getSettings().name){
-    await settingStore.setSettings();
-  }
 })
 </script>
 

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Modules\Core\Models\Image;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Modules\Order\Models\Cart;
 
 class ProductItem extends Model
 {
@@ -23,6 +24,10 @@ class ProductItem extends Model
         "barcode",
         "available"
     ];
+
+    public function carts(){
+        return $this->hasMany(Cart::class, "product_item_id");
+    }
 
     public function genBarCode(){
         $productItemId = (string)$this->id;
@@ -72,6 +77,20 @@ class ProductItem extends Model
             }
         }
         return $variations;
+    }
+
+    public function variationIds()
+    {
+        $variation = $this->variationsCollect();
+        $variationIds = [];
+        $variationIds[] = $variation->id;
+
+        if($variation->ancestors->count()){
+            foreach($variation->ancestors as $variation_parent){
+                $variationIds[] = $variation_parent->id;
+            }
+        }
+        return $variationIds;
     }
 
     public function variationString() : Attribute

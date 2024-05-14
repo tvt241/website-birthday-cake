@@ -9,4 +9,5 @@ enum PaymentStatusEnum : int
     case UNPAID = 0;
     case LACK = 2;
     case DONE = 1;
+    case RETURN = 3;
 }

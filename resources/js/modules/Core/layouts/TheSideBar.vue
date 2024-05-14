@@ -4,7 +4,7 @@
             <!-- Aplication Brand -->
             <div class="app-brand">
                 <router-link :to="{ name: 'pos' }">
-                    <img style="width: 110px;" :src="settings.logo" :alt="settings.name" />
+                    <img style="width: 100%; height: 70px; object-fit: contain;" :src="settings.logo" :alt="settings.name" />
                     <!-- <span class="brand-name">{{ settings.name }}</span> -->
                 </router-link>
             </div>
@@ -62,11 +62,12 @@ import 'simplebar-vue/dist/simplebar.min.css';
 import { ref } from 'vue';
 import { useAuthStore } from '~/User/store/authStore';
 import { useSettingStore } from '~/Setting/store/settingStore';
+import { storeToRefs } from 'pinia';
 
 const store = useAuthStore();
 const settingStore = useSettingStore();
 
-const settings = settingStore.getSettings();
+const settings = ref(settingStore.getSettings());
 
 const menus = ref(store.getMenus());
 

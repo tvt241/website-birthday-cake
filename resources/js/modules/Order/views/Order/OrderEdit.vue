@@ -12,62 +12,14 @@
         </div>
         <div class="card card-body">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="form-group">
                         <label for="">Mã đơn hàng</label>
                         <input type="" :value="form.order_code" readonly class="form-control"id="">
                     </div>
-                    <div class="form-group">
-                        <label for="">Tình trạng đơn hàng</label>
-                        <select v-model="form.status" class="form-control">
-                            <option class="text-danger" disabled>Chờ sử lý</option>
-                            <option value="0">Chờ duyệt</option>
-                            <option value="1">Chuẩn bị hàng</option>
-                            <option value="2">Đã bàn giao đơn vị vận chuyển</option>
-                            <option value="3">Đang vận chuyển</option>
-                            <option value="4">Đang giao đến bạn</option>
-                            <option value="5">Đã giao</option>
-                            <!-- <option disabled value="11">Hoàn thành tự động</option> -->
-                            <option class="text-danger" disabled>Thất bại</option>
-                            <option value="23">Giao thất bại</option>
-                            <option value="23">Tạm dừng</option>
-                            <option value="21">Người bán hủy</option>
-                            <option value="20">Khách hàng hủy</option>
-                            <option value="20">Hoàn hàng</option>
-                            <option value="20">Trả hàng</option>
 
-                            <option class="text-danger" disabled>Thành công </option>
-                            <option value="10">Hoàn thành</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Kiểu thanh toán</label>
-                        <select  v-model="form.payment_method" name="" id="" class="form-control">
-                            <option value="0">COD</option>
-                            <option value="1">VNPAY</option>
-                            <option value="2">Tiền mặt</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="">Trạng thái thanh toán</label>
-                        <select v-model="form.payment_status" name="" id="" class="form-control">
-                            <option value="0">Chờ thanh toán</option>
-                            <option value="1">Đã thanh toán</option>
-                            <option value="2">Thanh toán thiếu</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="">Khách hàng</label>
-                        <select v-model="form.user_id" name="" id="" class="form-control">
-                            <option value="">Khách lẻ</option>
-                            <option v-for="customer in customers" :value="customer.id">{{ customer.name }}</option>
-                        </select>
-                    </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="form-group">
                         <label for="">Tên người nhận</label>
                         <input type="" v-model="form.name" class="form-control"id="">
@@ -174,3 +126,52 @@ onMounted(async () => {
     await getOrder();
 });
 </script>
+<!-- 
+<div class="form-group">
+    <label for="">Tình trạng đơn hàng</label>
+    <select v-model="form.status" class="form-control">
+        <option class="text-danger" disabled>Chờ sử lý</option>
+        <option value="0">Chờ duyệt</option>
+        <option value="1">Chuẩn bị hàng</option>
+        <option value="2">Đã bàn giao đơn vị vận chuyển</option>
+        <option value="3">Đang vận chuyển</option>
+        <option value="4">Đang giao đến bạn</option>
+        <option value="5">Đã giao</option>
+        <option class="text-danger" disabled>Thất bại</option>
+        <option value="23">Giao thất bại</option>
+        <option value="23">Tạm dừng</option>
+        <option value="21">Người bán hủy</option>
+        <option value="20">Khách hàng hủy</option>
+        <option value="20">Hoàn hàng</option>
+        <option value="20">Trả hàng</option>
+
+        <option class="text-danger" disabled>Thành công </option>
+        <option value="10">Hoàn thành</option>
+    </select>
+</div>
+
+<div class="form-group">
+    <label>Kiểu thanh toán</label>
+    <select  v-model="form.payment_method" name="" id="" class="form-control">
+        <option value="0">COD</option>
+        <option value="1">VNPAY</option>
+        <option value="2">Tiền mặt</option>
+    </select>
+</div>
+
+<div class="form-group">
+    <label for="">Trạng thái thanh toán</label>
+    <select v-model="form.payment_status" name="" id="" class="form-control">
+        <option value="0">Chờ thanh toán</option>
+        <option value="1">Đã thanh toán</option>
+        <option value="2">Thanh toán thiếu</option>
+    </select>
+</div>
+
+<div class="form-group">
+    <label for="">Khách hàng</label>
+    <select v-model="form.user_id" name="" id="" class="form-control">
+        <option value="">Khách lẻ</option>
+        <option v-for="customer in customers" :value="customer.id">{{ customer.name }}</option>
+    </select>
+</div> -->

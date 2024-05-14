@@ -1,6 +1,8 @@
 <div class="humberger__menu__wrapper">
     <div class="humberger__menu__logo">
-        <a href="#"><img src="{{ asset("assets/img/logo.png") }}" alt=""></a>
+    <a href="{{ route("home") }}">
+            <img style="widows: 100%" height="50px" src="{{ $company["logo"] }}" alt="">
+        </a>
     </div>
     <div class="humberger__menu__cart">
         <ul>

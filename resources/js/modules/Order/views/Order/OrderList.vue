@@ -99,7 +99,7 @@ function onShowConfirm(id) {
     alertHelper.confirmDelete()
         .then((result) => {
             if (result.isConfirmed) {
-                deletePost(id);
+                deleteOrder(id);
             }
         })
 }

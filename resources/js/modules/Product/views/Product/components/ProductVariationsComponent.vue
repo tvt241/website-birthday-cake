@@ -189,7 +189,7 @@ const emitVariationChange = debounce(() => {
         return temp;
     })
     emit("variationsChange", simpleData, variations, states.isChange);
-}, 1000);
+}, 500);
 
 async function previewImage(event, index) {
     try {

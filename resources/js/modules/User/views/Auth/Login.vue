@@ -98,9 +98,11 @@ import { IMG_FOLDER } from "~/Core/helpers/imageHelper";
 import { useRouter } from "vue-router";
 import alertHelper from "~/Core/helpers/alertHelper";
 import { useGlobalStore } from "~/Core/stores/globalStore";
+import { useSettingStore } from "~/Setting/store/settingStore";
 
 const authStore = useAuthStore();
 const globalStore = useGlobalStore();
+const settingStore = useSettingStore();
 
 const router = useRouter();
 
@@ -121,6 +123,7 @@ async function login(){
         const response = await authApi.login(form);
         const data = response.data;
         await authStore.setToken(data);
+        await settingStore.setSettings();
         router.push({name: "pos"});
     } catch (error) {
         alertHelper.error(error.response.data.message);
@@ -141,6 +144,7 @@ function toggleShowPass(){
 onMounted(async () => {
     await authStore.setInfo();
     if(authStore.isLogin){
+        await settingStore.setSettings();
         router.push(globalStore.preRouteName);
     }
 });

@@ -52,7 +52,7 @@ class LoginApiController extends Controller
         return $this->SuccessResponse($result, $result->message, $status);
     }
 
-    public function info(){
+    public function info(Request $request){
         $user = auth()->user();
         $permissions = $user->roles()
             ->join("role_has_permissions", "roles.id", "=", "role_has_permissions.role_id")
@@ -100,6 +100,11 @@ class LoginApiController extends Controller
         return $this->SuccessResponse(new InfoUserResource($user));
     }
 
+    public function logout(Request $request){
+        $token = auth()->user()->token();
+        $token->revoke();
+        return $this->SuccessResponse([]);
+    }
     // public function abc(){
     //     $permissions = $user->roles()
     //         ->join("role_has_permissions", "roles.id", "=", "role_has_permissions.role_id")

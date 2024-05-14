@@ -180,6 +180,7 @@ class ProductApiController extends Controller
                 $product->update($data);
                 return $this->SuccessResponse();
             }
+
             $productItems = $product->productItems;
             $productItemIds = $productItems->pluck("id");
 
@@ -195,7 +196,10 @@ class ProductApiController extends Controller
             foreach($productItems as $productItem){
                 $this->iImageService->destroy($productItem);
                 Cart::where("product_item_id", $productItem->id)->delete();
+                ProductItem::find($productItem->id)->delete();
             }
+            $product->variations()->delete();
+
             $this->handleStoreVariation($request->variations, $product->id, $request->items);
 
             if ($request->hasFile("image")) {
@@ -212,16 +216,40 @@ class ProductApiController extends Controller
 
     public function destroy($id)
     {
-        $product = Product::find($id);
-        if (!$product) {
-            return $this->ErrorResponse(message: __("No Results Found."), status_code: 404);
+        DB::beginTransaction();
+            try {
+                $product = Product::find($id);
+            if (!$product) {
+                return $this->ErrorResponse(message: __("No Results Found."), status_code: 404);
+            }
+            $productItems = $product->productItems;
+            $productItemIds = $productItems->pluck("id");
+
+            $orderPendingCount = DB::table("order_details")
+                    ->join("orders", "orders.id", "=", "order_details.order_id")
+                    ->whereIn("order_details.product_item_id", $productItemIds)
+                    ->where("orders.status", ">=", OrderStatusEnum::START_ORDER_PENDING)
+                    ->where("orders.status", "<", OrderStatusEnum::END_ORDER_PENDING)
+                    ->count("*");
+
+            if($orderPendingCount){
+                DB::rollBack();
+                return $this->ErrorResponse("Vui lòng hoàn thành những đơn hàng liên quan trước khi xóa sản phẩm");
+            }
+
+            foreach($productItems as $productItem){
+                $productItem->carts()->delete();
+                $productItem->delete();
+            }
+            // $product->variations()->delete();
+            $this->iImageService->destroy($product);
+            $product->delete();
+            DB::commit();
+            return $this->SuccessResponse();
+        } catch (\Exception $th) {
+            return $this->ErrorResponse($th->getMessage());
         }
-        $product->items()->delete();
-        $product->variations()->delete();
-        $product->carts()->delete();
-        $this->iImageService->destroy($product);
-        $product->delete();
-        return $this->SuccessResponse();
+        
     }
 
     public function changeActive($id)

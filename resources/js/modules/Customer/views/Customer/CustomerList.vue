@@ -59,13 +59,13 @@
                                         <div class="d-flex justify-content-center gap-2">
                                             <router-link 
                                                 class="btn btn-outline-info btn-sm square-btn"
-                                                :to="{ name: 'employees.details', params: { id: customer.id }}"
+                                                :to="{ name: 'customers.details', params: { id: customer.id }}"
                                             >
                                                 <i class="mdi mdi-eye"></i>
                                             </router-link>
                                             <router-link 
                                                 class="btn btn-outline-warning btn-sm square-btn"
-                                                :to="{ name: 'employees.edit', params: { id: customer.id }}"
+                                                :to="{ name: 'customers.edit', params: { id: customer.id }}"
                                             >
                                                 <i class="mdi mdi-pencil"></i>
                                             </router-link>

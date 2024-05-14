@@ -9,6 +9,10 @@ export default {
         const url = "get-config";
         return apiHelper.post(url, data, "");
     },
+    setConfig: function(group, form){
+        const url = `update-config/${group}`;
+        return apiHelper.postRaw(url, form, "");
+    },
     getService: function (service){
         const data = {
             service

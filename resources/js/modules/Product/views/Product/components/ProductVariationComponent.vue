@@ -30,7 +30,8 @@
                             <span class="text-danger">*</span>
                         </label>
                         <input type="text" 
-                            v-model="items[0].price" 
+                            v-model="items[0].price"
+                            @change="onUpdateVariation"  
                             class="form-control"
                             :class="{ 'is-invalid': errors['items.0.price'] }"
                         >
@@ -47,6 +48,7 @@
                         </label>
                         <input type="text" 
                             v-model="items[0].quantity" 
+                            @change="onUpdateVariation"
                             class="form-control"                            
                             :class="{ 'is-invalid': errors['items.0.quantity'] }"
                         >
@@ -61,9 +63,8 @@
 </template>
 
 <script setup>
-import { reactive, defineEmits, defineProps, watch } from 'vue';
+import { reactive, defineEmits, defineProps, onBeforeUpdate } from 'vue';
 import debounce from 'lodash/debounce';
-import { onMounted } from 'vue';
 
 const emits = defineEmits(["variationsChange"]);
 
@@ -92,10 +93,18 @@ const variations = [{
 }];
 
 const onUpdateVariation = debounce(() => {
-    emits("variationsChange", items, variations, 0);
-}, 1000);
+    const itemFirst = items[0];
+    const simpleItem = [{
+        id: itemFirst.id ?? "",
+        price_import: itemFirst.price_import,
+        quantity: itemFirst.quantity,
+        price: itemFirst.price,
+    }];
+    console.log(simpleItem);
+    emits("variationsChange", simpleItem, variations, 0);
+}, 200);
 
-onMounted(() => {
+onBeforeUpdate(() => {
     emits("variationsChange", items, variations, 0);
 });
 </script>

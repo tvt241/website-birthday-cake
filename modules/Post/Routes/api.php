@@ -15,12 +15,13 @@ use Modules\Post\Http\Controllers\Api\PostCategoryApiController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-
-Route::prefix('posts')->as('posts.')->group(function () {
-    Route::get("categories/get-all", [PostCategoryApiController::class, "getAll"]);
-    Route::put("categories/{id}/change-active", [PostCategoryApiController::class, "changeActive"]);
-    Route::apiResource("categories", PostCategoryApiController::class);
+Route::group(["middleware" => "auth:api"], function(){
+    Route::prefix('posts')->as('posts.')->group(function () {
+        Route::get("categories/get-all", [PostCategoryApiController::class, "getAll"]);
+        Route::put("categories/{id}/change-active", [PostCategoryApiController::class, "changeActive"]);
+        Route::apiResource("categories", PostCategoryApiController::class);
+    });
+    Route::put("posts/{id}/change-active", [PostApiController::class, "changeActive"]);
+    Route::apiResource("posts", PostApiController::class);
 });
-Route::put("posts/{id}/change-active", [PostApiController::class, "changeActive"]);
-Route::apiResource("posts", PostApiController::class);
+

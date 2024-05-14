@@ -28,10 +28,3 @@ Route::get("shippings/fee", [ShippingApiController::class, "fee"])->name("shippi
 
 Route::get('/order-details', [OrderController::class, 'index'])->name("orders.index");
 Route::post('/order-details/{order}', [OrderController::class, 'show'])->name("orders.details");
-
-
-Route::get("test", function(){
-    $order = Order::find(1);
-    $html = view("order::mail.mail-order-created", ["order" => $order])->render();
-    echo $html;
-});

@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Customer\Http\Requests;
+namespace Modules\Customer\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -14,9 +14,8 @@ class UpdateCustomerRequest extends FormRequest
     public function rules()
     {
         $time = now()->addYears(- 15);
-        $customer_id = auth()->id();
         return [
-            "username" => "required|unique:customers,username, $customer_id",
+            "username" => "required|unique:customers,username, $this->customer",
             "email" => "nullable|email",
             "phone" => "nullable|numeric",
             "name" => "nullable",

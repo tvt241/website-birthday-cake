@@ -24,5 +24,7 @@ export const useGlobalStore = defineStore("globalStore", () => {
         isActive.value = false;
     }
 
+    
+
     return { accept_status, showLoading, hideLoading, isActive, setStatus, preRouteName, setPreRoute };
 });

@@ -4,27 +4,31 @@ $(document).ready(function(){
 });
 
 $(document).on("click", ".variation__btn",async function(){
-    const btnVariation = $(this);
-    btnVariation.siblings().removeClass("active");
-    btnVariation.addClass("active");
-    const variationParent = btnVariation.parent()
-    const variationNext = variationParent.next();
-    const variationId = $(this).data("variation-id");
-    if(variationNext && variationNext.hasClass("product__details__variations_item")){
-        const depth = variationParent.data("depth");
-        const html = await renderVariation(depth, variationId);
-        variationNext.html(html);
-        $(".variation__btn", variationNext).first().click();
-        return;
-    }
-    const item = items.find((item) => item.product_variation_id == variationId);
-    if(item){
-        $(".product__details__price span").first().html(formatCurrency(item.price));
-        $(".product__details__instock span").first().html(item.quantity);
-        $(".product-item-id").val(item.id);
-        $(".product-item-price").val(item.price);
-        $(".product-item-quantity").val(item.quantity);
-        $(".pro-qty input").val(1);
+    try {
+        const btnVariation = $(this);
+        btnVariation.siblings().removeClass("active");
+        btnVariation.addClass("active");
+        const variationParent = btnVariation.parent();
+        const variationNext = variationParent.next();
+        const variationId = $(this).data("variation-id");
+        if(variationNext && variationNext.hasClass("product__details__variations_item")){
+            const depth = variationParent.data("depth");
+            const html = await renderVariation(depth, variationId);
+            variationNext.html(html);
+            $(".variation__btn", variationNext).first().click();
+            return;
+        }
+        const item = items.find((item) => item.product_variation_id == variationId);
+        if(item){
+            $(".product__details__price span").first().html(formatCurrency(item.price));
+            $(".product__details__instock span").first().html(item.available);
+            $(".product-item-id").val(item.id);
+            $(".product-item-price").val(item.price);
+            $(".product-item-quantity").val(item.available);
+            $(".pro-qty input").val(1);
+        }
+    } catch (error) {
+        console.log(error);
     }
 });
 
