@@ -7,7 +7,7 @@
 import JsBarcode from 'jsbarcode';
 import { defineProps, defineEmits, onMounted, ref } from 'vue';
 
-const emits = defineEmits(["onPrint"]);
+const emits = defineEmits(["print"]);
 
 const props = defineProps({
     value: {

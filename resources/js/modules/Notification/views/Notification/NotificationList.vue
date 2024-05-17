@@ -1,5 +1,5 @@
 <template>
-    <PageHeaderTitleComponent header-title="Danh sách đơn hàng">
+    <PageHeaderTitleComponent header-title="Danh sách thông báo">
         <router-link :to="{ name: 'posts.create' }"  class="btn btn-primary text-nowrap">
             <i class="mdi mdi-plus"></i>
             Thêm

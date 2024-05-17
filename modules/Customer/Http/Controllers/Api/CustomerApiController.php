@@ -81,7 +81,11 @@ class CustomerApiController extends Controller
         }
         DB::beginTransaction();
         try {
-            $customer->update($request->validated());
+            $data = $request->validated();
+            if(!$request->password){
+                $data = $request->except("password");
+            }
+            $customer->update($data);
             if($request->image){
                 $imageService->update($request->image, $customer, "users");
             }

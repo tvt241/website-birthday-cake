@@ -84,8 +84,8 @@
                         <td>
                             {{ item.quantity }}
                         </td>
-                        <td class="barcode">
-                            <BarCodeImage @click="showBarcode(item)" :value="item.barcode"/>
+                        <td class="barcode" @click="showBarcode(item)">
+                            <BarCodeImage :value="item.barcode"/>
                         </td>
                     </tr>
                 </tbody>
@@ -227,7 +227,6 @@ function renderProductItem(productItems){
     product.is_variation = 1;
 }
 
-
 function showBarcode(item){
     const barcode = item.barcode;
     JsBarcode("#barcode", barcode, {
@@ -238,6 +237,7 @@ function showBarcode(item){
     states.item = item;
     $("#modal-barcode").modal().show();
 }
+
 onMounted(async () => { 
     await getProduct();
 });

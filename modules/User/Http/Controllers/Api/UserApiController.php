@@ -60,7 +60,11 @@ class UserApiController extends Controller
         }
         DB::beginTransaction();
         try {
-            $user->update($request->validated());
+            $data = $request->validated();
+            if(!$request->password){
+                $data = $request->except("password");
+            }
+            $user->update($data);
             $role = Role::find($request->role_id);
             $user->syncRoles($role);
             if($request->image){
